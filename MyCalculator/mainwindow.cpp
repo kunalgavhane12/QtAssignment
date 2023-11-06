@@ -65,6 +65,7 @@ void MainWindow::numPressed()
 void MainWindow::on_AllClear_clicked()
 {
     ui->lineEdit->setText("");
+    ui->History->setText("");
     num1 = 0.0;
     num2 = 0.0;
     result = 0.0;
@@ -131,6 +132,7 @@ void MainWindow::on_Equals_clicked()
     double ans=0.0;
     QString displayVal = ui->lineEdit->text();
     ui->lineEdit->setText("");
+
     QRegularExpression numberRegex("([+-]?\\d*\\.?\\d+)");
     QRegularExpressionMatchIterator numberMatches = numberRegex.globalMatch(displayVal);
 
@@ -142,7 +144,6 @@ void MainWindow::on_Equals_clicked()
     {
         num2 = numberMatches.next().captured(1).toDouble();
     }
-    ui->lineEdit->setText(QString::number(num1)+" "+QString::number(num2));
 
     if(add)
     {
@@ -172,7 +173,7 @@ void MainWindow::on_Equals_clicked()
         Div = false;
       }
 
-//    ui->lineEdit->setText(displayVal + "=" + QString::number(ans));
+    ui->History->setText(displayVal + "=" + QString::number(ans));
     ui->lineEdit->setText(QString::number(ans));
 
 }
