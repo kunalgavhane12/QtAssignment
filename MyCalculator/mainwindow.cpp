@@ -1,12 +1,6 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
-#include <QRegularExpression>
-
-double result = 0.0 ,num1 = 0.0, num2 = 0.0;
-bool add = false;
-bool sub = false;
-bool mul = false;
-bool Div = false;
+#include <QStack>
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
@@ -43,47 +37,24 @@ void MainWindow::numPressed()
     QString newVal = displayVal + value;
     ui->lineEdit->setText(newVal);
 
-    if(0 == QString::compare(value, "÷", Qt::CaseInsensitive))
-    {
-        Div= true;
-     }
-    if(0 == QString::compare(value, "×", Qt::CaseInsensitive))
-    {
-        mul = true;
-    }
-    if(0 == QString::compare(value, "+", Qt::CaseInsensitive))
-    {
-        add =true;
-    }
-    if(0 == QString::compare(value, "−", Qt::CaseInsensitive))
-    {
-        sub =true;
-    }
-
 }
 
 void MainWindow::on_AllClear_clicked()
 {
-    ui->lineEdit->setText("");
-    ui->History->setText("");
-    num1 = 0.0;
-    num2 = 0.0;
-    result = 0.0;
-    add = false;
-    sub = false;
-    mul = false;
-    Div = false;
+    ui->lineEdit->clear();
+    ui->History->clear();
 }
+
 
 void MainWindow::on_Clear_clicked()
 {
-    ui->lineEdit->setText("");
+    ui->lineEdit->clear();
 }
 
 void MainWindow::on_Modules_clicked()
 {
     QString displayVal = ui->lineEdit->text();
-    result = displayVal.toDouble();
+    double result = displayVal.toDouble();
     result /= 100;
     ui->lineEdit->setText(QString::number(result));
 }
@@ -113,7 +84,7 @@ void MainWindow::on_RightBracket_clicked()
 void MainWindow::on_Power_clicked()
 {
     QString displayVal = ui->lineEdit->text();
-    result = displayVal.toDouble();
+    double result = displayVal.toDouble();
     result*=result;
     ui->lineEdit->setText(QString::number(result));
 }
@@ -127,53 +98,91 @@ void MainWindow::on_Point_clicked()
     ui->lineEdit->setText(newVal);
 }
 
+
+double MainWindow::performOperation()
+{
+    QString s = ui->lineEdit->text();
+    QStack<double> numbers;
+    QStack<char> operators;
+
+    QString currentNumber ="";
+
+    for (int i = 0; i < s.length(); ++i)
+    {
+        if (s[i]>='0' && s[i]<='9')
+        {
+            while(i < s.length() && (s[i]>='0' && s[i]<='9'))
+            {
+                currentNumber += s[i];
+                i++;
+            }
+            numbers.push(currentNumber.toDouble());
+            currentNumber.clear();
+        }
+
+        if (s[i] == '+' || s[i] == '-' || s[i] == '*' || s[i] == '/')
+        {
+            while (!operators.empty())
+            {
+                    double b = numbers.top();
+                    numbers.pop();
+                    double a = numbers.top();
+                    numbers.pop();
+                    char op = operators.top();
+                    operators.pop();
+                    if (op == '+')
+                    {
+                        numbers.push(a + b);
+                    }
+                    else if (op == '-')
+                    {
+                        numbers.push(a - b);
+                    }
+                    else if (op == '*')
+                    {
+                        numbers.push(a * b);
+                    }
+                    else if (op == '/')
+                    {
+                        numbers.push(a / b);
+                    }
+            }
+                operators.push(s[i].toLatin1());
+        }
+    }
+        while (!operators.empty())
+        {
+            double b = numbers.top();
+            numbers.pop();
+            double a = numbers.top();
+            numbers.pop();
+            char op = operators.top();
+            operators.pop();
+            if (op == '+')
+            {
+                numbers.push(a + b);
+            }
+            else if (op == '-')
+            {
+                numbers.push(a - b);
+            }
+            else if (op == '*')
+            {
+                numbers.push(a * b);
+            }
+            else if (op == '/')
+            {
+                numbers.push(a / b);
+            }
+        }
+
+    return numbers.top();
+}
+
 void MainWindow::on_Equals_clicked()
 {
-    double ans=0.0;
     QString displayVal = ui->lineEdit->text();
-    ui->lineEdit->setText("");
-
-    QRegularExpression numberRegex("([+-]?\\d*\\.?\\d+)");
-    QRegularExpressionMatchIterator numberMatches = numberRegex.globalMatch(displayVal);
-
-    if(numberMatches.hasNext())
-    {
-        num1 = numberMatches.next().captured(1).toDouble();
-    }
-    if(numberMatches.hasNext())
-    {
-        num2 = numberMatches.next().captured(1).toDouble();
-    }
-
-    if(add)
-    {
-        ans = num1 + num2;
-        add = false;
-    }
-    if(mul)
-    {
-        ans = num1 * num2;
-        mul = false;
-    }
-    if(sub)
-    {
-        ans = num1 - num2;
-        sub = false;
-    }
-    if(Div)
-    {
-        if(num2 == 0.0)
-        {
-            ui->lineEdit->setText("Error: Division by zero");
-            return;
-        }
-        else
-            ans = num1 / num2;
-
-        Div = false;
-      }
-
-    ui->History->setText(displayVal + "=" + QString::number(ans));
-    ui->lineEdit->setText(QString::number(ans));
-
+    double result = performOperation();
+    ui->History->setText(displayVal);
+    ui->lineEdit->setText(QString::number(result));
 }

@@ -36,6 +36,8 @@ private slots:
 
     void on_Equals_clicked();
 
+    double performOperation();
+
 private:
     Ui::MainWindow *ui;
 
