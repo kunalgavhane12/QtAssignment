@@ -98,6 +98,33 @@ void MainWindow::on_Point_clicked()
     ui->lineEdit->setText(newVal);
 }
 
+int MainWindow::isdigit(char ch)
+{
+    return (ch>='0'&& ch<='9');
+}
+
+int MainWindow::getPriority(char op)
+{
+    if (op == '+' || op == '-')
+        return 1;
+    else if (op == '*' || op == '/')
+        return 2;
+    return 0;
+}
+
+double MainWindow::arthimaticOperation(double a, double b, char op)
+{
+    if (op == '+')
+      return a + b;
+    else if (op == '-')
+      return a - b;
+    else if (op == '*')
+        return a * b;
+    else if (op == '/')
+        if(b != 0.0)
+        return a / b;
+    return 0.0;
+}
 
 double MainWindow::performOperation()
 {
@@ -105,51 +132,59 @@ double MainWindow::performOperation()
     QStack<double> numbers;
     QStack<char> operators;
 
-    QString currentNumber ="";
-
+    QString currentNumber = "";
     for (int i = 0; i < s.length(); ++i)
     {
-        if (s[i]>='0' && s[i]<='9')
-        {
-            while(i < s.length() && (s[i]>='0' && s[i]<='9'))
+            if(s[i]>='0' && s[i]<='9')
             {
-                currentNumber += s[i];
-                i++;
-            }
-            numbers.push(currentNumber.toDouble());
-            currentNumber.clear();
-        }
+                while((i< s.length() && (s[i]>='0' && s[i]<='9')) || s[i] == '.')
+                {
+                    currentNumber += s[i];
+                    i++;
+                }
+                numbers.push(currentNumber.toDouble());
+                currentNumber ="";
+                i--;
 
-        if (s[i] == '+' || s[i] == '-' || s[i] == '*' || s[i] == '/')
-        {
-            while (!operators.empty())
+            }
+            else if (s[i] == '(')
             {
+                operators.push(s[i].toLatin1());
+            }
+            else if (s[i] == ')')
+            {
+                while (!operators.empty() && operators.top() != '(')
+                {
                     double b = numbers.top();
                     numbers.pop();
                     double a = numbers.top();
                     numbers.pop();
                     char op = operators.top();
                     operators.pop();
-                    if (op == '+')
-                    {
-                        numbers.push(a + b);
-                    }
-                    else if (op == '-')
-                    {
-                        numbers.push(a - b);
-                    }
-                    else if (op == '*')
-                    {
-                        numbers.push(a * b);
-                    }
-                    else if (op == '/')
-                    {
-                        numbers.push(a / b);
-                    }
+
+                    double ans = arthimaticOperation(a,b,op);
+                    numbers.push(ans);
+                }
+                operators.pop();
             }
+            else if (s[i] == '+' || s[i] == '-' || s[i] == '*' || s[i] == '/')
+            {
+                while (!operators.empty() && getPriority(operators.top()) >= getPriority(s[i].toLatin1()))
+                {
+                    double b = numbers.top();
+                    numbers.pop();
+                    double a = numbers.top();
+                    numbers.pop();
+                    char op = operators.top();
+                    operators.pop();
+
+                    double ans = arthimaticOperation(a,b,op);
+                    numbers.push(ans);
+                }
                 operators.push(s[i].toLatin1());
+            }
         }
-    }
+
         while (!operators.empty())
         {
             double b = numbers.top();
@@ -158,31 +193,17 @@ double MainWindow::performOperation()
             numbers.pop();
             char op = operators.top();
             operators.pop();
-            if (op == '+')
-            {
-                numbers.push(a + b);
-            }
-            else if (op == '-')
-            {
-                numbers.push(a - b);
-            }
-            else if (op == '*')
-            {
-                numbers.push(a * b);
-            }
-            else if (op == '/')
-            {
-                numbers.push(a / b);
-            }
+            double ans = arthimaticOperation(a,b,op);
+            numbers.push(ans);
         }
 
-    return numbers.top();
+        return numbers.top();
 }
 
 void MainWindow::on_Equals_clicked()
 {
     QString displayVal = ui->lineEdit->text();
     double result = performOperation();
-    ui->History->setText(displayVal);
+    ui->History->setText(displayVal + "=" + QString::number(result));
     ui->lineEdit->setText(QString::number(result));
 }
