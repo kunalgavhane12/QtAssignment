@@ -21,6 +21,7 @@ MainWindow::MainWindow(QWidget *parent)
     connect(ui->Divide, SIGNAL(clicked()), this, SLOT(numPressed()));
     connect(ui->Multiply, SIGNAL(clicked()), this, SLOT(numPressed()));
     connect(ui->Subt, SIGNAL(clicked()), this, SLOT(numPressed()));
+
 }
 
 
@@ -56,6 +57,7 @@ void MainWindow::on_Modules_clicked()
     QString displayVal = ui->lineEdit->text();
     double result = displayVal.toDouble();
     result /= 100;
+    ui->History->setText(displayVal + " = " +QString::number(result));
     ui->lineEdit->setText(QString::number(result));
 }
 
@@ -86,6 +88,7 @@ void MainWindow::on_Power_clicked()
     QString displayVal = ui->lineEdit->text();
     double result = displayVal.toDouble();
     result*=result;
+    ui->History->setText(displayVal + " ^ = " +QString::number(result));
     ui->lineEdit->setText(QString::number(result));
 }
 
@@ -119,10 +122,11 @@ double MainWindow::arthimaticOperation(double a, double b, char op)
     else if (op == '-')
       return a - b;
     else if (op == '*')
-        return a * b;
+      return a * b;
     else if (op == '/')
-        if(b != 0.0)
-        return a / b;
+      if(b != 0.0)
+      return a / b;
+
     return 0.0;
 }
 
@@ -133,7 +137,7 @@ double MainWindow::performOperation()
     QStack<char> operators;
 
     QString currentNumber = "";
-    for (int i = 0; i < s.length(); ++i)
+    for (int i = 0; i < s.length(); i++)
     {
             if(s[i]>='0' && s[i]<='9')
             {
@@ -164,6 +168,14 @@ double MainWindow::performOperation()
 
                     double ans = arthimaticOperation(a,b,op);
                     numbers.push(ans);
+                }
+                if(!numbers.empty() && operators.top() == '(')
+                {
+                    double b = numbers.top();
+                    numbers.pop();
+                    double a = numbers.top();
+                    numbers.pop();
+                    numbers.push(a*b);
                 }
                 operators.pop();
             }

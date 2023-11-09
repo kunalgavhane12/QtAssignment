@@ -37,8 +37,11 @@ private slots:
     void on_Equals_clicked();
 
     double performOperation();
+
     int isdigit(char ch);
+
     int getPriority(char);
+
     double arthimaticOperation(double a, double b, char op);
 
 private:
