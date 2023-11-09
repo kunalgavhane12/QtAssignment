@@ -101,10 +101,6 @@ void MainWindow::on_Point_clicked()
     ui->lineEdit->setText(newVal);
 }
 
-int MainWindow::isdigit(char ch)
-{
-    return (ch>='0'&& ch<='9');
-}
 
 int MainWindow::getPriority(char op)
 {
@@ -165,11 +161,11 @@ double MainWindow::performOperation()
                     numbers.pop();
                     char op = operators.top();
                     operators.pop();
-
                     double ans = arthimaticOperation(a,b,op);
                     numbers.push(ans);
                 }
-                if(!numbers.empty() && operators.top() == '(')
+                operators.pop();
+                if(operators.empty())
                 {
                     double b = numbers.top();
                     numbers.pop();
@@ -177,7 +173,6 @@ double MainWindow::performOperation()
                     numbers.pop();
                     numbers.push(a*b);
                 }
-                operators.pop();
             }
             else if (s[i] == '+' || s[i] == '-' || s[i] == '*' || s[i] == '/')
             {
@@ -189,7 +184,6 @@ double MainWindow::performOperation()
                     numbers.pop();
                     char op = operators.top();
                     operators.pop();
-
                     double ans = arthimaticOperation(a,b,op);
                     numbers.push(ans);
                 }
@@ -208,7 +202,6 @@ double MainWindow::performOperation()
             double ans = arthimaticOperation(a,b,op);
             numbers.push(ans);
         }
-
         return numbers.top();
 }
 
@@ -216,6 +209,6 @@ void MainWindow::on_Equals_clicked()
 {
     QString displayVal = ui->lineEdit->text();
     double result = performOperation();
-    ui->History->setText(displayVal + "=" + QString::number(result));
+    ui->History->setText(displayVal + " = " + QString::number(result));
     ui->lineEdit->setText(QString::number(result));
 }
