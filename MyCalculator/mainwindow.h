@@ -2,6 +2,11 @@
 #define MAINWINDOW_H
 
 #include <QMainWindow>
+#include <QWidget>
+#include <QKeyEvent>
+#include <QMouseEvent>
+#include <QEvent>
+#include <QDebug>
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
@@ -17,6 +22,10 @@ public:
 
 private slots:
     void numPressed();
+
+    void keyPressEvent(QKeyEvent *event) override;
+
+   // bool event(QEvent *event) override;
 
     void on_AllClear_clicked();
 

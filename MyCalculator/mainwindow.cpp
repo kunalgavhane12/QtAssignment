@@ -2,12 +2,15 @@
 #include "ui_mainwindow.h"
 #include <QStack>
 
+double result = 0.0;
+QString expression = "0";
+
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
     , ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
-    ui->lineEdit->setText("");
+    ui->lineEdit->setText("0");
 
     for (int i = 0; i < 10; i++)
     {
@@ -40,16 +43,87 @@ void MainWindow::numPressed()
 
 }
 
+void MainWindow::keyPressEvent(QKeyEvent *event)
+{
+    QString key = event->text();
+
+    if(event->key() == Qt::Key_Enter || event->key() == Qt::Key_Return)
+    {
+        on_Equals_clicked();
+        expression = ui->lineEdit->text();
+    }
+
+    if(event->key() == Qt::Key_Delete)
+    {
+        on_AllClear_clicked();
+        expression = "";
+        ui->lineEdit->clear();
+    }
+    else if(event->key() == Qt::Key_Backspace)
+    {
+        QString s = ui->lineEdit->text();
+        expression = "";
+        for(int i=0; i<s.length()-1; i++)
+        {
+            expression +=s[i];
+            ui->lineEdit->setText(ui->lineEdit->text()+s[i]);
+        }
+    }
+    else if(event->type() == QEvent::KeyPress)
+    {
+        expression +=  key;
+
+    }
+
+    ui->lineEdit->setText(expression);
+}
+
+/*bool MainWindow::event(QEvent *event)
+{
+    //keyborad event
+    if(event->type() == QEvent::KeyPress)
+    {
+        QKeyEvent *k_ev = static_cast<QKeyEvent *>(event);
+        if(k_ev->key() == 'A')
+        {
+            qDebug() << "Key: " << (char) k_ev->key() << "----handled by event";
+            return true;
+        }
+    }
+    //mouse event
+    if(event->type() == QEvent::MouseButtonPress)
+    {
+        QMouseEvent *m_ev = static_cast<QMouseEvent *>(event);
+        if(m_ev->button() == Qt::LeftButton)
+        {
+            qDebug() << "in event(), left click.";
+            return true;
+        }
+        else if(m_ev->button() == Qt::RightButton)
+        {
+            qDebug() << "in event(), right click.";
+            return true;
+        }
+        else
+        {
+            return QWidget::event(event);
+        }
+    }
+    return QWidget::event(event);
+}*/
+
 void MainWindow::on_AllClear_clicked()
 {
     ui->lineEdit->clear();
     ui->History->clear();
+    expression = "";
 }
 
 
 void MainWindow::on_Clear_clicked()
 {
     ui->lineEdit->clear();
+    expression = "";
 }
 
 void MainWindow::on_Modules_clicked()
@@ -208,7 +282,8 @@ double MainWindow::performOperation()
 void MainWindow::on_Equals_clicked()
 {
     QString displayVal = ui->lineEdit->text();
-    double result = performOperation();
+    result = performOperation();
+
     ui->History->setText(displayVal + " = " + QString::number(result));
     ui->lineEdit->setText(QString::number(result));
 }
