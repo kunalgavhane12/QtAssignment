@@ -7,6 +7,7 @@
 #include <QMouseEvent>
 #include <QEvent>
 #include <QDebug>
+#include <QSet>
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
@@ -76,7 +77,7 @@ private slots:
 
     void on_Delete_clicked();
 
-    bool isvaildExpression(const QString expression);
+    bool isValidExpression(const QString expression);
 
     bool isOperator(const QChar &);
     bool lastCharOperator(const QString &);
@@ -86,6 +87,8 @@ private:
     double result = 0.0;
     QString expression = "0";
     static int dot;
+    QSet<QChar> validOperators = {'+', '-', '/', '*'};
+
 
 };
 #endif // MAINWINDOW_H

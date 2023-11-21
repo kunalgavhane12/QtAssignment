@@ -3,7 +3,6 @@
 #include <QStack>
 
 int MainWindow::dot = 0;
-QSet<QChar> vaildOperators = {'+', '-', '/', '*'};
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
@@ -35,16 +34,22 @@ MainWindow::~MainWindow()
 void MainWindow::numPressed()
 {
     QString oldExpression = ui->lineEdit->text();
-    QPushButton *btn = (QPushButton*)sender();
+    QPushButton *btn = qobject_cast<QPushButton*>(sender());
     QString value = btn->text();
-    if(oldExpression != value)
+
+    if (oldExpression != value)
     {
         QString newValue = oldExpression + value;
         ui->lineEdit->setText(newValue);
     }
-    else if(dot==1)
+    else if (dot == 1 && value == ".")
     {
         ui->lineEdit->setText(oldExpression);
+    }
+    else if (dot == 1)
+    {
+        dot = 0;
+        ui->lineEdit->setText(value);
     }
     else
     {
@@ -57,51 +62,69 @@ void MainWindow::keyPressEvent(QKeyEvent *event)
     QString oldExp = expression;
     QString key = event->text();
 
-    if(event->key() == Qt::Key_Enter || event->key() == Qt::Key_Return)
+    if (event->key() == Qt::Key_Enter || event->key() == Qt::Key_Return)
     {
         on_Equals_clicked();
         expression = ui->lineEdit->text();
     }
 
-    if(event->key() == Qt::Key_Delete)
+    if (event->key() == Qt::Key_Delete)
     {
         on_AllClear_clicked();
         expression = "";
         ui->lineEdit->clear();
     }
-    else if(event->key() == Qt::Key_Backspace)
+    else if (event->key() == Qt::Key_Backspace)
     {
         QString oldexpression = ui->lineEdit->text();
         expression = "";
-        for(int i=0; i<oldexpression.length()-1; i++)
+        for (int i = 0; i < oldexpression.length() - 1; i++)
         {
-            expression +=oldexpression[i];
-            ui->lineEdit->setText(ui->lineEdit->text()+oldexpression[i]);
+            expression += oldexpression[i];
+            ui->lineEdit->setText(ui->lineEdit->text() + oldexpression[i]);
         }
     }
-    else if(event->type() == QEvent::KeyPress)
+    else if (event->type() == QEvent::KeyPress)
     {
-        if((key >= '0' && key <= '9' )|| key == '.' || key == '+' || key =='-' || key =='/' || key =='*')
+        if ((key >= '0' && key <= '9') || key == '.')
         {
-            if(lastCharOperator(expression) && (key == '+' || key =='-' || key =='/' || key =='*'))
+            if (lastCharOperator(expression) && validOperators.contains(key[0]))
             {
-                expression = expression.left(expression.length()-1) + key;
+                expression = expression.left(expression.length() - 1) + key[0];
             }
             else
             {
-                    expression +=  key;
+                if (key == "." && !ui->lineEdit->text().contains('.'))
+                {
+                    expression += key[0];
+                    dot = 1;
+                }
+                else if (key != ".")
+                {
+                    expression += key[0];
+                }
             }
         }
-
+        else if (validOperators.contains(key[0]))
+        {
+            if (lastCharOperator(expression) && validOperators.contains(key[0]))
+            {
+                expression = expression.left(expression.length() - 1) + key[0];
+            }
+            else
+            {
+                expression += key[0];
+            }
+        }
     }
-    //handle Special character alphabet
-    if(oldExp!=expression)
-    ui->lineEdit->setText(expression);
-}
 
+    // handle Special character alphabet
+    if (oldExp != expression)
+        ui->lineEdit->setText(expression);
+}
 bool MainWindow::isOperator(const QChar &ch)
 {
-    return vaildOperators.contains(ch);
+    return validOperators.contains(ch);
 }
 
 bool MainWindow::lastCharOperator(const QString &exp)
@@ -154,8 +177,8 @@ void MainWindow::on_AllClear_clicked()
     ui->History->clear();
     expression = "";
     result = 0.0;
+    dot = 0;
 }
-
 
 void MainWindow::on_Clear_clicked()
 {
@@ -209,12 +232,12 @@ void MainWindow::on_Dot_clicked()
 
 void MainWindow::on_Delete_clicked()
 {
-        QString str = ui->lineEdit->text();
-        ui->lineEdit->setText("");
-        for(int i=0; i<str.length()-1; i++)
-        {
-            ui->lineEdit->setText(ui->lineEdit->text()+str[i]);
-        }
+    QString str = ui->lineEdit->text();
+    ui->lineEdit->setText("");
+    for(int i=0; i<str.length()-1; i++)
+    {
+        ui->lineEdit->setText(ui->lineEdit->text()+str[i]);
+    }
 
 }
 
@@ -321,26 +344,8 @@ double MainWindow::performOperation()
         return numbers.top();
 }
 
-bool MainWindow::isvaildExpression(const QString expression)
+bool MainWindow::isValidExpression(const QString expression)
 {
-
-//    if(expression[0]== '+' || expression[0] =='-')
-//        return true;
-//    else if(expression[0]== '*' || expression[0] =='/')
-//        return false;
-  /*  for(int index = 0; index < expression.length(); index++)
-     {
-         if((expression[index] >= '0' && expression[index] <= '9') || expression[index] == '.'
-                 || expression[index] == ADDITION || expression[index] == SUBSTRACT ||
-                 expression[index] == MULTIPLY || expression[index] == DIVISION
-                 || expression[index] == '(' || expression[index] == ')')
-             continue;
-         else
-             return false;
-     }
-     return true;
-*/
-
     QStack<char> stack;
     for(int index=0; index < expression.length(); index++)
     {
@@ -372,31 +377,48 @@ void MainWindow::on_Equals_clicked()
 {
     QString displayVal = ui->lineEdit->text();
 
-    if(!isvaildExpression(displayVal))
+    if (!isValidExpression(displayVal))
     {
         ui->lineEdit->setText("Error");
         return;
     }
 
-    if(isOperator(displayVal[0]))
+    result = performOperation();
+    ui->History->setText(displayVal + "=" + QString::number(result));
+    ui->lineEdit->setText(QString::number(result));
+
+}
+
+/*
+void MainWindow::on_Equals_clicked()
+{
+    QString displayVal = ui->lineEdit->text();
+
+    if (!isValidExpression(displayVal))
+    {
+        ui->lineEdit->setText("Error");
+        return;
+    }
+
+    if (isOperator(displayVal[0]))
     {
         double secondOperand = displayVal.mid(1).toDouble();
 
-        if(displayVal[0] == '+')
+        if (displayVal[0] == ADDITION)
         {
-                result = 0 + secondOperand;
-         }
-        else if(displayVal[0] == '-')
-        {
-                result = 0 - secondOperand;
+            result = 0 + secondOperand;
         }
-        else if(displayVal[0] == '*')
+        else if (displayVal[0] == SUBSTRACT)
+        {
+            result = 0 - secondOperand;
+        }
+        else if (displayVal[0] == MULTIPLY)
         {
             result = 0 * secondOperand;
         }
-        else if(displayVal[0] == '/')
+        else if (displayVal[0] == DIVISION)
         {
-            if(secondOperand != 0)
+            if (secondOperand != 0)
             {
                 result = 0 / secondOperand;
             }
@@ -407,9 +429,40 @@ void MainWindow::on_Equals_clicked()
             }
         }
 
-        ui->History->setText("0" + displayVal[0] + secondOperand + "=" + QString::number(result));
+        ui->History->setText("0" + displayVal[0] + QString::number(secondOperand) + "=" + QString::number(result));
         ui->lineEdit->setText(QString::number(result));
+    }
+    else if (isOperator(displayVal[1]))
+    {
+        double firstOperand = displayVal.mid(0).toDouble();
 
+        if (displayVal[1] == ADDITION)
+        {
+            result = firstOperand + firstOperand;
+        }
+        else if (displayVal[1] == SUBSTRACT)
+        {
+            result = firstOperand - firstOperand;
+        }
+        else if (displayVal[1] == MULTIPLY)
+        {
+            result = firstOperand * firstOperand;
+        }
+        else if (displayVal[1] == DIVISION)
+        {
+            if (firstOperand != 0)
+            {
+                result = firstOperand / firstOperand;
+            }
+            else
+            {
+                ui->lineEdit->setText("Result is undefined");
+                return;
+            }
+        }
+
+        ui->History->setText(QString::number(firstOperand) + displayVal[1] + QString::number(firstOperand) + "=" + QString::number(result));
+        ui->lineEdit->setText(QString::number(result));
     }
     else
     {
@@ -417,7 +470,5 @@ void MainWindow::on_Equals_clicked()
         ui->History->setText(displayVal + "=" + QString::number(result));
         ui->lineEdit->setText(QString::number(result));
     }
-
 }
-
-
+*/
