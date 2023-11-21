@@ -42,6 +42,10 @@ void MainWindow::numPressed()
         QString newValue = oldExpression + value;
         ui->lineEdit->setText(newValue);
     }
+    else if(dot==1)
+    {
+        ui->lineEdit->setText(oldExpression);
+    }
     else
     {
         ui->lineEdit->setText(value);
@@ -319,11 +323,12 @@ double MainWindow::performOperation()
 
 bool MainWindow::isvaildExpression(const QString expression)
 {
+
 //    if(expression[0]== '+' || expression[0] =='-')
 //        return true;
 //    else if(expression[0]== '*' || expression[0] =='/')
 //        return false;
-    for(int index = 0; index < expression.length(); index++)
+  /*  for(int index = 0; index < expression.length(); index++)
      {
          if((expression[index] >= '0' && expression[index] <= '9') || expression[index] == '.'
                  || expression[index] == ADDITION || expression[index] == SUBSTRACT ||
@@ -334,35 +339,32 @@ bool MainWindow::isvaildExpression(const QString expression)
              return false;
      }
      return true;
+*/
 
-
-    /*QStack<char> stack;
-    char ch;
-    for(int i=0; i < expression.length(); i++)
+    QStack<char> stack;
+    for(int index=0; index < expression.length(); index++)
     {
-        if(expression[i]=='(' )
+        if((expression[index] >= '0' && expression[index] <= '9') || expression[index] == '.'
+                || expression[index] == ADDITION || expression[index] == SUBSTRACT ||
+                expression[index] == MULTIPLY || expression[index] == DIVISION
+                || expression[index] == '(' || expression[index] == ')')
         {
-           stack.push(expression[i].toLatin1());
-           continue;
+            if(expression[index] == '(')
+            {
+                stack.push(expression[index].toLatin1());
+            }
+            else if(expression[index] == ')')
+            {
+                if(stack.isEmpty() || stack.pop() != '(')
+                    return false;
+            }
         }
-        if(stack.empty())
+        else
         {
             return false;
         }
-        switch(expression[i].toLatin1())
-        {
-            case ')':
-                    ch=stack.pop();
-                    if(ch!='(')
-                    return false;
-            break;
-        }
     }
-    if(stack.empty())
-    return true;
-    else
-    return false;
-*/
+    return stack.isEmpty();
 
 }
 
