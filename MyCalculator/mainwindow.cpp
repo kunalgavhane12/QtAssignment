@@ -2,19 +2,18 @@
 #include "ui_mainwindow.h"
 #include <QStack>
 
-double result = 0.0;
-QString expression = "0";
+int MainWindow::dot = 0;
+QSet<QChar> vaildOperators = {'+', '-', '/', '*'};
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
     , ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
-    ui->lineEdit->setText("0");
 
-    for (int i = 0; i < 10; i++)
+    for (int index = 0; index < 10; index++)
     {
-        QString btnName = "pushButton" + QString::number(i);
+        QString btnName = "pushButton" + QString::number(index);
         QPushButton *numberButton = findChild<QPushButton*>(btnName);
         connect(numberButton, SIGNAL(clicked()), this, SLOT(numPressed()));
 
@@ -35,16 +34,23 @@ MainWindow::~MainWindow()
 
 void MainWindow::numPressed()
 {
+    QString oldExpression = ui->lineEdit->text();
     QPushButton *btn = (QPushButton*)sender();
     QString value = btn->text();
-    QString displayVal = ui->lineEdit->text();
-    QString newVal = displayVal + value;
-    ui->lineEdit->setText(newVal);
-
+    if(oldExpression != value)
+    {
+        QString newValue = oldExpression + value;
+        ui->lineEdit->setText(newValue);
+    }
+    else
+    {
+        ui->lineEdit->setText(value);
+    }
 }
 
 void MainWindow::keyPressEvent(QKeyEvent *event)
 {
+    QString oldExp = expression;
     QString key = event->text();
 
     if(event->key() == Qt::Key_Enter || event->key() == Qt::Key_Return)
@@ -61,21 +67,47 @@ void MainWindow::keyPressEvent(QKeyEvent *event)
     }
     else if(event->key() == Qt::Key_Backspace)
     {
-        QString s = ui->lineEdit->text();
+        QString oldexpression = ui->lineEdit->text();
         expression = "";
-        for(int i=0; i<s.length()-1; i++)
+        for(int i=0; i<oldexpression.length()-1; i++)
         {
-            expression +=s[i];
-            ui->lineEdit->setText(ui->lineEdit->text()+s[i]);
+            expression +=oldexpression[i];
+            ui->lineEdit->setText(ui->lineEdit->text()+oldexpression[i]);
         }
     }
     else if(event->type() == QEvent::KeyPress)
     {
-        expression +=  key;
+        if((key >= '0' && key <= '9' )|| key == '.' || key == '+' || key =='-' || key =='/' || key =='*')
+        {
+            if(lastCharOperator(expression) && (key == '+' || key =='-' || key =='/' || key =='*'))
+            {
+                expression = expression.left(expression.length()-1) + key;
+            }
+            else
+            {
+                    expression +=  key;
+            }
+        }
 
     }
-
+    //handle Special character alphabet
+    if(oldExp!=expression)
     ui->lineEdit->setText(expression);
+}
+
+bool MainWindow::isOperator(const QChar &ch)
+{
+    return vaildOperators.contains(ch);
+}
+
+bool MainWindow::lastCharOperator(const QString &exp)
+{
+    if(!exp.isEmpty())
+    {
+        QChar lastChar = exp.at(exp.length()-1);
+        return isOperator(lastChar);
+    }
+    return false;
 }
 
 /*bool MainWindow::event(QEvent *event)
@@ -117,6 +149,7 @@ void MainWindow::on_AllClear_clicked()
     ui->lineEdit->clear();
     ui->History->clear();
     expression = "";
+    result = 0.0;
 }
 
 
@@ -124,6 +157,7 @@ void MainWindow::on_Clear_clicked()
 {
     ui->lineEdit->clear();
     expression = "";
+    result = 0.0;
 }
 
 void MainWindow::on_Modules_clicked()
@@ -135,15 +169,6 @@ void MainWindow::on_Modules_clicked()
     ui->lineEdit->setText(QString::number(result));
 }
 
-void MainWindow::on_Delete_clicked()
-{
-    QString str = ui->lineEdit->text();
-    ui->lineEdit->setText("");
-    for(int i=0; i<str.length()-1; i++)
-    {
-        ui->lineEdit->setText(ui->lineEdit->text()+str[i]);
-    }
-}
 
 void MainWindow::on_LeftBracket_clicked()
 {
@@ -166,124 +191,231 @@ void MainWindow::on_Power_clicked()
     ui->lineEdit->setText(QString::number(result));
 }
 
-void MainWindow::on_Point_clicked()
+void MainWindow::on_Dot_clicked()
 {
-    QPushButton *btn = (QPushButton*)sender();
-    QString value = btn->text();
-    QString displayVal = ui->lineEdit->text();
-    QString newVal = displayVal + value;
-    ui->lineEdit->setText(newVal);
+    QString oldExpression = ui->lineEdit->text();
+
+    if(!oldExpression.contains('.') && dot == 0)
+    {
+        ui->lineEdit->setText(oldExpression + ".");
+        dot++;
+    }
+
+}
+
+void MainWindow::on_Delete_clicked()
+{
+        QString str = ui->lineEdit->text();
+        ui->lineEdit->setText("");
+        for(int i=0; i<str.length()-1; i++)
+        {
+            ui->lineEdit->setText(ui->lineEdit->text()+str[i]);
+        }
+
 }
 
 
 int MainWindow::getPriority(char op)
 {
-    if (op == '+' || op == '-')
+    if (op == ADDITION || op == SUBSTRACT)
         return 1;
-    else if (op == '*' || op == '/')
+    else if (op == MULTIPLY || op == DIVISION)
         return 2;
     return 0;
 }
 
 double MainWindow::arthimaticOperation(double a, double b, char op)
 {
-    if (op == '+')
+    if (op == ADDITION)
       return a + b;
-    else if (op == '-')
+    else if (op == SUBSTRACT)
       return a - b;
-    else if (op == '*')
+    else if (op == MULTIPLY)
       return a * b;
-    else if (op == '/')
+    else if (op == DIVISION)
+    {
       if(b != 0.0)
-      return a / b;
-
+      {
+          return a / b;
+      }
+      else
+      {
+        ui->lineEdit->setText("Cannot divide by zero");
+        exit(1);
+      }
+    }
     return 0.0;
 }
 
 double MainWindow::performOperation()
 {
-    QString s = ui->lineEdit->text();
+    QString curExpression = ui->lineEdit->text();
     QStack<double> numbers;
     QStack<char> operators;
 
     QString currentNumber = "";
-    for (int i = 0; i < s.length(); i++)
+    for (int curIndex = 0; curIndex < curExpression.length(); curIndex++)
     {
-            if(s[i]>='0' && s[i]<='9')
+            if(curExpression[curIndex]>='0' && curExpression[curIndex]<='9')
             {
-                while((i< s.length() && (s[i]>='0' && s[i]<='9')) || s[i] == '.')
+                while((curIndex< curExpression.length() &&
+                       (curExpression[curIndex]>='0' && curExpression[curIndex]<='9'))
+                      || curExpression[curIndex] == '.')
                 {
-                    currentNumber += s[i];
-                    i++;
+                    currentNumber += curExpression[curIndex];
+                    curIndex++;
                 }
                 numbers.push(currentNumber.toDouble());
                 currentNumber ="";
-                i--;
+                curIndex--;
 
             }
-            else if (s[i] == '(')
+            else if (curExpression[curIndex] == '(')
             {
-                operators.push(s[i].toLatin1());
+                operators.push(curExpression[curIndex].toLatin1());
             }
-            else if (s[i] == ')')
+            else if (curExpression[curIndex] == ')')
             {
                 while (!operators.empty() && operators.top() != '(')
                 {
-                    double b = numbers.top();
-                    numbers.pop();
-                    double a = numbers.top();
-                    numbers.pop();
-                    char op = operators.top();
-                    operators.pop();
+                    double b = numbers.pop();
+                    double a = numbers.pop();
+                    char op = operators.pop();
                     double ans = arthimaticOperation(a,b,op);
                     numbers.push(ans);
                 }
                 operators.pop();
                 if(operators.empty())
                 {
-                    double b = numbers.top();
-                    numbers.pop();
-                    double a = numbers.top();
-                    numbers.pop();
+                    double b = numbers.pop();
+                    double a = numbers.pop();
                     numbers.push(a*b);
                 }
             }
-            else if (s[i] == '+' || s[i] == '-' || s[i] == '*' || s[i] == '/')
+            else if (curExpression[curIndex] == ADDITION || curExpression[curIndex] == SUBSTRACT || curExpression[curIndex] == MULTIPLY || curExpression[curIndex] == DIVISION)
             {
-                while (!operators.empty() && getPriority(operators.top()) >= getPriority(s[i].toLatin1()))
+                while (!operators.empty() && getPriority(operators.top()) >= getPriority(curExpression[curIndex].toLatin1()))
                 {
-                    double b = numbers.top();
-                    numbers.pop();
-                    double a = numbers.top();
-                    numbers.pop();
-                    char op = operators.top();
-                    operators.pop();
+                    double b = numbers.pop();
+                    double a = numbers.pop();
+                    char op = operators.pop();
                     double ans = arthimaticOperation(a,b,op);
                     numbers.push(ans);
                 }
-                operators.push(s[i].toLatin1());
+                operators.push(curExpression[curIndex].toLatin1());
             }
         }
 
         while (!operators.empty())
         {
-            double b = numbers.top();
-            numbers.pop();
-            double a = numbers.top();
-            numbers.pop();
-            char op = operators.top();
-            operators.pop();
+            double b = numbers.pop();
+            double a = numbers.pop();
+            char op = operators.pop();
             double ans = arthimaticOperation(a,b,op);
             numbers.push(ans);
         }
         return numbers.top();
 }
 
+bool MainWindow::isvaildExpression(const QString expression)
+{
+//    if(expression[0]== '+' || expression[0] =='-')
+//        return true;
+//    else if(expression[0]== '*' || expression[0] =='/')
+//        return false;
+    for(int index = 0; index < expression.length(); index++)
+     {
+         if((expression[index] >= '0' && expression[index] <= '9') || expression[index] == '.'
+                 || expression[index] == ADDITION || expression[index] == SUBSTRACT ||
+                 expression[index] == MULTIPLY || expression[index] == DIVISION
+                 || expression[index] == '(' || expression[index] == ')')
+             continue;
+         else
+             return false;
+     }
+     return true;
+
+
+    /*QStack<char> stack;
+    char ch;
+    for(int i=0; i < expression.length(); i++)
+    {
+        if(expression[i]=='(' )
+        {
+           stack.push(expression[i].toLatin1());
+           continue;
+        }
+        if(stack.empty())
+        {
+            return false;
+        }
+        switch(expression[i].toLatin1())
+        {
+            case ')':
+                    ch=stack.pop();
+                    if(ch!='(')
+                    return false;
+            break;
+        }
+    }
+    if(stack.empty())
+    return true;
+    else
+    return false;
+*/
+
+}
+
 void MainWindow::on_Equals_clicked()
 {
     QString displayVal = ui->lineEdit->text();
-    result = performOperation();
 
-    ui->History->setText(displayVal + " = " + QString::number(result));
-    ui->lineEdit->setText(QString::number(result));
+    if(!isvaildExpression(displayVal))
+    {
+        ui->lineEdit->setText("Error");
+        return;
+    }
+
+    if(isOperator(displayVal[0]))
+    {
+        double secondOperand = displayVal.mid(1).toDouble();
+
+        if(displayVal[0] == '+')
+        {
+                result = 0 + secondOperand;
+         }
+        else if(displayVal[0] == '-')
+        {
+                result = 0 - secondOperand;
+        }
+        else if(displayVal[0] == '*')
+        {
+            result = 0 * secondOperand;
+        }
+        else if(displayVal[0] == '/')
+        {
+            if(secondOperand != 0)
+            {
+                result = 0 / secondOperand;
+            }
+            else
+            {
+                ui->lineEdit->setText("Cannot divide by zero");
+                return;
+            }
+        }
+
+        ui->History->setText("0" + displayVal[0] + secondOperand + "=" + QString::number(result));
+        ui->lineEdit->setText(QString::number(result));
+
+    }
+    else
+    {
+        result = performOperation();
+        ui->History->setText(displayVal + "=" + QString::number(result));
+        ui->lineEdit->setText(QString::number(result));
+    }
+
 }
+
+

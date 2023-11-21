@@ -12,6 +12,31 @@ QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
 QT_END_NAMESPACE
 
+
+namespace  {
+
+ constexpr char ADDITION = '+';
+
+}
+
+namespace  {
+
+ constexpr char MULTIPLY = '*';
+
+}
+
+namespace  {
+
+ constexpr char SUBSTRACT = '-';
+
+}
+
+namespace  {
+
+ constexpr char DIVISION = '/';
+
+}
+
 class MainWindow : public QMainWindow
 {
     Q_OBJECT
@@ -33,15 +58,13 @@ private slots:
 
     void on_Clear_clicked();
 
-    void on_Delete_clicked();
-
     void on_LeftBracket_clicked();
 
     void on_RightBracket_clicked();
 
     void on_Power_clicked();
 
-    void on_Point_clicked();
+    void on_Dot_clicked();
 
     void on_Equals_clicked();
 
@@ -51,8 +74,18 @@ private slots:
 
     double arthimaticOperation(double a, double b, char op);
 
+    void on_Delete_clicked();
+
+    bool isvaildExpression(const QString expression);
+
+    bool isOperator(const QChar &);
+    bool lastCharOperator(const QString &);
+
 private:
     Ui::MainWindow *ui;
+    double result = 0.0;
+    QString expression = "0";
+    static int dot;
 
 };
 #endif // MAINWINDOW_H
