@@ -34,7 +34,7 @@ MainWindow::~MainWindow()
 void MainWindow::numPressed()
 {
     QString oldExpression = ui->lineEdit->text();
-    QPushButton *btn = qobject_cast<QPushButton*>(sender());
+    QPushButton *btn = (QPushButton*)sender();
     QString value = btn->text();
 
     if (oldExpression != value)
