@@ -204,7 +204,7 @@ void MainWindow::on_Power_clicked()
         return;
     }
     result*=result;
-    ui->History->setText("Sqrt("+displayVal + ")= " +QString::number(result));
+    ui->History->setText("Sqrt(" + displayVal + ")= " +QString::number(result));
     ui->lineEdit->setText(QString::number(result));
 }
 
