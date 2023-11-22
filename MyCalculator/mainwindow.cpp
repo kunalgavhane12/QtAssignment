@@ -18,13 +18,12 @@ MainWindow::MainWindow(QWidget *parent)
 
     }
 
-    connect(ui->Addition, SIGNAL(clicked()), this, SLOT(numPressed()));
-    connect(ui->Divide, SIGNAL(clicked()), this, SLOT(numPressed()));
-    connect(ui->Multiply, SIGNAL(clicked()), this, SLOT(numPressed()));
-    connect(ui->Subt, SIGNAL(clicked()), this, SLOT(numPressed()));
+    connect(ui->Addition, SIGNAL(clicked()), this, SLOT(operatorPressed()));
+    connect(ui->Divide, SIGNAL(clicked()), this, SLOT(operatorPressed()));
+    connect(ui->Multiply, SIGNAL(clicked()), this, SLOT(operatorPressed()));
+    connect(ui->Subt, SIGNAL(clicked()), this, SLOT(operatorPressed()));
 
 }
-
 
 MainWindow::~MainWindow()
 {
@@ -42,18 +41,35 @@ void MainWindow::numPressed()
         QString newValue = oldExpression + value;
         ui->lineEdit->setText(newValue);
     }
-    else if (dot == 1 && value == ".")
-    {
-        ui->lineEdit->setText(oldExpression);
-    }
-    else if (dot == 1)
+    else if ((value == ADDITION || value == SUBSTRACT || value == MULTIPLY || value == DIVISION) && dot == 1)
     {
         dot = 0;
-        ui->lineEdit->setText(value);
+        ui->lineEdit->setText(oldExpression + value);
     }
     else
     {
         ui->lineEdit->setText(value);
+    }
+}
+
+void MainWindow::operatorPressed()
+{
+    QString expression = ui->lineEdit->text();
+    QPushButton *btn = (QPushButton*)sender();
+    QString value = btn->text();
+
+    if (value == ADDITION || value == SUBSTRACT || value == MULTIPLY || value == DIVISION)
+    {
+        dot = 0;
+        if (lastCharOperator(expression) && validOperators.contains(value))
+        {
+            expression = expression.left(expression.length() - 1) + value;
+        }
+        else
+        {
+            expression += value;
+        }
+        ui->lineEdit->setText(expression);
     }
 }
 
@@ -86,34 +102,35 @@ void MainWindow::keyPressEvent(QKeyEvent *event)
     }
     else if (event->type() == QEvent::KeyPress)
     {
-        if ((key >= '0' && key <= '9') || key == '.')
+        if ((key >= '0' && key <= '9') || key == '.' || key == '(' || key ==')')
         {
-            if (lastCharOperator(expression) && validOperators.contains(key[0]))
+            if (lastCharOperator(expression) &&  key == '.')
             {
-                expression = expression.left(expression.length() - 1) + key[0];
+                expression = expression.left(expression.length() - 1) + key;
             }
             else
             {
-                if (key == "." && !ui->lineEdit->text().contains('.'))
+                if (!ui->lineEdit->text().contains('.') && key == ".")
                 {
-                    expression += key[0];
+                    expression += key;
                     dot = 1;
                 }
                 else if (key != ".")
                 {
-                    expression += key[0];
+                    expression += key;
                 }
             }
         }
-        else if (validOperators.contains(key[0]))
+        else if (validOperators.contains(key))
         {
-            if (lastCharOperator(expression) && validOperators.contains(key[0]))
+            dot = 0;
+            if (lastCharOperator(expression) && validOperators.contains(key))
             {
-                expression = expression.left(expression.length() - 1) + key[0];
+                expression = expression.left(expression.length() - 1) + key;
             }
             else
             {
-                expression += key[0];
+                expression += key;
             }
         }
     }
@@ -122,6 +139,7 @@ void MainWindow::keyPressEvent(QKeyEvent *event)
     if (oldExp != expression)
         ui->lineEdit->setText(expression);
 }
+
 bool MainWindow::isOperator(const QChar &ch)
 {
     return validOperators.contains(ch);
@@ -137,39 +155,6 @@ bool MainWindow::lastCharOperator(const QString &exp)
     return false;
 }
 
-/*bool MainWindow::event(QEvent *event)
-{
-    //keyborad event
-    if(event->type() == QEvent::KeyPress)
-    {
-        QKeyEvent *k_ev = static_cast<QKeyEvent *>(event);
-        if(k_ev->key() == 'A')
-        {
-            qDebug() << "Key: " << (char) k_ev->key() << "----handled by event";
-            return true;
-        }
-    }
-    //mouse event
-    if(event->type() == QEvent::MouseButtonPress)
-    {
-        QMouseEvent *m_ev = static_cast<QMouseEvent *>(event);
-        if(m_ev->button() == Qt::LeftButton)
-        {
-            qDebug() << "in event(), left click.";
-            return true;
-        }
-        else if(m_ev->button() == Qt::RightButton)
-        {
-            qDebug() << "in event(), right click.";
-            return true;
-        }
-        else
-        {
-            return QWidget::event(event);
-        }
-    }
-    return QWidget::event(event);
-}*/
 
 void MainWindow::on_AllClear_clicked()
 {
@@ -185,6 +170,7 @@ void MainWindow::on_Clear_clicked()
     ui->lineEdit->clear();
     expression = "";
     result = 0.0;
+    dot = 0;
 }
 
 void MainWindow::on_Modules_clicked()
@@ -214,7 +200,7 @@ void MainWindow::on_Power_clicked()
     QString displayVal = ui->lineEdit->text();
     double result = displayVal.toDouble();
     result*=result;
-    ui->History->setText(displayVal + " ^ = " +QString::number(result));
+    ui->History->setText("sqr("+displayVal + ")= " +QString::number(result));
     ui->lineEdit->setText(QString::number(result));
 }
 
@@ -222,12 +208,12 @@ void MainWindow::on_Dot_clicked()
 {
     QString oldExpression = ui->lineEdit->text();
 
-    if(!oldExpression.contains('.') && dot == 0)
+    if(dot == 0)
     {
+        dot = 1;
         ui->lineEdit->setText(oldExpression + ".");
-        dot++;
-    }
 
+    }
 }
 
 void MainWindow::on_Delete_clicked()
@@ -375,16 +361,16 @@ bool MainWindow::isValidExpression(const QString expression)
 
 void MainWindow::on_Equals_clicked()
 {
-    QString displayVal = ui->lineEdit->text();
+    QString expression = ui->lineEdit->text();
 
-    if (!isValidExpression(displayVal))
+    if (!isValidExpression(expression))
     {
         ui->lineEdit->setText("Error");
         return;
     }
 
     result = performOperation();
-    ui->History->setText(displayVal + "=" + QString::number(result));
+    ui->History->setText(expression + "=" + QString::number(result));
     ui->lineEdit->setText(QString::number(result));
 
 }
@@ -472,3 +458,36 @@ void MainWindow::on_Equals_clicked()
     }
 }
 */
+/*bool MainWindow::event(QEvent *event)
+{
+    //keyborad event
+    if(event->type() == QEvent::KeyPress)
+    {
+        QKeyEvent *k_ev = static_cast<QKeyEvent *>(event);
+        if(k_ev->key() == 'A')
+        {
+            qDebug() << "Key: " << (char) k_ev->key() << "----handled by event";
+            return true;
+        }
+    }
+    //mouse event
+    if(event->type() == QEvent::MouseButtonPress)
+    {
+        QMouseEvent *m_ev = static_cast<QMouseEvent *>(event);
+        if(m_ev->button() == Qt::LeftButton)
+        {
+            qDebug() << "in event(), left click.";
+            return true;
+        }
+        else if(m_ev->button() == Qt::RightButton)
+        {
+            qDebug() << "in event(), right click.";
+            return true;
+        }
+        else
+        {
+            return QWidget::event(event);
+        }
+    }
+    return QWidget::event(event);
+}*/

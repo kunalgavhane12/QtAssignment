@@ -81,13 +81,14 @@ private slots:
 
     bool isOperator(const QChar &);
     bool lastCharOperator(const QString &);
+    void operatorPressed();
 
 private:
     Ui::MainWindow *ui;
     double result = 0.0;
     QString expression = "0";
     static int dot;
-    QSet<QChar> validOperators = {'+', '-', '/', '*'};
+    QSet<QString> validOperators = {"+", "-", "/", "*"};
 
 
 };
