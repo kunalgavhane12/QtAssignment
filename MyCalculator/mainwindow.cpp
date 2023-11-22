@@ -104,13 +104,13 @@ void MainWindow::keyPressEvent(QKeyEvent *event)
     {
         if ((key >= '0' && key <= '9') || key == '.' || key == '(' || key ==')')
         {
-            if (lastCharOperator(expression) &&  key == '.')
+            if ((lastCharOperator(expression) &&  key == '.'))
             {
                 expression = expression.left(expression.length() - 1) + key;
             }
             else
             {
-                if (!ui->lineEdit->text().contains('.') && key == ".")
+                if (dot == 0 && key == ".")
                 {
                     expression += key;
                     dot = 1;
@@ -137,7 +137,7 @@ void MainWindow::keyPressEvent(QKeyEvent *event)
 
     // handle Special character alphabet
     if (oldExp != expression)
-        ui->lineEdit->setText(expression);
+      ui->lineEdit->setText(expression);
 }
 
 bool MainWindow::isOperator(const QChar &ch)
@@ -199,8 +199,12 @@ void MainWindow::on_Power_clicked()
 {
     QString displayVal = ui->lineEdit->text();
     double result = displayVal.toDouble();
+    if(result < 0.0)
+    {
+        return;
+    }
     result*=result;
-    ui->History->setText("sqr("+displayVal + ")= " +QString::number(result));
+    ui->History->setText("Sqrt("+displayVal + ")= " +QString::number(result));
     ui->lineEdit->setText(QString::number(result));
 }
 
@@ -271,7 +275,7 @@ double MainWindow::performOperation()
     {
             if(curExpression[curIndex]>='0' && curExpression[curIndex]<='9')
             {
-                while((curIndex< curExpression.length() &&
+                while((curIndex < curExpression.length() &&
                        (curExpression[curIndex]>='0' && curExpression[curIndex]<='9'))
                       || curExpression[curIndex] == '.')
                 {
@@ -359,9 +363,52 @@ bool MainWindow::isValidExpression(const QString expression)
 
 }
 
+
 void MainWindow::on_Equals_clicked()
 {
     QString expression = ui->lineEdit->text();
+    QString ch = expression.left(expression.length() - 1);
+    QString num ="";
+    for(int index = 0; index < expression.length()-1; index++)
+    {
+        num+=expression[index];
+    }
+    if (ch == ADDITION)
+    {
+        result = num.toDouble() + num.toDouble();
+        ui->History->setText(expression + "=" + QString::number(result));
+        ui->lineEdit->setText(QString::number(result));
+        return;
+    }
+//    else if (ch == SUBSTRACT)
+//    {
+//        result = num.toDouble() - num.toDouble();
+//        ui->History->setText(expression + "=" + QString::number(result));
+//        ui->lineEdit->setText(QString::number(result));
+//        return;
+//    }
+//    else if (ch == MULTIPLY)
+//    {
+//        result = num.toDouble() * num.toDouble();
+//        ui->History->setText(expression + "=" + QString::number(result));
+//        ui->lineEdit->setText(QString::number(result));
+//        return;
+//    }
+//    else if( ch == DIVISION)
+//    {
+//        if(num.toDouble() != 0.0)
+//        {
+//            result = num.toDouble() / num.toDouble();
+//            ui->History->setText(expression + "=" + QString::number(result));
+//            ui->lineEdit->setText(QString::number(result));
+//            return;
+//        }
+//        else
+//        {
+//            ui->lineEdit->setText("Result is undefined");
+//            return;
+//        }
+//    }
 
     if (!isValidExpression(expression))
     {
