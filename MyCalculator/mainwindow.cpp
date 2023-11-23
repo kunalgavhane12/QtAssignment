@@ -87,7 +87,7 @@ void MainWindow::keyPressEvent(QKeyEvent *event)
     if (event->key() == Qt::Key_Delete)
     {
         on_AllClear_clicked();
-        expression = "";
+        expression.clear();
         ui->lineEdit->clear();
     }
     else if (event->key() == Qt::Key_Backspace)
@@ -102,7 +102,11 @@ void MainWindow::keyPressEvent(QKeyEvent *event)
     }
     else if (event->type() == QEvent::KeyPress)
     {
-        if ((key >= '0' && key <= '9') || key == '.' || key == '(' || key ==')')
+        if(key >='0' && key <= '9')
+        {
+            expression += key;
+        }
+        else if (key == '.' || key == '(' || key ==')')
         {
             if ((lastCharOperator(expression) &&  key == '.'))
             {
@@ -115,7 +119,7 @@ void MainWindow::keyPressEvent(QKeyEvent *event)
                     expression += key;
                     dot = 1;
                 }
-                else if (key != ".")
+                else if(key != ".")
                 {
                     expression += key;
                 }
@@ -222,11 +226,11 @@ void MainWindow::on_Dot_clicked()
 
 void MainWindow::on_Delete_clicked()
 {
-    QString str = ui->lineEdit->text();
+    QString expression = ui->lineEdit->text();
     ui->lineEdit->setText("");
-    for(int i=0; i<str.length()-1; i++)
+    for(int i=0; i<expression.length()-1; i++)
     {
-        ui->lineEdit->setText(ui->lineEdit->text()+str[i]);
+        ui->lineEdit->setText(ui->lineEdit->text()+expression[i]);
     }
 
 }
@@ -273,7 +277,7 @@ double MainWindow::performOperation()
     QString currentNumber = "";
     for (int curIndex = 0; curIndex < curExpression.length(); curIndex++)
     {
-            if(curExpression[curIndex]>='0' && curExpression[curIndex]<='9')
+            if((curExpression[curIndex]>='0' && curExpression[curIndex]<='9') || curExpression[curIndex] == '.')
             {
                 while((curIndex < curExpression.length() &&
                        (curExpression[curIndex]>='0' && curExpression[curIndex]<='9'))
@@ -302,12 +306,12 @@ double MainWindow::performOperation()
                     numbers.push(ans);
                 }
                 operators.pop();
-                if(operators.empty())
-                {
-                    double b = numbers.pop();
-                    double a = numbers.pop();
-                    numbers.push(a*b);
-                }
+//                if(operators.empty())
+//                {
+//                    double b = numbers.pop();
+//                    double a = numbers.pop();
+//                    numbers.push(a*b);
+//                }
             }
             else if (curExpression[curIndex] == ADDITION || curExpression[curIndex] == SUBSTRACT || curExpression[curIndex] == MULTIPLY || curExpression[curIndex] == DIVISION)
             {
@@ -337,6 +341,18 @@ double MainWindow::performOperation()
 bool MainWindow::isValidExpression(const QString expression)
 {
     QStack<char> stack;
+    QString ch = expression[expression.length() - 1];
+
+    if(expression[0] == ADDITION || expression[0] == SUBSTRACT || expression[0] == MULTIPLY || expression[0] == DIVISION )
+    {
+        return false;
+    }
+
+    if(ch == ADDITION || ch == SUBSTRACT || ch == MULTIPLY || ch == DIVISION )
+    {
+        return false;
+    }
+
     for(int index=0; index < expression.length(); index++)
     {
         if((expression[index] >= '0' && expression[index] <= '9') || expression[index] == '.'
@@ -367,48 +383,6 @@ bool MainWindow::isValidExpression(const QString expression)
 void MainWindow::on_Equals_clicked()
 {
     QString expression = ui->lineEdit->text();
-    QString ch = expression.left(expression.length() - 1);
-    QString num ="";
-    for(int index = 0; index < expression.length()-1; index++)
-    {
-        num+=expression[index];
-    }
-    if (ch == ADDITION)
-    {
-        result = num.toDouble() + num.toDouble();
-        ui->History->setText(expression + "=" + QString::number(result));
-        ui->lineEdit->setText(QString::number(result));
-        return;
-    }
-//    else if (ch == SUBSTRACT)
-//    {
-//        result = num.toDouble() - num.toDouble();
-//        ui->History->setText(expression + "=" + QString::number(result));
-//        ui->lineEdit->setText(QString::number(result));
-//        return;
-//    }
-//    else if (ch == MULTIPLY)
-//    {
-//        result = num.toDouble() * num.toDouble();
-//        ui->History->setText(expression + "=" + QString::number(result));
-//        ui->lineEdit->setText(QString::number(result));
-//        return;
-//    }
-//    else if( ch == DIVISION)
-//    {
-//        if(num.toDouble() != 0.0)
-//        {
-//            result = num.toDouble() / num.toDouble();
-//            ui->History->setText(expression + "=" + QString::number(result));
-//            ui->lineEdit->setText(QString::number(result));
-//            return;
-//        }
-//        else
-//        {
-//            ui->lineEdit->setText("Result is undefined");
-//            return;
-//        }
-//    }
 
     if (!isValidExpression(expression))
     {

@@ -83,6 +83,7 @@ private slots:
     bool lastCharOperator(const QString &);
     void operatorPressed();
 
+
 private:
     Ui::MainWindow *ui;
     double result = 0.0;
