@@ -386,13 +386,17 @@ void MainWindow::on_Equals_clicked()
 
     if (!isValidExpression(expression))
     {
-        ui->lineEdit->setText("Error");
+        ui->History->setText(expression + "=" + "Error");
+        ui->lineEdit->clear();
         return;
     }
 
     result = performOperation();
     ui->History->setText(expression + "=" + QString::number(result));
     ui->lineEdit->setText(QString::number(result));
+
+    if(result >=0)
+    ui->lineEdit->clear();
 
 }
 
