@@ -108,9 +108,9 @@ void MainWindow::keyPressEvent(QKeyEvent *event)
         }
         else if (key == '.' || key == '(' || key ==')')
         {
-            if ((lastCharOperator(expression) &&  key == '.'))
+            if ((lastCharOperator(expression) && key == '.'))
             {
-                expression = expression.left(expression.length() - 1) + key;
+                expression = expression.left(expression.length() + 1);
             }
             else
             {
@@ -392,11 +392,14 @@ void MainWindow::on_Equals_clicked()
     }
 
     result = performOperation();
+
     ui->History->setText(expression + "=" + QString::number(result));
     ui->lineEdit->setText(QString::number(result));
 
-    if(result >=0)
-    ui->lineEdit->clear();
+    if(result)
+    {
+        ui->lineEdit->clear();
+    }
 
 }
 
