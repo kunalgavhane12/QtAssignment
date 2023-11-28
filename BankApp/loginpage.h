@@ -2,6 +2,7 @@
 #define LOGINPAGE_H
 
 #include <QMainWindow>
+#include "profilepage.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class LoginPage; }
@@ -29,5 +30,7 @@ private slots:
 
 private:
     Ui::LoginPage *ui;
+    profilePage *profilepage;
+
 };
 #endif // LOGINPAGE_H

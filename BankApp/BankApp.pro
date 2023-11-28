@@ -10,13 +10,16 @@ CONFIG += c++11
 
 SOURCES += \
     main.cpp \
-    loginpage.cpp
+    loginpage.cpp \
+    profilepage.cpp
 
 HEADERS += \
-    loginpage.h
+    loginpage.h \
+    profilepage.h
 
 FORMS += \
-    loginpage.ui
+    loginpage.ui \
+    profilepage.ui
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin

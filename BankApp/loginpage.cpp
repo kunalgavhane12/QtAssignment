@@ -36,6 +36,9 @@ void LoginPage::on_pushButton_Login_clicked()
     QMessageBox::information(this, "Login", "Login Success");
     hide();
 
+    profilepage = new profilePage(this);
+    profilepage->show();
+
 }
 
 bool LoginPage::isValidEmail(const QString& email)
@@ -54,6 +57,7 @@ bool LoginPage::isValidEmail(const QString& email)
             && domainPart.left(5).compare("yahoo", Qt::CaseInsensitive) != 0
             && domainPart.left(10).compare("rediffmail", Qt::CaseInsensitive) !=0)
         return false;
+
     if (domainParts.size() < 2 || domainPart.right(4).compare(".com", Qt::CaseInsensitive) != 0
             && domainPart.right(3).compare(".in", Qt::CaseInsensitive) != 0)
         return false;
