@@ -3,6 +3,10 @@
 
 #include <QMainWindow>
 #include "profilepage.h"
+#include <QFile>
+#include <QDebug>
+#include <QTextStream>
+#include <QMessageBox>
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class LoginPage; }
@@ -27,10 +31,15 @@ private slots:
 
     bool isValidPassword(const QString &);
 
+    bool authenticate(const QString &, const QString &);
+
 
 private:
     Ui::LoginPage *ui;
     profilePage *profilepage;
+    QString username;
+    QString password;
+    QFile file_DB;
 
 };
 #endif // LOGINPAGE_H

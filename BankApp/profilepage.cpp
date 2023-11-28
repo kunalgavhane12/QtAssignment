@@ -19,14 +19,20 @@ profilePage::~profilePage()
 
 void profilePage::accountDetails()
 {
-    qDebug() << "Name: " << name;
-    qDebug() << "Account Number: " << accountNumber;
+    ui->lineEdit->setText("Name : Kunal Gavhane");
+    ui->lineEdit_2->setText("Account Number: " + QString::number(accountNumber));
+
+//    qDebug() << "Name: " << name;
+//    qDebug() << "Account Number: " << accountNumber;
 
 }
 
 void profilePage::balanceEnquiry()
 {
-    qDebug() << "Balance: " << balance;
+    ui->lineEdit->setText("Name : Kunal Gavhane");
+    ui->lineEdit_2->setText("Account Balance : " + QString::number(balance));
+
+    //qDebug() << "Balance: " << balance;
 }
 
 void profilePage::on_pushButton_account_clicked()
@@ -51,21 +57,31 @@ bool profilePage::balanceTransfer(float amt)
 
 void profilePage::on_pushButton_Transfer_clicked()
 {
-    float amount = 10.0;//take from user input
+    ui->lineEdit->setText("Enter Transfer Amount:");
+    ui->lineEdit_2->clear();
+
+//    QPushButton *btn = (QPushButton*) sender();
+//    QString number = btn->text();
+
+    float amount = 0.0;//take from user input
 
     if(balanceTransfer(amount))
     {
-        qDebug() << "Transfer Successfully";
+        ui->lineEdit->setText("Transfer Successful");
+     //   qDebug() << "Transfer Successful";
     }
     else
     {
-        qDebug() << "Insufficient Balance, Transaction Failed";
+        ui->lineEdit->setText("Insufficient Balance, Transaction Failed");
+       // qDebug() << "Insufficient Balance, Transaction Failed";
     }
 }
 
 
 void profilePage::on_pushButton_Balance_clicked()
 {
+    ui->lineEdit->clear();
+    ui->lineEdit_2->clear();
     balanceEnquiry();
 }
 

@@ -1,6 +1,5 @@
 #include "loginpage.h"
 #include "ui_loginpage.h"
-#include <QMessageBox>
 
 LoginPage::LoginPage(QWidget *parent)
     : QMainWindow(parent)
@@ -17,8 +16,8 @@ LoginPage::~LoginPage()
 
 void LoginPage::on_pushButton_Login_clicked()
 {
-    QString username = ui->lineEdit_username->text();
-    QString password = ui->lineEdit_password->text();
+    username = ui->lineEdit_username->text();
+    password = ui->lineEdit_password->text();
 
     if(!isValidEmail(username))
     {
@@ -33,11 +32,18 @@ void LoginPage::on_pushButton_Login_clicked()
         return;
     }
 
-    QMessageBox::information(this, "Login", "Login Success");
-    hide();
+    if(authenticate(username,password))
+    {
+        QMessageBox::information(this, "Login", "Login Success");
+        hide();
 
-    profilepage = new profilePage(this);
-    profilepage->show();
+        profilepage = new profilePage(this);
+        profilepage->show();
+    }
+    else
+    {
+        QMessageBox::warning(this, "Login", "Invalid username or password");
+    }
 
 }
 
@@ -85,6 +91,37 @@ bool LoginPage::isValidPassword(const QString& password)
     }
 
     return (digit && lowercase && uppercase && specialchar && password.length() >=8);
+}
+
+
+bool LoginPage::authenticate(const QString& username, const QString& password)
+{
+
+    file_DB.setFileName("D:/Qt Assignment/BankApp/user_credential.txt");
+
+    if(!file_DB.open(QFile::ReadOnly | QFile::Text))
+    {
+        QMessageBox::information(this, "Login", "File not open");
+        return false;
+    }
+
+    QTextStream in(&file_DB);
+
+    while(!in.atEnd())
+    {
+        QString line = in.readLine();
+        QStringList parts = line.split(" ");
+
+        if(parts.size() == 2 && parts[0] == username && parts[1] == password)
+        {
+            file_DB.close();
+            return true;
+        }
+    }
+
+    file_DB.close();
+    return false;
+
 }
 
 
