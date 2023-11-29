@@ -135,5 +135,20 @@ void LoginPage::on_pushButton_Reset_clicked()
 void LoginPage::on_pushButton_CreateAccount_clicked()
 {
 
+    file_DB.setFileName("D:/Qt Assignment/BankApp/user_credential.txt");
+
+    if(!file_DB.open(QFile::WriteOnly | QFile::Append))
+    {
+        QMessageBox::information(this, "Login", "File not open");
+        return;
+    }
+
+    QTextStream out(&file_DB);
+    QString text = "\n" + ui->lineEdit_username_3->text() + " " + ui->lineEdit_username_5->text();
+    out << text;
+
+    file_DB.flush();
+    file_DB.close();
+
 }
 
