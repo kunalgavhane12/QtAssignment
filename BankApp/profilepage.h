@@ -25,10 +25,12 @@ private slots:
     void on_pushButton_Logout_clicked();
 
     void accountDetails();
-    //void deposit(float);
+    void deposit(float);
     bool balanceTransfer(float);
     void balanceEnquiry();
 
+
+    void on_pushButton_Deposit_clicked();
 
 private:
     Ui::profilePage *ui;

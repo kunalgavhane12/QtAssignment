@@ -27,6 +27,14 @@ void profilePage::accountDetails()
 
 }
 
+void profilePage::deposit(float amount)
+{
+    balance += amount;
+    ui->lineEdit->setText("Balance : ");
+    ui->lineEdit_2->setText(QString::number(balance));
+
+}
+
 void profilePage::balanceEnquiry()
 {
     ui->lineEdit->setText("Name : Kunal Gavhane");
@@ -89,5 +97,11 @@ void profilePage::on_pushButton_Balance_clicked()
 void profilePage::on_pushButton_Logout_clicked()
 {
     exit(0);
+}
+
+
+void profilePage::on_pushButton_Deposit_clicked()
+{
+    deposit(1000);
 }
 

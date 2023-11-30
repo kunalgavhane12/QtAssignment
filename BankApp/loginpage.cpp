@@ -139,16 +139,18 @@ void LoginPage::on_pushButton_CreateAccount_clicked()
 
     if(!file_DB.open(QFile::WriteOnly | QFile::Append))
     {
-        QMessageBox::information(this, "Login", "File not open");
+        QMessageBox::information(this, "Form", "File not open");
         return;
     }
 
     QTextStream out(&file_DB);
-    QString text = "\n" + ui->lineEdit_username_3->text() + " " + ui->lineEdit_username_5->text();
+    QString text = "\n" + ui->lineEdit_Email->text() + " " + ui->lineEdit_cspassword->text();
     out << text;
 
     file_DB.flush();
     file_DB.close();
+
+    QMessageBox::information(this, "Form", "Account Created");
 
 }
 

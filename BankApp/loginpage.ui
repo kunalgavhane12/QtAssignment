@@ -125,7 +125,7 @@
         </widget>
        </item>
        <item>
-        <widget class="QLineEdit" name="lineEdit_username_3">
+        <widget class="QLineEdit" name="lineEdit_Name">
          <property name="placeholderText">
           <string>Full Name</string>
          </property>
@@ -143,7 +143,7 @@
         </widget>
        </item>
        <item>
-        <widget class="QLineEdit" name="lineEdit_username_4">
+        <widget class="QLineEdit" name="lineEdit_Email">
          <property name="placeholderText">
           <string>Email ID</string>
          </property>
@@ -161,7 +161,7 @@
         </widget>
        </item>
        <item>
-        <widget class="QLineEdit" name="lineEdit_username_6">
+        <widget class="QLineEdit" name="lineEdit_Spassword">
          <property name="placeholderText">
           <string>Password</string>
          </property>
@@ -179,7 +179,7 @@
         </widget>
        </item>
        <item>
-        <widget class="QLineEdit" name="lineEdit_username_5">
+        <widget class="QLineEdit" name="lineEdit_cspassword">
          <property name="echoMode">
           <enum>QLineEdit::Password</enum>
          </property>
