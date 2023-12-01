@@ -131,10 +131,10 @@ bool Login::isValidPassword(const QString& password)
 
 void Login::on_pushButton_CreateAccount_clicked()
 {
-    QString name, surname, email, deposit_amount, username, password;
+    QString name, email, deposit_amount, username, password;
 
     name = ui->lineEdit_name->text();
-    surname = ui->label_Surname->text();
+
     email = ui->lineEdit_Email->text();
     deposit_amount = ui->lineEdit_deposit->text();
     username = ui->lineEdit_Email->text();
@@ -142,8 +142,8 @@ void Login::on_pushButton_CreateAccount_clicked()
 
     QSqlQuery qry;
 
-   qry.prepare("insert into AccountDetails (Name, Surname, Email, Deposit, Username,Password)"
-               " values ('"+name+"', '"+surname+"','"+email+"','"+deposit_amount+"','"+username+"','"+password+"')");
+   qry.prepare("insert into AccountDetails (Name, Email, Balance, Username,Password)"
+               " values ('"+name+"', '"+email+"','"+deposit_amount+"','"+username+"','"+password+"')");
 
     if(qry.exec())
     {

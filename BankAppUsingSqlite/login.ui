@@ -110,25 +110,7 @@
        <item>
         <widget class="QLineEdit" name="lineEdit_name">
          <property name="placeholderText">
-          <string>Enter Name</string>
-         </property>
-        </widget>
-       </item>
-      </layout>
-     </item>
-     <item>
-      <layout class="QHBoxLayout" name="horizontalLayout_3">
-       <item>
-        <widget class="QLabel" name="label_Surname">
-         <property name="text">
-          <string>Surname</string>
-         </property>
-        </widget>
-       </item>
-       <item>
-        <widget class="QLineEdit" name="lineEdit_Surname">
-         <property name="placeholderText">
-          <string>Enter Surname</string>
+          <string>Enter Full Name</string>
          </property>
         </widget>
        </item>

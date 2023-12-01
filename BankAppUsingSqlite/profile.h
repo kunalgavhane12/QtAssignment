@@ -2,6 +2,7 @@
 #define PROFILE_H
 
 #include <QDialog>
+#include "login.h"
 
 namespace Ui {
 class Profile;
@@ -16,11 +17,12 @@ public:
     ~Profile();
 
 private slots:
-    void on_pushButton_Details_clicked();
+
+    void on_pushButton_AccountDetails_clicked();
 
     void on_pushButton_Transfer_clicked();
 
-    void on_pushButton_3_clicked();
+    void on_pushButton_Balance_clicked();
 
     void on_pushButton_Logout_clicked();
 
