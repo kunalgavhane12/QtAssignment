@@ -36,11 +36,12 @@ public:
         else
         {
             qDebug() << "Connected...";
+            loadAccountNumberFromDatabasae();
             return true;
         }
-
-
     }
+
+
 
 public:
     Login(QWidget *parent = nullptr);
@@ -55,7 +56,13 @@ private slots:
 
     void on_pushButton_CreateAccount_clicked();
 
+    void loadAccountNumberFromDatabasae();
+
+    void saveAccountNumberToDatabasae();
+
+
 private:
     Ui::Login *ui;
+    static int Count;
 };
 #endif // LOGIN_H

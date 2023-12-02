@@ -1,6 +1,8 @@
 #include "login.h"
 #include "ui_login.h"
 
+int Login::Count = 0;
+
 Login::Login(QWidget *parent)
     : QMainWindow(parent)
     , ui(new Ui::Login)
@@ -37,7 +39,6 @@ void Login::on_pushButton_Login_clicked()
 
     connectionOpen();//this function open your connection only one time
 
-    QSqlQuery qry;
 
     if(!isValidEmail(username))
     {
@@ -52,8 +53,11 @@ void Login::on_pushButton_Login_clicked()
         return;
     }
 
+
     //finding
-    qry.prepare("select * from AccountDetails where Username ='"+username+"' and Password='"+password+"'");
+    QSqlQuery qry;
+
+    qry.prepare("select Username,Password from BankAccountDetails where Username ='"+username+"' and Password='"+password+"'");
 
     if(qry.exec())
     {
@@ -66,6 +70,7 @@ void Login::on_pushButton_Login_clicked()
         if(count == 1)
         {
             ui->label_Status->setText("username and password is correct");
+            QMessageBox::information(this, "Login", "Login Sucess");
 
             connectionClose();//this function close your database connection after login success.
 
@@ -74,10 +79,12 @@ void Login::on_pushButton_Login_clicked()
             profilepage.setModal(true);
             profilepage.exec();
         }
-        if(count > 1)
-            ui->label_Status->setText("Duplicate username and password");
         if(count < 1)
+        {
             ui->label_Status->setText("username and password is not correct");
+
+            QMessageBox::warning(this, "Login", "Invalid username or password");
+        }
     }
 
 }
@@ -94,13 +101,10 @@ bool Login::isValidEmail(const QString& username)
     QString domainPart = username.mid(index+1);
     QStringList domainParts = domainPart.split('.');
 
-    if(domainPart.left(5).compare("gmail", Qt::CaseInsensitive) != 0
-       && domainPart.left(5).compare("yahoo", Qt::CaseInsensitive) != 0
-       && domainPart.left(10).compare("rediffmail", Qt::CaseInsensitive) !=0)
+    if(domainPart.left(5).compare("gmail", Qt::CaseInsensitive) != 0 && domainPart.left(5).compare("yahoo", Qt::CaseInsensitive) != 0 && domainPart.left(10).compare("rediffmail", Qt::CaseInsensitive) !=0)
             return false;
 
-        if (domainParts.size() < 2 || domainPart.right(4).compare(".com", Qt::CaseInsensitive) != 0
-                && domainPart.right(3).compare(".in", Qt::CaseInsensitive) != 0)
+    if (domainParts.size() < 2 || domainPart.right(4).compare(".com", Qt::CaseInsensitive) != 0 && domainPart.right(3).compare(".in", Qt::CaseInsensitive) != 0)
             return false;
 
         return true;
@@ -129,8 +133,12 @@ bool Login::isValidPassword(const QString& password)
 }
 
 
+
 void Login::on_pushButton_CreateAccount_clicked()
 {
+    qDebug()<<"AccountNumber: " <<Count;
+    Count++;
+
     QString name, email, deposit_amount, username, password;
 
     name = ui->lineEdit_name->text();
@@ -140,20 +148,62 @@ void Login::on_pushButton_CreateAccount_clicked()
     username = ui->lineEdit_Email->text();
     password = ui->lineEdit_fpassword->text();
 
+
     QSqlQuery qry;
 
-   qry.prepare("insert into AccountDetails (Name, Email, Balance, Username,Password)"
-               " values ('"+name+"', '"+email+"','"+deposit_amount+"','"+username+"','"+password+"')");
+    qry.prepare("insert into BankAccountDetails (AccountNumber, Name, Email, Balance, Username,Password)"
+               " values ('"+QString::number(Count)+"','"+name+"', '"+email+"', '"+deposit_amount+"', '"+username+"', '"+password+"')");
 
     if(qry.exec())
     {
-        QMessageBox::critical(this,tr("Submit"),tr("Account Created"));
-        connectionClose();
+        QMessageBox::information(this,"Submit","Account Created");
+
+        saveAccountNumberToDatabasae();
+//        connectionClose();
     }
     else
     {
         QMessageBox::critical(this,tr("error"),qry.lastError().text());
     }
 
+}
+
+void Login::loadAccountNumberFromDatabasae()
+{
+    QSqlQuery query;
+    if (query.exec("SELECT * FROM Count_Table LIMIT 1"))
+    {
+        if (query.next())
+        {
+            Count = query.value(0).toInt();
+        }
+        else
+        {
+            qDebug() << "Warning: Count_table is empty.";
+        }
+    }
+    else
+    {
+        qDebug() << "Error loading 'Count' from the databases: " << query.lastError().text();
+    }
+
+}
+
+void Login::saveAccountNumberToDatabasae()
+{
+    QSqlQuery qry;
+
+    qDebug()<<"Save count: "<<Count;
+
+    qry.prepare("update Count_Table set Count='"+QString::number(Count)+"' where Count=Count");
+
+    if (qry.exec())
+    {
+        qDebug() << "Count Updated in the database.";
+    }
+    else
+    {
+        qDebug() << "Error updating 'Count' in the database: " << qry.lastError().text();
+    }
 }
 

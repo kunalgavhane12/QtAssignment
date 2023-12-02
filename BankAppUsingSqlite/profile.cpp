@@ -24,7 +24,7 @@ void Profile::on_pushButton_AccountDetails_clicked()
 
     QSqlQuery* qry = new QSqlQuery(conn.mydb);
 
-    qry->prepare("select accountnumber,name,email,balance from AccountDetails");
+    qry->prepare("select accountnumber,name,email,balance from BankAccountDetails");
     qry->exec();
 
     model->setQuery(*qry);
@@ -52,7 +52,7 @@ void Profile::on_pushButton_Balance_clicked()
 
     QSqlQuery* qry = new QSqlQuery(conn.mydb);
 
-    qry->prepare("select Name,Balance from AccountDetails");
+    qry->prepare("select Name,Balance from BankAccountDetails");
     qry->exec();
 
     model->setQuery(*qry);
@@ -67,6 +67,13 @@ void Profile::on_pushButton_Balance_clicked()
 
 void Profile::on_pushButton_Logout_clicked()
 {
-    exit(0);
+    QMessageBox::StandardButton reply;
+
+    reply = QMessageBox::question(this,"Logout","Do You Want to Logout?", QMessageBox::Yes| QMessageBox::No);
+    if(reply == QMessageBox::Yes)
+    {
+        exit(0);
+    }
+
 }
 
