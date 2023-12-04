@@ -28,6 +28,7 @@ private slots:
 
 private:
     Ui::Profile *ui;
+
 };
 
 #endif // PROFILE_H

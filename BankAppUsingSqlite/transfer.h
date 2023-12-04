@@ -2,6 +2,8 @@
 #define TRANSFER_H
 
 #include <QDialog>
+#include "login.h"
+#include "profile.h"
 
 namespace Ui {
 class Transfer;
@@ -15,8 +17,14 @@ public:
     explicit Transfer(QWidget *parent = nullptr);
     ~Transfer();
 
+private slots:
+    void on_pushButton_Cancel_clicked();
+
+    void on_pushButton_TransferAmount_clicked();
+
 private:
     Ui::Transfer *ui;
+
 };
 
 #endif // TRANSFER_H

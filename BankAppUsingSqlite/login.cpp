@@ -25,6 +25,19 @@ Login::Login(QWidget *parent)
 
     }
 
+    if(USE_FILE)
+    {
+        if(!connectionOpen())
+        {
+            ui->label_Status->setText("Failed to open database");
+        }
+        else
+        {
+            ui->label_Status->setText("Connected USE_DB...");
+        }
+
+    }
+
 
 }
 

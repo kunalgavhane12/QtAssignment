@@ -13,27 +13,41 @@
   <property name="windowTitle">
    <string>Dialog</string>
   </property>
-  <widget class="QWidget" name="">
+  <widget class="QWidget" name="layoutWidget">
    <property name="geometry">
     <rect>
      <x>40</x>
      <y>50</y>
      <width>311</width>
-     <height>151</height>
+     <height>195</height>
     </rect>
    </property>
    <layout class="QVBoxLayout" name="verticalLayout_4">
     <item>
      <layout class="QVBoxLayout" name="verticalLayout">
       <item>
-       <widget class="QLabel" name="label_AccountNo">
+       <layout class="QVBoxLayout" name="verticalLayout_2">
+        <item>
+         <widget class="QLabel" name="label_FormAccountNo">
+          <property name="text">
+           <string>Form Account Number</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QLineEdit" name="lineEdit_FromAccountNo"/>
+        </item>
+       </layout>
+      </item>
+      <item>
+       <widget class="QLabel" name="label_ToAccountNo">
         <property name="text">
-         <string>Account Number</string>
+         <string>To Account Number</string>
         </property>
        </widget>
       </item>
       <item>
-       <widget class="QLineEdit" name="lineEdit_AccountNo"/>
+       <widget class="QLineEdit" name="lineEdit_ToAccountNo"/>
       </item>
      </layout>
     </item>
