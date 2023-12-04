@@ -22,7 +22,7 @@ void Profile::on_pushButton_AccountDetails_clicked()
 
     QSqlQueryModel *model = new QSqlQueryModel();
 
-//    conn.connectionOpen();
+    conn.connectionOpen();
 
     QSqlQuery* qry = new QSqlQuery(conn.mydb);
 
@@ -33,7 +33,7 @@ void Profile::on_pushButton_AccountDetails_clicked()
 
     ui->tableView->setModel(model);
 
-//    conn.connectionClose();
+    conn.connectionClose();
     qDebug() << (model->rowCount());
 
 }
@@ -55,7 +55,7 @@ void Profile::on_pushButton_Balance_clicked()
 
     QSqlQueryModel *model = new QSqlQueryModel();
 
-//    conn.connectionOpen();
+    conn.connectionOpen();
 
     QSqlQuery* qry = new QSqlQuery(conn.mydb);
 
@@ -66,7 +66,7 @@ void Profile::on_pushButton_Balance_clicked()
 
     ui->tableView->setModel(model);
 
-//    conn.connectionClose();
+    conn.connectionClose();
     qDebug() << (model->rowCount());
 
 }
@@ -80,7 +80,6 @@ void Profile::on_pushButton_Logout_clicked()
     reply = QMessageBox::question(this,"Logout","Do You Want to Logout?", QMessageBox::Yes| QMessageBox::No);
     if(reply == QMessageBox::Yes)
     {
-        conn.connectionClose();
         exit(0);
     }
 

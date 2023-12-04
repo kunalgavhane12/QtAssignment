@@ -53,13 +53,13 @@ void Login::on_pushButton_Login_clicked()
     username = ui->lineEdit_Username->text();
     password = ui->lineEdit_Password->text();
 
-//    if(!connectionOpen())
-//    {
-//        qDebug() << "Failed to open the database";
-//        return;
-//    }
+    if(!connectionOpen())
+    {
+        qDebug() << "Failed to open the database";
+        return;
+    }
 
-//    connectionOpen();//this function open your connection only one time
+    connectionOpen();//this function open your connection only one time
 
 
     if(!isValidEmail(username))
@@ -212,10 +212,9 @@ void Login::on_pushButton_CreateAccount_clicked()
     QString name, email, deposit_amount, username, password;
 
     name = ui->lineEdit_name->text();
-
     email = ui->lineEdit_Email->text();
     deposit_amount = ui->lineEdit_deposit->text();
-    username = ui->lineEdit_Email->text();
+    username = ui->lineEdit_fusername->text();
     password = ui->lineEdit_fpassword->text();
 
     if(USE_DB)
@@ -233,13 +232,15 @@ void Login::on_pushButton_CreateAccount_clicked()
             QMessageBox::information(this,"Submit","Account Created");
 
             saveAccountNumberToDatabasae();
-    //        connectionClose();
+
         }
         else
         {
             QMessageBox::critical(this,tr("error"),qry.lastError().text());
         }
     }
+
+    allClear();
 
 }
 
@@ -280,5 +281,14 @@ void Login::saveAccountNumberToDatabasae()
     {
         qDebug() << "Error updating 'Count' in the database: " << qry.lastError().text();
     }
+}
+
+void Login::allClear()
+{
+    ui->lineEdit_name->clear();
+    ui->lineEdit_Email->clear();
+    ui->lineEdit_deposit->clear();
+    ui->lineEdit_fusername->clear();
+    ui->lineEdit_fpassword->clear();
 }
 

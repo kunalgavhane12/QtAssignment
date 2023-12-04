@@ -62,6 +62,8 @@ private slots:
 
     void saveAccountNumberToDatabasae();
 
+    void allClear();
+
 
 private:
     Ui::Login *ui;

@@ -18,7 +18,6 @@ public:
     ~Transfer();
 
 private slots:
-    void on_pushButton_Cancel_clicked();
 
     void on_pushButton_TransferAmount_clicked();
 
