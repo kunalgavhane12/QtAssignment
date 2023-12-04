@@ -57,11 +57,18 @@ void Transfer::on_pushButton_TransferAmount_clicked()
                         qry->exec();
                     }
                 }
-                ui->label_Status->setText("Transfer success");
+
+               ui->label_Status->setText("Transfer success");
+
+              QMessageBox::information(this,"Title","Transfer Sucess");
+
             }
             else
             {
-                qDebug() << "insufficient Balance";
+                QMessageBox::information(this,"Title","Insufficient Balance");
+                qDebug() << "Insufficient Balance";
+                ui->label_Status->setText("Insufficient Balance");
+
             }
         }
     }
@@ -69,6 +76,12 @@ void Transfer::on_pushButton_TransferAmount_clicked()
     {
         qDebug() << "Error executing qry: " << qry->lastError().text();
     }
+
+    ui->lineEdit_FromAccountNo->clear();
+    ui->lineEdit_ToAccountNo->clear();
+    ui->lineEdit_Transfer->clear();
+    ui->label_Status->clear();
+
     conn.connectionClose();
 }
 
