@@ -7,6 +7,7 @@
 #include <QDebug>
 #include <QTextStream>
 #include <QMessageBox>
+#include <QFileInfo>
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class LoginPage; }
@@ -32,6 +33,7 @@ private slots:
     bool isValidPassword(const QString &);
 
     bool authenticate(const QString &, const QString &);
+
 
 
 private:

@@ -54,6 +54,8 @@ private slots:
 
     bool isValidPassword(const QString &);
 
+    bool authenticate(const QString&, const QString&);
+
     void on_pushButton_CreateAccount_clicked();
 
     void loadAccountNumberFromDatabasae();
@@ -63,6 +65,7 @@ private slots:
 
 private:
     Ui::Login *ui;
+    QFile file;
     static int Count;
 };
 #endif // LOGIN_H
