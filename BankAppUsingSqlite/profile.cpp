@@ -80,6 +80,7 @@ void Profile::on_pushButton_Logout_clicked()
     reply = QMessageBox::question(this,"Logout","Do You Want to Logout?", QMessageBox::Yes| QMessageBox::No);
     if(reply == QMessageBox::Yes)
     {
+        conn.connectionClose();
         exit(0);
     }
 

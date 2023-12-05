@@ -2,6 +2,7 @@
 #define LOGIN_H
 
 #include <QMainWindow>
+#include "loginlib.h"
 #include <QtSql>
 #include <QMessageBox>
 #include "profile.h"
@@ -50,9 +51,9 @@ public:
 private slots:
     void on_pushButton_Login_clicked();
 
-    bool isValidEmail(const QString &);
+//    bool isValidEmail(const QString &);
 
-    bool isValidPassword(const QString &);
+//    bool isValidPassword(const QString &);
 
     bool authenticate(const QString&, const QString&);
 

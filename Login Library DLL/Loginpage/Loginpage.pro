@@ -1,6 +1,6 @@
-QT       += core gui sql
+QT       += core gui
 
-LIBS     += 'D:\qt practice program\QtPractice\Sql application\BankAppUsingSqlite\libLoginLib.a'
+LIBS += 'D:\Login Library DLL\Loginpage\libLoginLib.a'
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
@@ -12,19 +12,14 @@ CONFIG += c++11
 
 SOURCES += \
     main.cpp \
-    login.cpp \
-    profile.cpp \
-    transfer.cpp
+    loginpage.cpp
 
 HEADERS += \
-    login.h \
-    profile.h \
-    transfer.h
+    loginlib.h \
+    loginpage.h
 
 FORMS += \
-    login.ui \
-    profile.ui \
-    transfer.ui
+    loginpage.ui
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin
