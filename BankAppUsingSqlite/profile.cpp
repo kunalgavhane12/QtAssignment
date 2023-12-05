@@ -41,7 +41,7 @@ void Profile::on_pushButton_AccountDetails_clicked()
 
 void Profile::on_pushButton_Transfer_clicked()
 {
-    //open new windows ask account no amount create amount user input account no and debit amount current user
+    //open new windows ask account no & amount credit amount account no and debit amount current user
 
     Transfer *transfer;
     transfer = new Transfer(this);

@@ -51,10 +51,6 @@ public:
 private slots:
     void on_pushButton_Login_clicked();
 
-//    bool isValidEmail(const QString &);
-
-//    bool isValidPassword(const QString &);
-
     bool authenticate(const QString&, const QString&);
 
     void on_pushButton_CreateAccount_clicked();

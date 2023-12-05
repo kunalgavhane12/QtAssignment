@@ -2,6 +2,8 @@ QT       += core gui sql
 
 LIBS     += 'D:\qt practice program\QtPractice\Sql application\BankAppUsingSqlite\libLoginLib.a'
 
+LIBS    += 'D:\qt practice program\QtPractice\Sql application\BankAppUsingSqlite\libsqllite3.a'
+
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
 CONFIG += c++11
@@ -19,6 +21,8 @@ SOURCES += \
 HEADERS += \
     login.h \
     profile.h \
+    sqlite3.h \
+    sqlite3ext.h \
     transfer.h
 
 FORMS += \
