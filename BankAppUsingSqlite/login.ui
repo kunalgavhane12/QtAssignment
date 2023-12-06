@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>800</width>
-    <height>600</height>
+    <width>696</width>
+    <height>447</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -18,16 +18,16 @@
     <property name="geometry">
      <rect>
       <x>390</x>
-      <y>90</y>
-      <width>301</width>
-      <height>171</height>
+      <y>60</y>
+      <width>281</width>
+      <height>181</height>
      </rect>
     </property>
     <property name="title">
      <string>Login</string>
     </property>
-    <layout class="QVBoxLayout" name="verticalLayout_3">
-     <item>
+    <layout class="QGridLayout" name="gridLayout">
+     <item row="0" column="0">
       <layout class="QVBoxLayout" name="verticalLayout">
        <item>
         <widget class="QLabel" name="label_username">
@@ -45,7 +45,7 @@
        </item>
       </layout>
      </item>
-     <item>
+     <item row="1" column="0">
       <layout class="QVBoxLayout" name="verticalLayout_2">
        <item>
         <widget class="QLabel" name="label_password">
@@ -63,7 +63,7 @@
        </item>
       </layout>
      </item>
-     <item>
+     <item row="2" column="0">
       <widget class="QPushButton" name="pushButton_Login">
        <property name="text">
         <string>Login</string>
@@ -76,9 +76,9 @@
     <property name="geometry">
      <rect>
       <x>10</x>
-      <y>340</y>
-      <width>291</width>
-      <height>21</height>
+      <y>370</y>
+      <width>271</width>
+      <height>31</height>
      </rect>
     </property>
     <property name="text">
@@ -88,110 +88,90 @@
    <widget class="QGroupBox" name="groupBox_2">
     <property name="geometry">
      <rect>
-      <x>20</x>
-      <y>70</y>
-      <width>341</width>
-      <height>241</height>
+      <x>9</x>
+      <y>60</y>
+      <width>371</width>
+      <height>301</height>
      </rect>
     </property>
     <property name="title">
      <string>Account Openning Form</string>
     </property>
-    <layout class="QVBoxLayout" name="verticalLayout_4">
-     <item>
-      <layout class="QHBoxLayout" name="horizontalLayout">
-       <item>
-        <widget class="QLabel" name="label_Name">
-         <property name="text">
-          <string>Name</string>
-         </property>
-        </widget>
-       </item>
-       <item>
-        <widget class="QLineEdit" name="lineEdit_name">
-         <property name="placeholderText">
-          <string>Enter Full Name</string>
-         </property>
-        </widget>
-       </item>
-      </layout>
+    <layout class="QFormLayout" name="formLayout">
+     <item row="0" column="0">
+      <widget class="QLabel" name="label_Name">
+       <property name="text">
+        <string>Name</string>
+       </property>
+      </widget>
      </item>
-     <item>
-      <layout class="QHBoxLayout" name="horizontalLayout_4">
-       <item>
-        <widget class="QLabel" name="label_Email">
-         <property name="text">
-          <string>Email-Id</string>
-         </property>
-        </widget>
-       </item>
-       <item>
-        <widget class="QLineEdit" name="lineEdit_Email">
-         <property name="placeholderText">
-          <string>Enter email</string>
-         </property>
-        </widget>
-       </item>
-      </layout>
+     <item row="0" column="1">
+      <widget class="QLineEdit" name="lineEdit_name">
+       <property name="placeholderText">
+        <string>Enter Full Name</string>
+       </property>
+      </widget>
      </item>
-     <item>
-      <layout class="QHBoxLayout" name="horizontalLayout_5">
-       <item>
-        <widget class="QLabel" name="label_Deposit_Amount">
-         <property name="text">
-          <string>Deposit Amount</string>
-         </property>
-        </widget>
-       </item>
-       <item>
-        <widget class="QLineEdit" name="lineEdit_deposit">
-         <property name="placeholderText">
-          <string>Enter Deposit Amount</string>
-         </property>
-        </widget>
-       </item>
-      </layout>
+     <item row="1" column="0">
+      <widget class="QLabel" name="label_Email">
+       <property name="text">
+        <string>Email-Id</string>
+       </property>
+      </widget>
      </item>
-     <item>
-      <layout class="QHBoxLayout" name="horizontalLayout_6">
-       <item>
-        <widget class="QLabel" name="label_fusername">
-         <property name="text">
-          <string>Username</string>
-         </property>
-        </widget>
-       </item>
-       <item>
-        <widget class="QLineEdit" name="lineEdit_fusername">
-         <property name="readOnly">
-          <bool>false</bool>
-         </property>
-         <property name="placeholderText">
-          <string>Enter Email</string>
-         </property>
-        </widget>
-       </item>
-      </layout>
+     <item row="1" column="1">
+      <widget class="QLineEdit" name="lineEdit_Email">
+       <property name="placeholderText">
+        <string>Enter email</string>
+       </property>
+      </widget>
      </item>
-     <item>
-      <layout class="QHBoxLayout" name="horizontalLayout_7">
-       <item>
-        <widget class="QLabel" name="label_fpassword">
-         <property name="text">
-          <string>Password</string>
-         </property>
-        </widget>
-       </item>
-       <item>
-        <widget class="QLineEdit" name="lineEdit_fpassword">
-         <property name="placeholderText">
-          <string>Enter Password</string>
-         </property>
-        </widget>
-       </item>
-      </layout>
+     <item row="2" column="0">
+      <widget class="QLabel" name="label_Deposit_Amount">
+       <property name="text">
+        <string>Deposit Amount</string>
+       </property>
+      </widget>
      </item>
-     <item>
+     <item row="2" column="1">
+      <widget class="QLineEdit" name="lineEdit_deposit">
+       <property name="placeholderText">
+        <string>Enter Deposit Amount</string>
+       </property>
+      </widget>
+     </item>
+     <item row="3" column="0">
+      <widget class="QLabel" name="label_fusername">
+       <property name="text">
+        <string>Username</string>
+       </property>
+      </widget>
+     </item>
+     <item row="3" column="1">
+      <widget class="QLineEdit" name="lineEdit_fusername">
+       <property name="readOnly">
+        <bool>false</bool>
+       </property>
+       <property name="placeholderText">
+        <string>Enter Email</string>
+       </property>
+      </widget>
+     </item>
+     <item row="4" column="0">
+      <widget class="QLabel" name="label_fpassword">
+       <property name="text">
+        <string>Password</string>
+       </property>
+      </widget>
+     </item>
+     <item row="4" column="1">
+      <widget class="QLineEdit" name="lineEdit_fpassword">
+       <property name="placeholderText">
+        <string>Enter Password</string>
+       </property>
+      </widget>
+     </item>
+     <item row="5" column="1">
       <widget class="QPushButton" name="pushButton_CreateAccount">
        <property name="text">
         <string>Create Account</string>
@@ -203,10 +183,10 @@
    <widget class="QLabel" name="label">
     <property name="geometry">
      <rect>
-      <x>200</x>
-      <y>20</y>
-      <width>201</width>
-      <height>21</height>
+      <x>230</x>
+      <y>9</y>
+      <width>191</width>
+      <height>23</height>
      </rect>
     </property>
     <property name="font">
@@ -226,7 +206,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>800</width>
+     <width>696</width>
      <height>21</height>
     </rect>
    </property>
