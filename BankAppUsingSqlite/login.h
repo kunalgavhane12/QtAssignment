@@ -21,8 +21,9 @@ class Login : public QMainWindow
     Q_OBJECT
 public:
 
-    bool USE_DB = false;
-    bool USE_FILE = true;
+    bool USE_DB = true;
+    bool USE_FILE = false;
+
     QSqlDatabase mydb;
     QFile file;
 
@@ -47,7 +48,7 @@ public:
         else
         {
             qDebug() << "Connected...";
-            loadAccountNumberFromDatabasae();
+            loadAccountNumberFromDatabase();
             return true;
         }
     }
@@ -70,7 +71,7 @@ public:
         else
         {
             qDebug() << "Connected...";
-//            loadAccountNumberFromDatabasae();
+//            loadAccountNumberFromFile();
             return true;
         }
     }
@@ -86,23 +87,21 @@ private slots:
 
     void on_pushButton_CreateAccount_clicked();
 
-    void loadAccountNumberFromDatabasae();
+    void loadAccountNumberFromDatabase();
 
-    void saveAccountNumberToDatabasae();
+    void saveAccountNumberToDatabase();
 
-    bool saveAccountToFile(int accountNumber, const QString &, const QString &, const QString &, const QString &, const QString &);
+    void saveAccountToDatabase(int accountNumber, const QString &name, const QString &email, const QString &deposit, const QString &username, const QString &password);
 
+    void saveAccountToFile(int accountNumber, const QString &name, const QString &email, const QString &deposit, const QString &username, const QString &password);
 
     void allClear();
-
-    void keyPressEvent(QKeyEvent *event)override;
 
 
 private:
     Ui::Login *ui;
     static int Count;
     QString username, password;
-
 
 };
 #endif // LOGIN_H

@@ -1,2 +1,0 @@
-0 kunal kunal@gmail.com 500 kunal@gmail.com Pass@123
-0 admin admin@gmail.com 500 admin@gmail.com Admin@123

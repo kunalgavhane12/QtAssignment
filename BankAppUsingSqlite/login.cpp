@@ -3,9 +3,6 @@
 
 int Login::Count = 0;
 
-//bool USE_DB = false;
-//bool USE_FILE = true;
-
 Login::Login(QWidget *parent)
     : QMainWindow(parent)
     , ui(new Ui::Login)
@@ -37,8 +34,6 @@ Login::Login(QWidget *parent)
         }
 
     }
-
-
 }
 
 Login::~Login()
@@ -54,18 +49,10 @@ void Login::on_pushButton_Login_clicked()
     username = ui->lineEdit_Username->text();
     password = ui->lineEdit_Password->text();
 
-    if(!connectionOpen())
-    {
-        qDebug() << "Failed to open the database";
-        return;
-    }
-
-    connectionOpen();//this function open your connection only one time
-
-
     if(!check.isValidEmail(username))
     {
         QMessageBox::information(this, "Login", "Invalid Username");
+        ui->lineEdit_Username->clear();
         return;
     }
 
@@ -73,6 +60,7 @@ void Login::on_pushButton_Login_clicked()
     {
         QMessageBox::warning(this, "Login", "Password must have at least one digit,"
              " one lowercase, one uppercase, one special character and be at least 8 character long");
+        ui->lineEdit_Password->clear();
         return;
     }
 
@@ -97,8 +85,6 @@ void Login::on_pushButton_Login_clicked()
                 ui->label_Status->setText("username and password is correct");
                 QMessageBox::information(this, "Login", "Login Sucess");
 
-                connectionClose();//this function close your database connection after login success.
-
                 this->hide();
                 Profile profilepage;
                 profilepage.setModal(true);
@@ -107,8 +93,8 @@ void Login::on_pushButton_Login_clicked()
             if(count < 1)
             {
                 ui->label_Status->setText("username and password is not correct");
-
                 QMessageBox::warning(this, "Login", "Invalid username or password");
+                allClear();
             }
         }
     }
@@ -119,7 +105,6 @@ void Login::on_pushButton_Login_clicked()
         {
             QMessageBox::information(this, "Login", "Login Success");
             hide();
-
             Profile *profilePage;
             profilePage = new Profile(this);
             profilePage->show();
@@ -127,6 +112,7 @@ void Login::on_pushButton_Login_clicked()
         else
         {
             QMessageBox::warning(this, "Login", "Invalid username or password");
+            allClear();
         }
 
     }
@@ -167,17 +153,38 @@ bool Login::authenticate(const QString& username, const QString& password)
 void Login::on_pushButton_CreateAccount_clicked()
 {
 
-    QString name, email, deposit_amount;
+    QString name, email, deposit;
 
     name = ui->lineEdit_name->text();
     email = ui->lineEdit_Email->text();
-    deposit_amount = ui->lineEdit_deposit->text();
+    deposit = ui->lineEdit_deposit->text();
+
     username = ui->lineEdit_fusername->text();
     password = ui->lineEdit_fpassword->text();
 
+    if (name.isEmpty() || email.isEmpty() || deposit.isEmpty() || username.isEmpty() || password.isEmpty())
+    {
+           QMessageBox::warning(this, "Create Account", "Please fill in all fields");
+           return;
+    }
+
+    Count++;
     if(USE_DB)
     {
-//        qDebug()<<"AccountNumber: " <<Count;
+        saveAccountToDatabase(Count, name, email, deposit, username, password);
+    }
+
+    if(USE_FILE)
+    {
+        saveAccountToFile(Count, name, email, deposit, username, password);
+    }
+
+    QMessageBox::information(this, "Create Account", "Account Created");
+    allClear();
+
+
+/*    if(USE_DB)
+    {
         Count++;
 
         QSqlQuery qry;
@@ -211,10 +218,11 @@ void Login::on_pushButton_CreateAccount_clicked()
     }
 
     allClear();
+*/
 
 }
 
-void Login::loadAccountNumberFromDatabasae()
+void Login::loadAccountNumberFromDatabase()
 {
     QSqlQuery query;
     if (query.exec("SELECT * FROM Count_Table LIMIT 1"))
@@ -223,10 +231,7 @@ void Login::loadAccountNumberFromDatabasae()
         {
             Count = query.value(0).toInt();
         }
-        else
-        {
-            qDebug() << "Warning: Count_table is empty.";
-        }
+
     }
     else
     {
@@ -235,17 +240,8 @@ void Login::loadAccountNumberFromDatabasae()
 
 }
 
-bool Login::saveAccountToFile(int accountNumber, const QString &name, const QString &email, const QString &balance, const QString &username, const QString &password)
-{
 
-    QTextStream out(&file);
-    out << accountNumber << " " << name << " " << email << " " << balance << " " << username << " " << password << endl;
-
-    return true;
-}
-
-
-void Login::saveAccountNumberToDatabasae()
+void Login::saveAccountNumberToDatabase()
 {
     QSqlQuery qry;
 
@@ -261,6 +257,29 @@ void Login::saveAccountNumberToDatabasae()
     }
 }
 
+void Login::saveAccountToDatabase(int accountNumber, const QString &name, const QString &email, const QString &deposit, const QString &username, const QString &password)
+{
+    QSqlQuery qry;
+
+    qry.prepare("insert into BankAccountDetails (AccountNumber, Name, Email, Balance, Username,Password)"
+               " values ('"+QString::number(accountNumber)+"','"+name+"', '"+email+"', '"+deposit+"', '"+username+"', '"+password+"')");
+
+    if (!qry.exec())
+    {
+        qDebug() << "Error inserting account into database: " << qry.lastError().text();
+    }
+
+        saveAccountNumberToDatabase();
+}
+
+void Login::saveAccountToFile(int accountNumber, const QString &name, const QString &email, const QString &deposit, const QString &username, const QString &password)
+{
+    QTextStream out(&file);
+
+    out << accountNumber << " " << name << " " << email << " " << deposit << " " << username << " " << password << endl;
+
+}
+
 void Login::allClear()
 {
     ui->lineEdit_name->clear();
@@ -268,23 +287,7 @@ void Login::allClear()
     ui->lineEdit_deposit->clear();
     ui->lineEdit_fusername->clear();
     ui->lineEdit_fpassword->clear();
-}
-
-void Login::keyPressEvent(QKeyEvent *event)
-{
-    QString key = event->text();
-
-    if (event->type() == QEvent::KeyPress)
-    {
-        if ((key >= 'A' && key <= 'Z') || (key >= 'a' && key <= 'z') || (key >= '0' && key <= '9'))
-        {
-            return;
-        }
-        else
-        {
-            event->ignore();
-        }
-    }
-
+    ui->lineEdit_Username->clear();
+    ui->lineEdit_Password->clear();
 }
 
