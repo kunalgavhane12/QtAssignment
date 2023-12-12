@@ -1,9 +1,9 @@
 QT += widgets
 
-LIBS += 'D:\qt practice program\QtPractice\Sql application\Login_Library\libsqllite3.a'
+LIBS += -L'D:\Qt Assignment\Login_Library\libsqllite3.a'
 
-TEMPLATE = lib
-CONFIG += staticlib
+#TEMPLATE = lib
+#CONFIG += staticlib
 
 CONFIG += c++11
 
@@ -13,12 +13,10 @@ CONFIG += c++11
 
 SOURCES += \
     loginpage.cpp \
-    main.cpp \
-    profilepage.cpp
+    main.cpp
 
 HEADERS += \
     loginpage.h \
-    profilepage.h \
     sqlite3.h
 
 # Default rules for deployment.
@@ -28,5 +26,4 @@ unix {
 !isEmpty(target.path): INSTALLS += target
 
 FORMS += \
-    loginpage.ui \
-    profilepage.ui
+    loginpage.ui

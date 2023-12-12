@@ -2,7 +2,6 @@
 #define LOGINPAGE_H
 
 #include <QMainWindow>
-#include "profilepage.h"
 #include <QFile>
 #include <QDebug>
 #include <QTextStream>
@@ -36,7 +35,6 @@ private slots:
 
 private:
     Ui::LoginPage *ui;
-    profilePage *profilepage;
     QString username;
     QString password;
     QFile file_DB;

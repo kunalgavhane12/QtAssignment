@@ -3,8 +3,8 @@
 
 int Login::Count = 0;
 
-bool USE_DB = true;
-bool USE_FILE = false;
+//bool USE_DB = false;
+//bool USE_FILE = true;
 
 Login::Login(QWidget *parent)
     : QMainWindow(parent)
@@ -27,13 +27,13 @@ Login::Login(QWidget *parent)
 
     if(USE_FILE)
     {
-        if(!connectionOpen())
+        if(!fileOpen())
         {
             ui->label_Status->setText("Failed to open database");
         }
         else
         {
-            ui->label_Status->setText("Connected USE_DB...");
+            ui->label_Status->setText("Connected USE_FILE...");
         }
 
     }
@@ -51,7 +51,6 @@ void Login::on_pushButton_Login_clicked()
 {
     LoginLib check;
 
-    QString username, password;
     username = ui->lineEdit_Username->text();
     password = ui->lineEdit_Password->text();
 
@@ -137,7 +136,7 @@ void Login::on_pushButton_Login_clicked()
 
 bool Login::authenticate(const QString& username, const QString& password)
 {
-    file.setFileName("D:/Qt Assignment/BankApp/user_credential.txt");
+    file.setFileName("D:/qt practice program/QtPractice/Sql application/BankAppUsingSqlite/accountdetails.txt");
 
     if(!file.open(QFile::ReadOnly | QFile::Text))
     {
@@ -152,24 +151,23 @@ bool Login::authenticate(const QString& username, const QString& password)
         QString line = in.readLine();
         QStringList parts = line.split(" ");
 
-        if(parts.size() == 2 && parts[0] == username && parts[1] == password)
+        if (parts.size() >= 6 && parts[4] == username && parts[5] == password)
         {
-            file.close();
+            fileClose();
             return true;
         }
     }
 
-    file.close();
+    fileClose();
     return false;
 
 }
 
 
-
 void Login::on_pushButton_CreateAccount_clicked()
 {
 
-    QString name, email, deposit_amount, username, password;
+    QString name, email, deposit_amount;
 
     name = ui->lineEdit_name->text();
     email = ui->lineEdit_Email->text();
@@ -200,6 +198,18 @@ void Login::on_pushButton_CreateAccount_clicked()
         }
     }
 
+    if (USE_FILE)
+    {
+        if (saveAccountToFile(Count, name, email, deposit_amount, username, password))
+        {
+            QMessageBox::information(this, "Submit", "Account Created");
+        }
+        else
+        {
+            QMessageBox::critical(this, tr("Error"), "Failed to create account in file");
+        }
+    }
+
     allClear();
 
 }
@@ -225,11 +235,19 @@ void Login::loadAccountNumberFromDatabasae()
 
 }
 
+bool Login::saveAccountToFile(int accountNumber, const QString &name, const QString &email, const QString &balance, const QString &username, const QString &password)
+{
+
+    QTextStream out(&file);
+    out << accountNumber << " " << name << " " << email << " " << balance << " " << username << " " << password << endl;
+
+    return true;
+}
+
+
 void Login::saveAccountNumberToDatabasae()
 {
     QSqlQuery qry;
-
-//    qDebug()<<"Save count: "<<Count;
 
     qry.prepare("update Count_Table set Count='"+QString::number(Count)+"' where Count=Count");
 
@@ -250,5 +268,23 @@ void Login::allClear()
     ui->lineEdit_deposit->clear();
     ui->lineEdit_fusername->clear();
     ui->lineEdit_fpassword->clear();
+}
+
+void Login::keyPressEvent(QKeyEvent *event)
+{
+    QString key = event->text();
+
+    if (event->type() == QEvent::KeyPress)
+    {
+        if ((key >= 'A' && key <= 'Z') || (key >= 'a' && key <= 'z') || (key >= '0' && key <= '9'))
+        {
+            return;
+        }
+        else
+        {
+            event->ignore();
+        }
+    }
+
 }
 

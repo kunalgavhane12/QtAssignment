@@ -22,6 +22,8 @@ LoginPage::LoginPage(QWidget *parent)
           fprintf(stderr, "Opened database successfully\n");
        }
        sqlite3_close(db);
+
+       show();
 }
 
 LoginPage::~LoginPage()
@@ -53,8 +55,6 @@ void LoginPage::on_pushButton_Login_clicked()
         QMessageBox::information(this, "Login", "Login Success");
         hide();
 
-        profilepage = new profilePage(this);
-        profilepage->show();
     }
     else
     {
