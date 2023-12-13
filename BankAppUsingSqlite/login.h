@@ -95,7 +95,9 @@ private slots:
 
     void saveAccountToFile(int accountNumber, const QString &name, const QString &email, const QString &deposit, const QString &username, const QString &password);
 
-    void allClear();
+    void allClear();    
+
+    QString encrypt(const QString& data, int key);
 
 
 private:

@@ -64,12 +64,13 @@ void Login::on_pushButton_Login_clicked()
         return;
     }
 
+    password = encrypt(password,3);
 
     if(USE_DB)
     {
         //finding
         QSqlQuery qry;
-
+        //find encrypted password
         qry.prepare("select Username,Password from BankAccountDetails where Username ='"+username+"' and Password='"+password+"'");
 
         if(qry.exec())
@@ -152,6 +153,7 @@ bool Login::authenticate(const QString& username, const QString& password)
 
 void Login::on_pushButton_CreateAccount_clicked()
 {
+    LoginLib check;
 
     QString name, email, deposit;
 
@@ -168,7 +170,30 @@ void Login::on_pushButton_CreateAccount_clicked()
            return;
     }
 
+    if(!check.isValidEmail(email))
+    {
+        QMessageBox::information(this, "Login", "Invalid email");
+        ui->lineEdit_Username->clear();
+        return;
+    }
+
+    if(!check.isValidEmail(username))
+    {
+        QMessageBox::information(this, "Login", "Invalid Username");
+        ui->lineEdit_Username->clear();
+        return;
+    }
+
+    if(!check.isValidPassword(password))
+    {
+        QMessageBox::warning(this, "Login", "Password must have at least one digit,"
+             " one lowercase, one uppercase, one special character and be at least 8 character long");
+        ui->lineEdit_Password->clear();
+        return;
+    }
     Count++;
+    //insert encrypted password
+    password = encrypt(password,3);
     if(USE_DB)
     {
         saveAccountToDatabase(Count, name, email, deposit, username, password);
@@ -290,4 +315,27 @@ void Login::allClear()
     ui->lineEdit_Username->clear();
     ui->lineEdit_Password->clear();
 }
+
+QString Login::encrypt(const QString& data, int key)
+{
+    QString str;
+    for (const QChar& ch : data)
+    {
+        if (ch.isLetter())
+        {
+            QChar encryptedChar = QChar((ch.toLatin1() - 'A' + key) % 26 + 'A');
+            if (ch.isLower())
+            {
+                encryptedChar = QChar((ch.toLatin1() - 'a' + key) % 26 + 'a');
+            }
+            str += encryptedChar;
+        }
+        else
+        {
+            str += ch;
+        }
+    }
+    return str;
+}
+
 
