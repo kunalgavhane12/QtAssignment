@@ -49,10 +49,17 @@ void Login::on_pushButton_Login_clicked()
     username = ui->lineEdit_Username->text();
     password = ui->lineEdit_Password->text();
 
+    if(username.isEmpty() && password.isEmpty())
+    {
+        QMessageBox::information(this, "Login", "Please fill in all fields");
+        return;
+
+    }
+
     if(!check.isValidEmail(username))
     {
         QMessageBox::information(this, "Login", "Invalid Username");
-        ui->lineEdit_Username->clear();
+        allClear();
         return;
     }
 
@@ -64,7 +71,8 @@ void Login::on_pushButton_Login_clicked()
         return;
     }
 
-    password = encrypt(password,3);
+//    password = encrypt(password,3);
+    password = encrypt(password);
 
     if(USE_DB)
     {
@@ -136,7 +144,7 @@ bool Login::authenticate(const QString& username, const QString& password)
     while(!in.atEnd())
     {
         QString line = in.readLine();
-        QStringList parts = line.split(" ");
+        QStringList parts = line.split(",");
 
         if (parts.size() >= 6 && parts[4] == username && parts[5] == password)
         {
@@ -170,6 +178,19 @@ void Login::on_pushButton_CreateAccount_clicked()
            return;
     }
 
+    if(!isValidName(name))
+    {
+        QMessageBox::information(this, "Login", "Please enter valid name, only alphabets");
+        ui->lineEdit_name->clear();
+        return;
+    }
+
+    if(!isValidDeposit(deposit))
+    {
+        QMessageBox::information(this, "Login", "Please enter only digits");
+        ui->lineEdit_deposit->clear();
+        return;
+    }
     if(!check.isValidEmail(email))
     {
         QMessageBox::information(this, "Login", "Invalid email");
@@ -191,17 +212,27 @@ void Login::on_pushButton_CreateAccount_clicked()
         ui->lineEdit_Password->clear();
         return;
     }
-    Count++;
+
     //insert encrypted password
-    password = encrypt(password,3);
+//    password = encrypt(password,3);
+      password = encrypt(password);
+
     if(USE_DB)
     {
+        Count++;
         saveAccountToDatabase(Count, name, email, deposit, username, password);
     }
 
     if(USE_FILE)
     {
+        loadAccountNumberFromFile();
+
+//        qDebug() <<"before count: "<<Count;
+        Count++;
         saveAccountToFile(Count, name, email, deposit, username, password);
+        saveAccountNumberToFile();
+
+//        qDebug() <<"After count: "<<Count;
     }
 
     QMessageBox::information(this, "Create Account", "Account Created");
@@ -299,10 +330,63 @@ void Login::saveAccountToDatabase(int accountNumber, const QString &name, const 
 
 void Login::saveAccountToFile(int accountNumber, const QString &name, const QString &email, const QString &deposit, const QString &username, const QString &password)
 {
+    fileOpen();
+
     QTextStream out(&file);
 
-    out << accountNumber << " " << name << " " << email << " " << deposit << " " << username << " " << password << endl;
+    out << accountNumber << "," << name << "," << email << "," << deposit << "," << username << "," << password << endl;
 
+    fileClose();
+}
+
+void Login::saveAccountNumberToFile()
+{
+    QFile countFile("D:/qt practice program/QtPractice/Sql application/BankAppUsingSqlite/count.txt");
+
+    if (!countFile.open(QFile::WriteOnly | QFile::Text))
+    {
+        qDebug() << "File not open";
+        return;
+    }
+
+    QTextStream out(&countFile);
+    out << Count;
+    countFile.close();
+}
+
+void Login::loadAccountNumberFromFile()
+{
+    QFile countFile("D:/qt practice program/QtPractice/Sql application/BankAppUsingSqlite/count.txt");
+    if (!countFile.open(QFile::ReadOnly | QFile::Text))
+    {
+        qDebug() << "File not open";
+        return;
+    }
+
+    QTextStream in(&countFile);
+    QString line = in.readLine();
+    Count = line.toInt();
+    countFile.close();
+}
+
+bool Login::isValidName(const QString &name)
+{
+    for(int i=0; i < name.length(); i++)
+    {
+        if(!(name[i]=='A' && name[i]=='Z') || (name[i]=='a' && name[i]=='z') || name[i] == ' ')
+            return false;
+    }
+    return true;
+}
+
+bool Login::isValidDeposit(const QString &deposit)
+{
+    for(int i=0; i < deposit.length(); i++)
+    {
+        if(!(deposit[i]=='0' && deposit[i]=='9') || deposit[i] == '.')
+            return false;
+    }
+    return true;
 }
 
 void Login::allClear()
@@ -316,6 +400,7 @@ void Login::allClear()
     ui->lineEdit_Password->clear();
 }
 
+/*
 QString Login::encrypt(const QString& data, int key)
 {
     QString str;
@@ -337,5 +422,11 @@ QString Login::encrypt(const QString& data, int key)
     }
     return str;
 }
+*/
 
+QString Login::encrypt(const QString& data)
+{
+    QByteArray hash = QCryptographicHash::hash(data.toUtf8(), QCryptographicHash::Sha256);
+    return QString(hash.toHex());
+}
 

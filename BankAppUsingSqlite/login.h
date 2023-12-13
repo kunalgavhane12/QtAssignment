@@ -71,7 +71,6 @@ public:
         else
         {
             qDebug() << "Connected...";
-//            loadAccountNumberFromFile();
             return true;
         }
     }
@@ -95,10 +94,19 @@ private slots:
 
     void saveAccountToFile(int accountNumber, const QString &name, const QString &email, const QString &deposit, const QString &username, const QString &password);
 
-    void allClear();    
+    void saveAccountNumberToFile();
 
-    QString encrypt(const QString& data, int key);
+    void loadAccountNumberFromFile();
 
+    bool isValidName(const QString &name);
+
+    bool isValidDeposit(const QString &deposit);
+
+    void allClear();
+
+//    QString encrypt(const QString& data, int key);
+
+    QString encrypt(const QString& data);
 
 private:
     Ui::Login *ui;
