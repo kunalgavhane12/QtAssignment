@@ -75,6 +75,10 @@ public:
         }
     }
 
+    bool isValidName(const QString &name);
+
+    bool isValidDeposit(const QString &deposit);
+
 public:
     Login(QWidget *parent = nullptr);
     ~Login();
@@ -97,10 +101,6 @@ private slots:
     void saveAccountNumberToFile();
 
     void loadAccountNumberFromFile();
-
-    bool isValidName(const QString &name);
-
-    bool isValidDeposit(const QString &deposit);
 
     void allClear();
 

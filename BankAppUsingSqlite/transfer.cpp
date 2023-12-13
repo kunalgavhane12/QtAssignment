@@ -27,8 +27,16 @@ void Transfer::on_pushButton_TransferAmount_clicked()
     QString ToAccountNo = ui->lineEdit_ToAccountNo->text();
     QString Amount = ui->lineEdit_Transfer->text();
     Login conn;
-
     conn.connectionOpen();
+
+    if(!(conn.isValidDeposit(FromAccountNo) && conn.isValidDeposit(ToAccountNo) && conn.isValidDeposit(Amount)))
+    {
+        QMessageBox::information(this, "Login", "Please enter only digits");
+        ui->lineEdit_ToAccountNo->clear();
+        ui->lineEdit_FromAccountNo->clear();
+        ui->lineEdit_Transfer->clear();
+        return;
+    }
 
     QSqlQuery* qry = new QSqlQuery(conn.mydb);
 

@@ -66,7 +66,7 @@ void Login::on_pushButton_Login_clicked()
     if(!check.isValidPassword(password))
     {
         QMessageBox::warning(this, "Login", "Password must have at least one digit,"
-             " one lowercase, one uppercase, one special character and be at least 8 character long");
+             " one lowercase, one uppercase, one special character and has to be at least of 8 characters");
         ui->lineEdit_Password->clear();
         return;
     }
@@ -208,13 +208,12 @@ void Login::on_pushButton_CreateAccount_clicked()
     if(!check.isValidPassword(password))
     {
         QMessageBox::warning(this, "Login", "Password must have at least one digit,"
-             " one lowercase, one uppercase, one special character and be at least 8 character long");
+             " one lowercase, one uppercase, one special character and has to be at least of 8 characters");
         ui->lineEdit_Password->clear();
         return;
     }
 
     //insert encrypted password
-//    password = encrypt(password,3);
       password = encrypt(password);
 
     if(USE_DB)
@@ -237,44 +236,6 @@ void Login::on_pushButton_CreateAccount_clicked()
 
     QMessageBox::information(this, "Create Account", "Account Created");
     allClear();
-
-
-/*    if(USE_DB)
-    {
-        Count++;
-
-        QSqlQuery qry;
-
-        qry.prepare("insert into BankAccountDetails (AccountNumber, Name, Email, Balance, Username,Password)"
-                   " values ('"+QString::number(Count)+"','"+name+"', '"+email+"', '"+deposit_amount+"', '"+username+"', '"+password+"')");
-
-        if(qry.exec())
-        {
-            QMessageBox::information(this,"Submit","Account Created");
-
-            saveAccountNumberToDatabasae();
-
-        }
-        else
-        {
-            QMessageBox::critical(this,tr("error"),qry.lastError().text());
-        }
-    }
-
-    if (USE_FILE)
-    {
-        if (saveAccountToFile(Count, name, email, deposit_amount, username, password))
-        {
-            QMessageBox::information(this, "Submit", "Account Created");
-        }
-        else
-        {
-            QMessageBox::critical(this, tr("Error"), "Failed to create account in file");
-        }
-    }
-
-    allClear();
-*/
 
 }
 
@@ -371,9 +332,9 @@ void Login::loadAccountNumberFromFile()
 
 bool Login::isValidName(const QString &name)
 {
-    for(int i=0; i < name.length(); i++)
+    for(QChar ch: name)
     {
-        if(!(name[i]=='A' && name[i]=='Z') || (name[i]=='a' && name[i]=='z') || name[i] == ' ')
+        if(!(ch.isLetter() || ch == ' '))
             return false;
     }
     return true;
@@ -381,9 +342,9 @@ bool Login::isValidName(const QString &name)
 
 bool Login::isValidDeposit(const QString &deposit)
 {
-    for(int i=0; i < deposit.length(); i++)
+    for(QChar ch: deposit)
     {
-        if(!(deposit[i]=='0' && deposit[i]=='9') || deposit[i] == '.')
+        if(!(ch.isDigit() || ch == '.'))
             return false;
     }
     return true;
@@ -399,30 +360,6 @@ void Login::allClear()
     ui->lineEdit_Username->clear();
     ui->lineEdit_Password->clear();
 }
-
-/*
-QString Login::encrypt(const QString& data, int key)
-{
-    QString str;
-    for (const QChar& ch : data)
-    {
-        if (ch.isLetter())
-        {
-            QChar encryptedChar = QChar((ch.toLatin1() - 'A' + key) % 26 + 'A');
-            if (ch.isLower())
-            {
-                encryptedChar = QChar((ch.toLatin1() - 'a' + key) % 26 + 'a');
-            }
-            str += encryptedChar;
-        }
-        else
-        {
-            str += ch;
-        }
-    }
-    return str;
-}
-*/
 
 QString Login::encrypt(const QString& data)
 {
