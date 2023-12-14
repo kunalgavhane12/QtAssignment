@@ -17,9 +17,10 @@ public:
     explicit Transfer(QWidget *parent = nullptr);
     ~Transfer();
 
-private slots:
 
+private slots:
     void on_pushButton_TransferAmount_clicked();
+
 
 private:
     Ui::Transfer *ui;

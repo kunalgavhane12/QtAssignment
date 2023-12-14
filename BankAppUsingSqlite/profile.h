@@ -3,6 +3,7 @@
 
 #include <QDialog>
 #include "login.h"
+#include <QStandardItemModel>
 
 namespace Ui {
 class Profile;
@@ -25,6 +26,11 @@ private slots:
     void on_pushButton_Balance_clicked();
 
     void on_pushButton_Logout_clicked();
+
+    void displayAccountDetailsInTable();
+
+    void displayAccountBalanceInTable();
+
 
 private:
     Ui::Profile *ui;

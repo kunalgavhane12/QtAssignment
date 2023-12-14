@@ -10,7 +10,7 @@
 #include <QEvent>
 #include "profile.h"
 #include "sqlite3.h"
-
+#include <QStandardItemModel>
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class Login; }

@@ -17,7 +17,7 @@ Transfer::~Transfer()
 void Transfer::on_pushButton_TransferAmount_clicked()
 {
     QMessageBox::StandardButton reply;
-    reply = QMessageBox::question(this,"Title","Do you Want to Transfer?",QMessageBox::Yes | QMessageBox::No);
+    reply = QMessageBox::question(this,"Quick Transfer","Do you Want to Transfer?",QMessageBox::Yes | QMessageBox::No);
     if(reply == QMessageBox::No)
     {
         close();
@@ -26,7 +26,9 @@ void Transfer::on_pushButton_TransferAmount_clicked()
     QString FromAccountNo = ui->lineEdit_FromAccountNo->text();
     QString ToAccountNo = ui->lineEdit_ToAccountNo->text();
     QString Amount = ui->lineEdit_Transfer->text();
+
     Login conn;
+
     conn.connectionOpen();
 
     if(!(conn.isValidDeposit(FromAccountNo) && conn.isValidDeposit(ToAccountNo) && conn.isValidDeposit(Amount)))
@@ -65,15 +67,13 @@ void Transfer::on_pushButton_TransferAmount_clicked()
                         qry->exec();
                     }
                 }
-
-               ui->label_Status->setText("Transfer success");
-
-              QMessageBox::information(this,"Title","Transfer Sucess");
-
+                ui->label_Status->setText("Transfer success");
+                QMessageBox::information(this,"Quick Transfer","Transfer Sucess");
+                close();
             }
             else
             {
-                QMessageBox::information(this,"Title","Insufficient Balance");
+                QMessageBox::information(this,"Quick Transfer","Insufficient Balance");
                 qDebug() << "Insufficient Balance";
                 ui->label_Status->setText("Insufficient Balance");
 

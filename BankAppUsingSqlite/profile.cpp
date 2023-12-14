@@ -1,13 +1,13 @@
 #include "profile.h"
 #include "ui_profile.h"
 #include "transfer.h"
-#include <QStandardItemModel>
 
 Profile::Profile(QWidget *parent) :
     QDialog(parent),
     ui(new Ui::Profile)
 {
     ui->setupUi(this);
+
 }
 
 Profile::~Profile()
@@ -15,9 +15,54 @@ Profile::~Profile()
     delete ui;
 }
 
-
-
 void Profile::on_pushButton_AccountDetails_clicked()
+{
+    displayAccountDetailsInTable();
+}
+
+void Profile::on_pushButton_Transfer_clicked()
+{
+    Transfer *transfer;
+    transfer = new Transfer(this);
+    transfer->show();
+}
+
+
+void Profile::on_pushButton_Balance_clicked()
+{
+    displayAccountBalanceInTable();
+
+}
+
+
+void Profile::on_pushButton_Logout_clicked()
+{
+    Login conn;
+    QMessageBox::StandardButton reply;
+
+    if(conn.USE_DB)
+    {
+        reply = QMessageBox::question(this,"Logout","Do You Want to Logout?", QMessageBox::Yes| QMessageBox::No);
+        if(reply == QMessageBox::Yes)
+        {
+            conn.connectionClose();
+            exit(0);
+        }
+    }
+
+    if(conn.USE_FILE)
+    {
+        reply = QMessageBox::question(this,"Logout","Do You Want to Logout?", QMessageBox::Yes| QMessageBox::No);
+        if(reply == QMessageBox::Yes)
+        {
+            conn.fileClose();
+            exit(0);
+        }
+    }
+
+}
+
+void Profile::displayAccountDetailsInTable()
 {
     Login conn;
 
@@ -75,16 +120,7 @@ void Profile::on_pushButton_AccountDetails_clicked()
 
 }
 
-
-void Profile::on_pushButton_Transfer_clicked()
-{
-    Transfer *transfer;
-    transfer = new Transfer(this);
-    transfer->show();
-}
-
-
-void Profile::on_pushButton_Balance_clicked()
+void Profile::displayAccountBalanceInTable()
 {
     Login conn;
 
@@ -135,34 +171,6 @@ void Profile::on_pushButton_Balance_clicked()
             file.close();
 
             ui->tableView->setModel(model);
-        }
-    }
-
-}
-
-
-void Profile::on_pushButton_Logout_clicked()
-{
-    Login conn;
-    QMessageBox::StandardButton reply;
-
-    if(conn.USE_DB)
-    {
-        reply = QMessageBox::question(this,"Logout","Do You Want to Logout?", QMessageBox::Yes| QMessageBox::No);
-        if(reply == QMessageBox::Yes)
-        {
-            conn.connectionClose();
-            exit(0);
-        }
-    }
-
-    if(conn.USE_FILE)
-    {
-        reply = QMessageBox::question(this,"Logout","Do You Want to Logout?", QMessageBox::Yes| QMessageBox::No);
-        if(reply == QMessageBox::Yes)
-        {
-            conn.fileClose();
-            exit(0);
         }
     }
 

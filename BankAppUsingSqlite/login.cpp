@@ -71,7 +71,6 @@ void Login::on_pushButton_Login_clicked()
         return;
     }
 
-//    password = encrypt(password,3);
     password = encrypt(password);
 
     if(USE_DB)
@@ -286,7 +285,7 @@ void Login::saveAccountToDatabase(int accountNumber, const QString &name, const 
         qDebug() << "Error inserting account into database: " << qry.lastError().text();
     }
 
-        saveAccountNumberToDatabase();
+    saveAccountNumberToDatabase();
 }
 
 void Login::saveAccountToFile(int accountNumber, const QString &name, const QString &email, const QString &deposit, const QString &username, const QString &password)
