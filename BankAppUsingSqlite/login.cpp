@@ -77,7 +77,7 @@ void Login::on_pushButton_Login_clicked()
     {
         //finding
         QSqlQuery qry;
-        //find encrypted password
+
         qry.prepare("select Username,Password from BankAccountDetails where Username ='"+username+"' and Password='"+password+"'");
 
         if(qry.exec())
@@ -162,44 +162,41 @@ void Login::on_pushButton_CreateAccount_clicked()
 {
     LoginLib check;
 
-    QString name, email, deposit;
-
     name = ui->lineEdit_name->text();
     email = ui->lineEdit_Email->text();
     deposit = ui->lineEdit_deposit->text();
-
     username = ui->lineEdit_fusername->text();
     password = ui->lineEdit_fpassword->text();
 
     if (name.isEmpty() || email.isEmpty() || deposit.isEmpty() || username.isEmpty() || password.isEmpty())
     {
-           QMessageBox::warning(this, "Create Account", "Please fill in all fields");
+           QMessageBox::warning(this, "Account Opening", "Please fill in all fields");
            return;
     }
 
     if(!isValidName(name))
     {
-        QMessageBox::information(this, "Login", "Please enter valid name, only alphabets");
+        QMessageBox::information(this, "Account Opening", "Please enter valid name, only alphabets");
         ui->lineEdit_name->clear();
         return;
     }
 
     if(!isValidDeposit(deposit))
     {
-        QMessageBox::information(this, "Login", "Please enter only digits");
+        QMessageBox::information(this, "Account Opening", "Please enter only digits.");
         ui->lineEdit_deposit->clear();
         return;
     }
     if(!check.isValidEmail(email))
     {
-        QMessageBox::information(this, "Login", "Invalid email");
+        QMessageBox::information(this, "Account Opening", "Invalid email");
         ui->lineEdit_Username->clear();
         return;
     }
 
     if(!check.isValidEmail(username))
     {
-        QMessageBox::information(this, "Login", "Invalid Username");
+        QMessageBox::information(this, "Account Opening", "Invalid Username");
         ui->lineEdit_Username->clear();
         return;
     }
@@ -217,23 +214,90 @@ void Login::on_pushButton_CreateAccount_clicked()
 
     if(USE_DB)
     {
-        Count++;
-        saveAccountToDatabase(Count, name, email, deposit, username, password);
+    //finding details in database file
+      QSqlQuery qry;
+
+      qry.prepare("SELECT name,email FROM BankAccountDetails WHERE Name = '"+name+"' AND Email = '"+email+"'");
+
+      if (qry.exec())
+      {
+          int count = 0;
+
+          while (qry.next())
+          {
+              count++;
+//              qDebug() << "Finding...";
+          }
+
+//          qDebug() << "Finding..." << count;
+
+          if (count >= 1)
+          {
+              ui->label_Status->setText("Account already exists");
+              QMessageBox::information(this, "Account Opening", "Account already exists");
+              allClear();
+              return;
+          }
+
+          if (count < 1)
+          {
+              Count++;
+              saveAccountToDatabase(Count, name, email, deposit, username, password);
+          }
+      }
+      else
+      {
+          qDebug() << "Error loading databases: " << qry.lastError().text();
+      }
     }
+
 
     if(USE_FILE)
     {
-        loadAccountNumberFromFile();
+        int count = 0;
 
-//        qDebug() <<"before count: "<<Count;
-        Count++;
-        saveAccountToFile(Count, name, email, deposit, username, password);
-        saveAccountNumberToFile();
+        file.setFileName("D:/qt practice program/QtPractice/Sql application/BankAppUsingSqlite/accountdetails.txt");
 
-//        qDebug() <<"After count: "<<Count;
+        if(!file.open(QFile::ReadOnly | QFile::Text))
+        {
+            QMessageBox::information(this, "Account opening", "File not open");
+            return;
+        }
+
+       QTextStream in(&file);
+
+        while(!in.atEnd())
+        {
+            QString line = in.readLine();
+            QStringList data = line.split(',');
+
+            if (data.size() >= 6 && data[1] == name && data[2] == email)
+            {
+               count++;
+               qDebug() << "find :" <<count;
+            }
+        }
+        qDebug() << "find :" <<count;
+        if(count < 1)
+        {
+            loadAccountNumberFromFile();
+//            qDebug() <<"before count: "<<Count;
+            Count++;
+            saveAccountToFile(Count, name, email, deposit, username, password);
+            saveAccountNumberToFile();
+//            qDebug() <<"After count: "<<Count;
+        }
+        else
+        {
+            ui->label_Status->setText("Account already exists");
+            QMessageBox::information(this, "Account Opening", "Account already exists");
+            allClear();
+            return;
+        }
+
     }
 
-    QMessageBox::information(this, "Create Account", "Account Created");
+    QMessageBox::information(this, "Account Opening", "Account Created");
     allClear();
 
 }
@@ -349,6 +413,12 @@ bool Login::isValidDeposit(const QString &deposit)
     return true;
 }
 
+QString Login::encrypt(const QString& data)
+{
+    QByteArray hash = QCryptographicHash::hash(data.toUtf8(), QCryptographicHash::Sha256);
+    return QString(hash.toHex());
+}
+
 void Login::allClear()
 {
     ui->lineEdit_name->clear();
@@ -359,10 +429,3 @@ void Login::allClear()
     ui->lineEdit_Username->clear();
     ui->lineEdit_Password->clear();
 }
-
-QString Login::encrypt(const QString& data)
-{
-    QByteArray hash = QCryptographicHash::hash(data.toUtf8(), QCryptographicHash::Sha256);
-    return QString(hash.toHex());
-}
-

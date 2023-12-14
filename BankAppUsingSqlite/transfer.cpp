@@ -13,7 +13,6 @@ Transfer::~Transfer()
     delete ui;
 }
 
-
 void Transfer::on_pushButton_TransferAmount_clicked()
 {
     QMessageBox::StandardButton reply;

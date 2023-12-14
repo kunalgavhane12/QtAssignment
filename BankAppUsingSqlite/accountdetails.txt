@@ -1,3 +1,3 @@
 1,Kunal,kunal@gmail.com,5000,kunal@gmail.com,b6bc7b58510319a151d168ba3d5aecb3ac0a9708d06dd930f37fbc89b6cdc697
-2,x,x@gmail.com,5,x@gmail.com,b6bc7b58510319a151d168ba3d5aecb3ac0a9708d06dd930f37fbc89b6cdc697
-3,d,d@gmail.com,5,d@gmail.com,b6bc7b58510319a151d168ba3d5aecb3ac0a9708d06dd930f37fbc89b6cdc697
+2,kunal,kunal@gmail.com,50,kunal@gmail.com,b6bc7b58510319a151d168ba3d5aecb3ac0a9708d06dd930f37fbc89b6cdc697
+3,admin,admin@gmail.com,50,admin@gmail.com,e86f78a8a3caf0b60d8e74e5942aa6d86dc150cd3c03338aef25b7d2d7e3acc7

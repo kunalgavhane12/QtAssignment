@@ -3,7 +3,6 @@
 
 #include <QDialog>
 #include "login.h"
-#include <QStandardItemModel>
 
 namespace Ui {
 class Profile;

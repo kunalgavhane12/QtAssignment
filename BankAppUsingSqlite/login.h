@@ -5,9 +5,6 @@
 #include "loginlib.h"
 #include <QtSql>
 #include <QMessageBox>
-#include <QLineEdit>
-#include <QKeyEvent>
-#include <QEvent>
 #include "profile.h"
 #include "sqlite3.h"
 #include <QStandardItemModel>
@@ -21,8 +18,8 @@ class Login : public QMainWindow
     Q_OBJECT
 public:
 
-    bool USE_DB = true;
-    bool USE_FILE = false;
+    bool USE_DB = false;
+    bool USE_FILE = true;
 
     QSqlDatabase mydb;
     QFile file;
@@ -104,14 +101,12 @@ private slots:
 
     void allClear();
 
-//    QString encrypt(const QString& data, int key);
-
     QString encrypt(const QString& data);
 
 private:
     Ui::Login *ui;
     static int Count;
-    QString username, password;
+    QString username, password, name, email, deposit;
 
 };
 #endif // LOGIN_H

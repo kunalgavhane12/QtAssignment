@@ -46,7 +46,7 @@ void Profile::on_pushButton_Logout_clicked()
         if(reply == QMessageBox::Yes)
         {
             conn.connectionClose();
-            exit(0);
+           close();
         }
     }
 
