@@ -21,6 +21,9 @@ public:
 private slots:
     void on_pushButton_TransferAmount_clicked();
 
+    bool isAccountExists(const QString &Number);
+
+    void updatedDetails();
 
 private:
     Ui::Transfer *ui;

@@ -35,7 +35,11 @@
          </widget>
         </item>
         <item>
-         <widget class="QLineEdit" name="lineEdit_FromAccountNo"/>
+         <widget class="QLineEdit" name="lineEdit_FromAccountNo">
+          <property name="inputMethodHints">
+           <set>Qt::ImhPreferNumbers</set>
+          </property>
+         </widget>
         </item>
        </layout>
       </item>
@@ -47,7 +51,11 @@
        </widget>
       </item>
       <item>
-       <widget class="QLineEdit" name="lineEdit_ToAccountNo"/>
+       <widget class="QLineEdit" name="lineEdit_ToAccountNo">
+        <property name="inputMethodHints">
+         <set>Qt::ImhPreferNumbers</set>
+        </property>
+       </widget>
       </item>
      </layout>
     </item>
@@ -61,7 +69,11 @@
        </widget>
       </item>
       <item>
-       <widget class="QLineEdit" name="lineEdit_Transfer"/>
+       <widget class="QLineEdit" name="lineEdit_Transfer">
+        <property name="inputMethodHints">
+         <set>Qt::ImhPreferNumbers</set>
+        </property>
+       </widget>
       </item>
      </layout>
     </item>
