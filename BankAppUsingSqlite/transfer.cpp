@@ -31,231 +31,184 @@ void Transfer::on_pushButton_TransferAmount_clicked()
 
     conn.connectionOpen();
 
-        if(!(conn.isValidDeposit(FromAccountNo) && conn.isValidDeposit(ToAccountNo) && conn.isValidDeposit(Amount)))
+    if(!(conn.isValidDeposit(FromAccountNo) && conn.isValidDeposit(ToAccountNo) && conn.isValidDeposit(Amount)))
+    {
+        QMessageBox::information(this, "Login", "Please enter only digits");
+        ui->lineEdit_ToAccountNo->clear();
+        ui->lineEdit_FromAccountNo->clear();
+        ui->lineEdit_Transfer->clear();
+        return;
+    }
+
+    if(conn.USE_DB)
+    {
+        QSqlQuery* qry = new QSqlQuery(conn.mydb);
+
+        if(qry->exec("select * from BankAccountDetails where AccountNumber = '"+FromAccountNo+"'"))
         {
-            QMessageBox::information(this, "Login", "Please enter only digits");
-            ui->lineEdit_ToAccountNo->clear();
-            ui->lineEdit_FromAccountNo->clear();
-            ui->lineEdit_Transfer->clear();
-            return;
-        }
-
-        if(conn.USE_DB)
-        {
-//            if(!isAccountExists(FromAccountNo))
-//            {
-//                QMessageBox::information(this, "Quick Transfer", "Invalid Account Number");
-//                return;
-//            }
-
-//            if(!isAccountExists(ToAccountNo))
-//            {
-//                QMessageBox::information(this, "Quick Transfer", "Invalid Account Number");
-//                return;
-//            }
-
-            QSqlQuery* qry = new QSqlQuery(conn.mydb);
-
-            if(qry->exec("select * from BankAccountDetails where AccountNumber = '"+FromAccountNo+"'"))
+            if(!qry->next())
             {
-                if(qry->next())
+                QMessageBox::information(this, "Quick Transfer", "Invalid From Account Number");
+                ui->lineEdit_FromAccountNo->clear();
+                return;
+            }
+
+            double sBalance = qry->value("Balance").toDouble();
+            if(sBalance >= Amount.toDouble())
+            {
+                sBalance -= Amount.toDouble();
+                qry->prepare("update BankAccountDetails SET Balance = '"+QString::number(sBalance)+"' where AccountNumber = '"+FromAccountNo+"'");
+                qry->exec();
+
+                if(qry->exec("select * from BankAccountDetails where AccountNumber = '"+ToAccountNo+"'"))
                 {
-                    double sBalance = qry->value("Balance").toDouble();
-
-                    if(sBalance >= Amount.toDouble())
+                    if(!qry->next())
                     {
-                        sBalance -= Amount.toDouble();
-
-                        qry->prepare("update BankAccountDetails SET Balance = '"+QString::number(sBalance)+"' where AccountNumber = '"+FromAccountNo+"'");
-                        qry->exec();
-
-                        if(qry->exec("select * from BankAccountDetails where AccountNumber = '"+ToAccountNo+"'"))
-                        {
-                            if(qry->next())
-                            {
-                                double rBalance = qry->value("Balance").toDouble();
-
-                                rBalance += Amount.toDouble();
-
-                                qry->prepare("update BankAccountDetails SET Balance = '"+QString::number(rBalance)+"' where AccountNumber = '"+ToAccountNo+"'");
-                                qry->exec();
-                            }
-                        }
-
-//                        displayAccountDetailsInTable();
-                        ui->label_Status->setText("Transfer success");
-                        QMessageBox::information(this,"Quick Transfer","Transfer Sucess");
-                        close();
-
-                        Profile profilepage;
-                        profilepage.setModal(true);
-                        profilepage.exec();
-                    }
-                    else
-                    {
-                        QMessageBox::information(this,"Quick Transfer","Insufficient Balance");
-                        qDebug() << "Insufficient Balance";
-                        ui->label_Status->setText("Insufficient Balance");
-                    }
-                }
-            }
-            else
-            {
-                qDebug() << "Error executing qry: " << qry->lastError().text();
-            }
-
-            ui->lineEdit_FromAccountNo->clear();
-            ui->lineEdit_ToAccountNo->clear();
-            ui->lineEdit_Transfer->clear();
-
-            conn.connectionClose();
-        }
-
-        if(conn.USE_FILE)
-        {
-            if(!isAccountExists(FromAccountNo))
-            {
-                QMessageBox::information(this, "Quick Transfer", "Invalid Account Number");
-                return;
-            }
-
-            if(!isAccountExists(ToAccountNo))
-            {
-                QMessageBox::information(this, "Quick Transfer", "Invalid Account Number");
-                return;
-            }
-
-            QFile file("D:/qt practice program/QtPractice/Sql application/BankAppUsingSqlite/accountdetails.txt");
-
-            if (!file.open(QFile::ReadOnly | QFile::Text))
-            {
-                QMessageBox::information(this, "Quick Transfer", "File not open");
-                return;
-            }
-
-            QFile tempFile("D:/qt practice program/QtPractice/Sql application/BankAppUsingSqlite/temp.txt");
-
-            if (tempFile.open(QFile::ReadWrite | QFile:: Text))
-            {
-                QTextStream out(&tempFile);
-
-                QTextStream in(&file);
-
-                while (!in.atEnd())
-                {
-                    QString line = in.readLine();
-                    QStringList data = line.split(',');
-
-                    if (data.size() >= 6 && data[0] == FromAccountNo)
-                    {
-                        if (data[3].toDouble() < Amount.toDouble())
-                        {
-                            QMessageBox::information(this, "Quick Transfer", "Insufficient Balance");
-                            ui->label_Status->setText("Insufficient Balance");
-                            file.close();
-                            tempFile.remove();
-                            return;
-                        }
-                        else
-                        {
-                            double sBalance = data[3].toDouble();
-                            sBalance -= Amount.toDouble();
-                            data[3] = QString::number(sBalance);
-                            qDebug() << "Balance deducted";
-                        }
+                        QMessageBox::information(this, "Quick Transfer", "Invalid To Account Number");
+                        ui->lineEdit_ToAccountNo->clear();
+                        return;
                     }
 
-                    if (data.size() >= 6 && data[0] == ToAccountNo)
-                    {
-                        double rBalance = data[3].toDouble();
-                        rBalance += Amount.toDouble();
-                        data[3] = QString::number(rBalance);
-                        qDebug() << "Balance received";
-
-                        ui->label_Status->setText("Transfer success");
-                        QMessageBox::information(this, "Quick Transfer", "Transfer Success");
-                    }
-
-                    out << data.join(',') << '\n';
+                    double rBalance = qry->value("Balance").toDouble();
+                    rBalance += Amount.toDouble();
+                    qry->prepare("update BankAccountDetails SET Balance = '"+QString::number(rBalance)+"' where AccountNumber = '"+ToAccountNo+"'");
+                    qry->exec();
                 }
 
-                tempFile.close();
-                file.close();
-                updatedDetails();
+//                displayAccountDetailsInTable();
+
+                ui->label_Status->setText("Transfer success");
+                QMessageBox::information(this,"Quick Transfer","Transfer Sucess");
                 close();
 
                 Profile profilepage;
                 profilepage.setModal(true);
                 profilepage.exec();
-
-                tempFile.remove();
             }
-            close();
+            else
+            {
+                QMessageBox::information(this,"Quick Transfer","Insufficient Balance");
+                qDebug() << "Insufficient Balance";
+                ui->label_Status->setText("Insufficient Balance");
+            }
         }
+        ui->lineEdit_FromAccountNo->clear();
+        ui->lineEdit_ToAccountNo->clear();
+        ui->lineEdit_Transfer->clear();
+        conn.connectionClose();
+    }
+
+    if(conn.USE_FILE)
+    {
+        if(!isAccountExists(FromAccountNo))
+        {
+            QMessageBox::information(this, "Quick Transfer", "Invalid From Account Number");
+            ui->lineEdit_FromAccountNo->clear();
+            return;
+        }
+
+        if(!isAccountExists(ToAccountNo))
+        {
+            QMessageBox::information(this, "Quick Transfer", "Invalid To Account Number");
+            ui->lineEdit_ToAccountNo->clear();
+            return;
+        }
+
+        QFile file("D:/qt practice program/QtPractice/Sql application/BankAppUsingSqlite/accountdetails.txt");
+
+        if (!file.open(QFile::ReadOnly | QFile::Text))
+        {
+            QMessageBox::information(this, "Quick Transfer", "File not open");
+            return;
+        }
+
+        QFile tempFile("D:/qt practice program/QtPractice/Sql application/BankAppUsingSqlite/temp.txt");
+
+        if (tempFile.open(QFile::ReadWrite | QFile:: Text))
+        {
+            QTextStream out(&tempFile);
+
+            QTextStream in(&file);
+
+            while (!in.atEnd())
+            {
+                QString line = in.readLine();
+                QStringList data = line.split(',');
+
+                if (data.size() >= 6 && data[0] == FromAccountNo)
+                {
+                    if (data[3].toDouble() < Amount.toDouble())
+                    {
+                        QMessageBox::information(this, "Quick Transfer", "Insufficient Balance");
+                        ui->label_Status->setText("Insufficient Balance");
+                        file.close();
+                        tempFile.remove();
+                        return;
+                    }
+                    else
+                    {
+                        double sBalance = data[3].toDouble();
+                        sBalance -= Amount.toDouble();
+                        data[3] = QString::number(sBalance);
+                        qDebug() << "Balance deducted";
+                    }
+                }
+
+                if (data.size() >= 6 && data[0] == ToAccountNo)
+                {
+                    double rBalance = data[3].toDouble();
+                    rBalance += Amount.toDouble();
+                    data[3] = QString::number(rBalance);
+                    qDebug() << "Balance received";
+
+                    ui->label_Status->setText("Transfer success");
+                    QMessageBox::information(this, "Quick Transfer", "Transfer Success");
+                }
+
+                out << data.join(',') << '\n';
+            }
+
+            tempFile.close();
+            file.close();
+            updatedDetails();
+            close();
+
+            Profile profilepage;
+            profilepage.setModal(true);
+            profilepage.exec();
+            tempFile.remove();
+        }
+        close();
+    }
 }
 
 bool Transfer::isAccountExists(const QString &accountNumber)
 {
-//    Login conn;
+    QFile file("D:/qt practice program/QtPractice/Sql application/BankAppUsingSqlite/accountdetails.txt");
+    if(!file.open(QFile::ReadOnly | QFile::Text))
+    {
+        QMessageBox::information(this, "Quick Transfer", "File not open");
+        return false;
+    }
 
-//    conn.connectionOpen();
-
-//    if(conn.USE_DB)
-//    {
-//        QSqlQuery* qry = new QSqlQuery(conn.mydb);
-//        qry->prepare("select AccountNumber from BankAccountDetails where AccountNumber = '"+accountNumber+"'");
-
-//        if (qry->exec())
-//        {
-//            int count = 0;
-
-//            while (qry->next())
-//            {
-//                count++;
-//            }
-//            if (count < 1)
-//            {
-//                conn.connectionClose();
-//                return false;
-//            }
-//            else
-//            {
-//                conn.connectionClose();
-//                return true;
-//            }
-//        }
-
-//    }
-
-
-        QFile file("D:/qt practice program/QtPractice/Sql application/BankAppUsingSqlite/accountdetails.txt");
-        if(!file.open(QFile::ReadOnly | QFile::Text))
+    QTextStream out(&file);
+    while(!out.atEnd())
+    {
+        QString line = out.readLine();
+        QStringList data = line.split(',');
+        if(data.size() >= 6 && data[0] == accountNumber)
         {
-            QMessageBox::information(this, "Quick Transfer", "File not open");
-            return false;
+            file.close();
+            return true;
         }
-
-        QTextStream out(&file);
-        while(!out.atEnd())
-        {
-            QString line = out.readLine();
-            QStringList data = line.split(',');
-
-            if(data.size() >= 6 && data[0] == accountNumber)
-            {
-                file.close();
-                return true;
-            }
-        }
-        file.close();
-
+    }
+    file.close();
     return false;
 }
 
 void Transfer::updatedDetails()
 {
     QFile tempFile("D:/qt practice program/QtPractice/Sql application/BankAppUsingSqlite/temp.txt");
-
 
     if (!tempFile.open(QFile::ReadOnly | QFile::Text))
     {
@@ -287,7 +240,3 @@ void Transfer::updatedDetails()
         file.close();
     }
 }
-
-
-
-

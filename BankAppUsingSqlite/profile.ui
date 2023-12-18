@@ -14,10 +14,10 @@
    <string>Account Profile</string>
   </property>
   <layout class="QGridLayout" name="gridLayout">
-   <item row="0" column="0">
-    <widget class="QPushButton" name="pushButton_AccountDetails">
+   <item row="0" column="3">
+    <widget class="QPushButton" name="pushButton_Logout">
      <property name="text">
-      <string>Account Details</string>
+      <string>Logout</string>
      </property>
     </widget>
    </item>
@@ -35,10 +35,10 @@
      </property>
     </widget>
    </item>
-   <item row="0" column="3">
-    <widget class="QPushButton" name="pushButton_Logout">
+   <item row="0" column="0">
+    <widget class="QPushButton" name="pushButton_AccountDetails">
      <property name="text">
-      <string>Logout</string>
+      <string>Account Details</string>
      </property>
     </widget>
    </item>

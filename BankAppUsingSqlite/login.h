@@ -3,9 +3,9 @@
 
 #include <QMainWindow>
 #include "loginlib.h"
+#include "profile.h"
 #include <QtSql>
 #include <QMessageBox>
-#include "profile.h"
 #include <QStandardItemModel>
 
 QT_BEGIN_NAMESPACE
