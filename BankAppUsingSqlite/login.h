@@ -6,7 +6,6 @@
 #include <QtSql>
 #include <QMessageBox>
 #include "profile.h"
-#include "sqlite3.h"
 #include <QStandardItemModel>
 
 QT_BEGIN_NAMESPACE
@@ -18,8 +17,8 @@ class Login : public QMainWindow
     Q_OBJECT
 public:
 
-    bool USE_DB = false;
-    bool USE_FILE = true;
+    bool USE_DB = true;
+    bool USE_FILE = false;
 
     QSqlDatabase mydb;
     QFile file;

@@ -3,6 +3,7 @@
 
 #include <QDialog>
 #include "login.h"
+#include "transfer.h"
 
 namespace Ui {
 class Profile;
@@ -16,6 +17,12 @@ public:
     explicit Profile(QWidget *parent = nullptr);
     ~Profile();
 
+public slots:
+
+    void displayAccountDetailsInTable();
+
+    void displayAccountBalanceInTable();
+
 private slots:
 
     void on_pushButton_AccountDetails_clicked();
@@ -25,11 +32,6 @@ private slots:
     void on_pushButton_Balance_clicked();
 
     void on_pushButton_Logout_clicked();
-
-    void displayAccountDetailsInTable();
-
-    void displayAccountBalanceInTable();
-
 
 private:
     Ui::Profile *ui;

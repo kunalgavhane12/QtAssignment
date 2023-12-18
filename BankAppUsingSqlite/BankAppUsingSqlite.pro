@@ -21,8 +21,6 @@ SOURCES += \
 HEADERS += \
     login.h \
     profile.h \
-    sqlite3.h \
-    sqlite3ext.h \
     transfer.h
 
 FORMS += \

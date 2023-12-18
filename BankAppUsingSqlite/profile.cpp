@@ -1,12 +1,12 @@
 #include "profile.h"
 #include "ui_profile.h"
-#include "transfer.h"
 
 Profile::Profile(QWidget *parent) :
     QDialog(parent),
     ui(new Ui::Profile)
 {
     ui->setupUi(this);
+    displayAccountDetailsInTable();
 
 }
 
@@ -22,11 +22,15 @@ void Profile::on_pushButton_AccountDetails_clicked()
 
 void Profile::on_pushButton_Transfer_clicked()
 {
-    Transfer *transfer;
-    transfer = new Transfer(this);
-    transfer->show();
-}
+    this->hide();
+    Transfer transferpage;
+    transferpage.setModal(true);
+    transferpage.exec();
 
+//    Transfer *transfer;
+//    transfer = new Transfer(this);
+//    transfer->show();
+}
 
 void Profile::on_pushButton_Balance_clicked()
 {
@@ -45,7 +49,7 @@ void Profile::on_pushButton_Logout_clicked()
         reply = QMessageBox::question(this,"Logout","Do You Want to Logout?", QMessageBox::Yes| QMessageBox::No);
         if(reply == QMessageBox::Yes)
         {
-            conn.connectionClose();
+           conn.connectionClose();
            close();
         }
     }
@@ -124,6 +128,7 @@ void Profile::displayAccountBalanceInTable()
 {
     Login conn;
 
+    // file_DB data display using displayAccountBalanceInTable
     if(conn.USE_DB)
     {
         QSqlQueryModel *model = new QSqlQueryModel();
@@ -142,6 +147,7 @@ void Profile::displayAccountBalanceInTable()
         conn.connectionClose();
     }
 
+    // file data display using displayAccountBalanceInTable
     if (conn.USE_FILE)
     {
         QFile file("D:/qt practice program/QtPractice/Sql application/BankAppUsingSqlite/accountdetails.txt");

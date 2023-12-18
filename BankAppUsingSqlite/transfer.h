@@ -4,6 +4,7 @@
 #include <QDialog>
 #include "login.h"
 #include "profile.h"
+#include "ui_profile.h"
 
 namespace Ui {
 class Transfer;

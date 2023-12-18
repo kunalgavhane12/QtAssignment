@@ -1,13 +1,12 @@
 #include "transfer.h"
 #include "ui_transfer.h"
-#include "profile.h"
-#include "ui_profile.h"
 
 Transfer::Transfer(QWidget *parent) :
     QDialog(parent),
     ui(new Ui::Transfer)
 {
     ui->setupUi(this);
+
 }
 
 Transfer::~Transfer()
@@ -43,6 +42,18 @@ void Transfer::on_pushButton_TransferAmount_clicked()
 
         if(conn.USE_DB)
         {
+//            if(!isAccountExists(FromAccountNo))
+//            {
+//                QMessageBox::information(this, "Quick Transfer", "Invalid Account Number");
+//                return;
+//            }
+
+//            if(!isAccountExists(ToAccountNo))
+//            {
+//                QMessageBox::information(this, "Quick Transfer", "Invalid Account Number");
+//                return;
+//            }
+
             QSqlQuery* qry = new QSqlQuery(conn.mydb);
 
             if(qry->exec("select * from BankAccountDetails where AccountNumber = '"+FromAccountNo+"'"))
@@ -71,9 +82,14 @@ void Transfer::on_pushButton_TransferAmount_clicked()
                             }
                         }
 
+//                        displayAccountDetailsInTable();
                         ui->label_Status->setText("Transfer success");
                         QMessageBox::information(this,"Quick Transfer","Transfer Sucess");
                         close();
+
+                        Profile profilepage;
+                        profilepage.setModal(true);
+                        profilepage.exec();
                     }
                     else
                     {
@@ -166,6 +182,11 @@ void Transfer::on_pushButton_TransferAmount_clicked()
                 tempFile.close();
                 file.close();
                 updatedDetails();
+                close();
+
+                Profile profilepage;
+                profilepage.setModal(true);
+                profilepage.exec();
 
                 tempFile.remove();
             }
@@ -175,26 +196,59 @@ void Transfer::on_pushButton_TransferAmount_clicked()
 
 bool Transfer::isAccountExists(const QString &accountNumber)
 {
-    QFile file("D:/qt practice program/QtPractice/Sql application/BankAppUsingSqlite/accountdetails.txt");
-    if(!file.open(QFile::ReadOnly | QFile::Text))
-    {
-        QMessageBox::information(this, "Quick Transfer", "File not open");
-        return false;
-    }
+//    Login conn;
 
-    QTextStream out(&file);
-    while(!out.atEnd())
-    {
-        QString line = out.readLine();
-        QStringList data = line.split(',');
+//    conn.connectionOpen();
 
-        if(data.size() >= 6 && data[0] == accountNumber)
+//    if(conn.USE_DB)
+//    {
+//        QSqlQuery* qry = new QSqlQuery(conn.mydb);
+//        qry->prepare("select AccountNumber from BankAccountDetails where AccountNumber = '"+accountNumber+"'");
+
+//        if (qry->exec())
+//        {
+//            int count = 0;
+
+//            while (qry->next())
+//            {
+//                count++;
+//            }
+//            if (count < 1)
+//            {
+//                conn.connectionClose();
+//                return false;
+//            }
+//            else
+//            {
+//                conn.connectionClose();
+//                return true;
+//            }
+//        }
+
+//    }
+
+
+        QFile file("D:/qt practice program/QtPractice/Sql application/BankAppUsingSqlite/accountdetails.txt");
+        if(!file.open(QFile::ReadOnly | QFile::Text))
         {
-            file.close();
-            return true;
+            QMessageBox::information(this, "Quick Transfer", "File not open");
+            return false;
         }
-    }
-    file.close();
+
+        QTextStream out(&file);
+        while(!out.atEnd())
+        {
+            QString line = out.readLine();
+            QStringList data = line.split(',');
+
+            if(data.size() >= 6 && data[0] == accountNumber)
+            {
+                file.close();
+                return true;
+            }
+        }
+        file.close();
+
     return false;
 }
 
@@ -228,7 +282,7 @@ void Transfer::updatedDetails()
             }
             out << '\n';
         }
-
+        file.flush();
         tempFile.close();
         file.close();
     }
