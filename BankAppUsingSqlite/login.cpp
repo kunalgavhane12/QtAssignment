@@ -342,7 +342,7 @@ void Login::saveAccountToDatabase(int accountNumber, const QString &name, const 
     QSqlQuery qry;
 
     qry.prepare("insert into BankAccountDetails (AccountNumber, Name, Email, Balance, Username,Password)"
-               " values ('"+QString::number(accountNumber)+"','"+name+"', '"+email+"', '"+deposit.toDouble()+"', '"+username+"', '"+password+"')");
+               " values ('"+QString::number(accountNumber)+"','"+name+"', '"+email+"', '"+QString::number(deposit.toDouble())+"', '"+username+"', '"+password+"')");
 
     if (!qry.exec())
     {

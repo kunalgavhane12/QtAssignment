@@ -3,19 +3,21 @@
 
 #include <QDialog>
 #include "login.h"
-//#include "profile.h"
-#include "ui_profile.h"
 
 namespace Ui {
 class Transfer;
 }
+
+
+class Profile;
 
 class Transfer : public QDialog
 {
     Q_OBJECT
 
 public:
-    explicit Transfer(QWidget *parent = nullptr);
+//    explicit Transfer(QWidget *parent = nullptr);
+    explicit Transfer(Profile* profileInstance, QWidget *parent = nullptr);
     ~Transfer();
 
 
@@ -28,6 +30,7 @@ private slots:
 
 private:
     Ui::Transfer *ui;
+    Profile *profile;
 
 };
 

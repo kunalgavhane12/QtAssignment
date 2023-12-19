@@ -23,7 +23,7 @@ void Profile::on_pushButton_AccountDetails_clicked()
 void Profile::on_pushButton_Transfer_clicked()
 {
 //    this->hide();
-    Transfer transferpage;
+    Transfer transferpage(this);
     transferpage.setModal(true);
     transferpage.exec();
 
