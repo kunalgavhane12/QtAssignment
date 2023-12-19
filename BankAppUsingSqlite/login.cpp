@@ -354,13 +354,13 @@ void Login::saveAccountToDatabase(int accountNumber, const QString &name, const 
 
 void Login::saveAccountToFile(int accountNumber, const QString &name, const QString &email, const QString &deposit, const QString &username, const QString &password)
 {
-    fileOpen();
+//    fileOpen();
 
     QTextStream out(&file);
 
     out << accountNumber << "," << name << "," << email << "," << deposit.toDouble() << "," << username << "," << password << endl;
 
-    fileClose();
+//    fileClose();
 }
 
 void Login::saveAccountNumberToFile()

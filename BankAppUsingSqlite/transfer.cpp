@@ -186,9 +186,10 @@ void Transfer::on_pushButton_TransferAmount_clicked()
             }
 
             tempFile.close();
+            tempFile.remove();
             file.close();
             updatedDetails();
-            tempFile.remove();
+
 
             ui->label_Status->setText("Transfer success");
             QMessageBox::information(this,"Quick Transfer","Transfer Sucess");

@@ -22,11 +22,12 @@ void Profile::on_pushButton_AccountDetails_clicked()
 
 void Profile::on_pushButton_Transfer_clicked()
 {
-//    this->hide();
+
     Transfer transferpage(this);
     transferpage.setModal(true);
     transferpage.exec();
 
+//    this->hide();
 //    Transfer *transfer;
 //    transfer = new Transfer(this);
 //    transfer->show();
@@ -74,7 +75,7 @@ void Profile::displayAccountDetailsInTable()
     {
         QSqlQueryModel *model = new QSqlQueryModel();
 
-        conn.connectionOpen();
+//        conn.connectionOpen();
 
         QSqlQuery* qry = new QSqlQuery(conn.mydb);
 
@@ -85,7 +86,7 @@ void Profile::displayAccountDetailsInTable()
 
         ui->tableView->setModel(model);
 
-        conn.connectionClose();
+//        conn.connectionClose();
         qDebug() << (model->rowCount());
     }
 
@@ -133,7 +134,7 @@ void Profile::displayAccountBalanceInTable()
     {
         QSqlQueryModel *model = new QSqlQueryModel();
 
-        conn.connectionOpen();
+//        conn.connectionOpen();
 
         QSqlQuery* qry = new QSqlQuery(conn.mydb);
 
@@ -144,7 +145,7 @@ void Profile::displayAccountBalanceInTable()
 
         ui->tableView->setModel(model);
 
-        conn.connectionClose();
+//        conn.connectionClose();
     }
 
     // file data display using displayAccountBalanceInTable
