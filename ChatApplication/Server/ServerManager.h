@@ -14,18 +14,15 @@ public:
 signals:
     void newClientConnected(QTcpSocket *client);
     void clientDisconnected(QTcpSocket *client);
-
 private slots:
     void newClientConnectionReceived();
     void onClientDisconnected();
 
-private:
+private: // fields
     QTcpServer *_server;
-    QList<QTcpSocket*> _clients;
-
-private:
+    QList<QTcpSocket *> _clients;
+private: //mehtods
     void setupServer(ushort port);
-
 };
 
 #endif // SERVERMANAGER_H

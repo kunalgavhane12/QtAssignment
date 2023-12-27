@@ -21,8 +21,19 @@ private slots:
 
     void on_btnSend_clicked();
 
-    void dataReceived(QByteArray data);
+    void dataReceived(QString message);
 
+    void on_lnClientName_editingFinished();
+
+    void on_cmbStatus_currentIndexChanged(int index);
+
+    void onTyping();
+
+    void on_btnSendFile_clicked();
+
+    void onRejectReceivingFile();
+
+    void onInitReceivingFile(QString clientName, QString fileName, qint64 fileSize);
 private:
     Ui::MainWindow *ui;
     ClientManager *_client;

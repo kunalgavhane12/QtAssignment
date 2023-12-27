@@ -3,6 +3,7 @@
 
 #include <QMainWindow>
 #include "ServerManager.h"
+#include "ClientChatWidget.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
@@ -15,16 +16,15 @@ class MainWindow : public QMainWindow
 public:
     MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
-
 private slots:
     void newClientConnected(QTcpSocket *client);
     void clientDisconnected(QTcpSocket *client);
-
-private:
+    void setClientName(QString name);
+    void setClientStatus(ChatProtocol::Status status);
+private: //fields
     Ui::MainWindow *ui;
     ServerManager *_server;
-
-private:
-    void setupServer();
+private: //methods
+    void seupServer();
 };
 #endif // MAINWINDOW_H

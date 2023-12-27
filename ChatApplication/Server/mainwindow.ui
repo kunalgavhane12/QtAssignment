@@ -6,35 +6,35 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>659</width>
-    <height>398</height>
+    <width>629</width>
+    <height>340</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>Server</string>
   </property>
   <widget class="QWidget" name="centralwidget">
-   <layout class="QHBoxLayout" name="horizontalLayout" stretch="3,2">
+   <layout class="QHBoxLayout" name="horizontalLayout" stretch="3,1">
     <item>
-     <widget class="QGroupBox" name="groupBox_Chats">
+     <widget class="QGroupBox" name="grpChats">
       <property name="title">
        <string>Chats</string>
       </property>
       <layout class="QVBoxLayout" name="verticalLayout_2">
        <item>
-        <widget class="QTabWidget" name="tabClients"/>
+        <widget class="QTabWidget" name="tbClientsChat"/>
        </item>
       </layout>
      </widget>
     </item>
     <item>
-     <widget class="QGroupBox" name="groupBox_Clients">
+     <widget class="QGroupBox" name="grpClients">
       <property name="title">
        <string>Clients</string>
       </property>
       <layout class="QVBoxLayout" name="verticalLayout">
        <item>
-        <widget class="QListWidget" name="listClients"/>
+        <widget class="QListWidget" name="lstClients"/>
        </item>
        <item>
         <widget class="QPushButton" name="pushButton">
@@ -53,8 +53,8 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>659</width>
-     <height>21</height>
+     <width>629</width>
+     <height>22</height>
     </rect>
    </property>
   </widget>
