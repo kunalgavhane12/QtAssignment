@@ -302,6 +302,9 @@ debug/moc_ClientManager.cpp: ../Client/ClientManager.h \
 		../../../QT/5.12.12/mingw73_64/include/QtCore/qcontiguouscache.h \
 		../../../QT/5.12.12/mingw73_64/include/QtCore/qsharedpointer.h \
 		../../../QT/5.12.12/mingw73_64/include/QtCore/qsharedpointer_impl.h \
+		../../../QT/5.12.12/mingw73_64/include/QtNetwork/QTcpServer \
+		../../../QT/5.12.12/mingw73_64/include/QtNetwork/qtcpserver.h \
+		../../../QT/5.12.12/mingw73_64/include/QtNetwork/qhostaddress.h \
 		debug/moc_predefs.h \
 		../../../QT/5.12.12/mingw73_64/bin/moc.exe
 	D:\QT\5.12.12\mingw73_64\bin\moc.exe $(DEFINES) --include "D:/Qt Assignment/ChatApplication/build-Client-Desktop_Qt_5_12_12_MinGW_64_bit-Debug/debug/moc_predefs.h" -ID:/QT/5.12.12/mingw73_64/mkspecs/win32-g++ -I"D:/Qt Assignment/ChatApplication/Client" -ID:/QT/5.12.12/mingw73_64/include -ID:/QT/5.12.12/mingw73_64/include/QtWidgets -ID:/QT/5.12.12/mingw73_64/include/QtGui -ID:/QT/5.12.12/mingw73_64/include/QtANGLE -ID:/QT/5.12.12/mingw73_64/include/QtNetwork -ID:/QT/5.12.12/mingw73_64/include/QtCore -I. -ID:/QT/Tools/mingw730_64/lib/gcc/x86_64-w64-mingw32/7.3.0/include/c++ -ID:/QT/Tools/mingw730_64/lib/gcc/x86_64-w64-mingw32/7.3.0/include/c++/x86_64-w64-mingw32 -ID:/QT/Tools/mingw730_64/lib/gcc/x86_64-w64-mingw32/7.3.0/include/c++/backward -ID:/QT/Tools/mingw730_64/lib/gcc/x86_64-w64-mingw32/7.3.0/include -ID:/QT/Tools/mingw730_64/lib/gcc/x86_64-w64-mingw32/7.3.0/include-fixed -ID:/QT/Tools/mingw730_64/x86_64-w64-mingw32/include ..\Client\ClientManager.h -o debug\moc_ClientManager.cpp
@@ -423,6 +426,9 @@ debug/moc_mainwindow.cpp: ../Client/mainwindow.h \
 		../../../QT/5.12.12/mingw73_64/include/QtNetwork/qtnetworkglobal.h \
 		../../../QT/5.12.12/mingw73_64/include/QtNetwork/qtnetwork-config.h \
 		../../../QT/5.12.12/mingw73_64/include/QtNetwork/qabstractsocket.h \
+		../../../QT/5.12.12/mingw73_64/include/QtNetwork/QTcpServer \
+		../../../QT/5.12.12/mingw73_64/include/QtNetwork/qtcpserver.h \
+		../../../QT/5.12.12/mingw73_64/include/QtNetwork/qhostaddress.h \
 		debug/moc_predefs.h \
 		../../../QT/5.12.12/mingw73_64/bin/moc.exe
 	D:\QT\5.12.12\mingw73_64\bin\moc.exe $(DEFINES) --include "D:/Qt Assignment/ChatApplication/build-Client-Desktop_Qt_5_12_12_MinGW_64_bit-Debug/debug/moc_predefs.h" -ID:/QT/5.12.12/mingw73_64/mkspecs/win32-g++ -I"D:/Qt Assignment/ChatApplication/Client" -ID:/QT/5.12.12/mingw73_64/include -ID:/QT/5.12.12/mingw73_64/include/QtWidgets -ID:/QT/5.12.12/mingw73_64/include/QtGui -ID:/QT/5.12.12/mingw73_64/include/QtANGLE -ID:/QT/5.12.12/mingw73_64/include/QtNetwork -ID:/QT/5.12.12/mingw73_64/include/QtCore -I. -ID:/QT/Tools/mingw730_64/lib/gcc/x86_64-w64-mingw32/7.3.0/include/c++ -ID:/QT/Tools/mingw730_64/lib/gcc/x86_64-w64-mingw32/7.3.0/include/c++/x86_64-w64-mingw32 -ID:/QT/Tools/mingw730_64/lib/gcc/x86_64-w64-mingw32/7.3.0/include/c++/backward -ID:/QT/Tools/mingw730_64/lib/gcc/x86_64-w64-mingw32/7.3.0/include -ID:/QT/Tools/mingw730_64/lib/gcc/x86_64-w64-mingw32/7.3.0/include-fixed -ID:/QT/Tools/mingw730_64/x86_64-w64-mingw32/include ..\Client\mainwindow.h -o debug\moc_mainwindow.cpp
@@ -597,10 +603,9 @@ debug/ChatProtocol.o: ../Client/ChatProtocol.cpp ../Client/ChatProtocol.h \
 		../../../QT/5.12.12/mingw73_64/include/QtCore/qstringalgorithms.h \
 		../../../QT/5.12.12/mingw73_64/include/QtCore/qstringview.h \
 		../../../QT/5.12.12/mingw73_64/include/QtCore/qstringbuilder.h \
-		../../../QT/5.12.12/mingw73_64/include/QtCore/QFileInfo \
-		../../../QT/5.12.12/mingw73_64/include/QtCore/qfileinfo.h \
-		../../../QT/5.12.12/mingw73_64/include/QtCore/qfile.h \
-		../../../QT/5.12.12/mingw73_64/include/QtCore/qfiledevice.h \
+		../../../QT/5.12.12/mingw73_64/include/QtCore/QDataStream \
+		../../../QT/5.12.12/mingw73_64/include/QtCore/qdatastream.h \
+		../../../QT/5.12.12/mingw73_64/include/QtCore/qscopedpointer.h \
 		../../../QT/5.12.12/mingw73_64/include/QtCore/qiodevice.h \
 		../../../QT/5.12.12/mingw73_64/include/QtCore/qobject.h \
 		../../../QT/5.12.12/mingw73_64/include/QtCore/qobjectdefs.h \
@@ -615,11 +620,14 @@ debug/ChatProtocol.o: ../Client/ChatProtocol.cpp ../Client/ChatProtocol.h \
 		../../../QT/5.12.12/mingw73_64/include/QtCore/qregexp.h \
 		../../../QT/5.12.12/mingw73_64/include/QtCore/qstringmatcher.h \
 		../../../QT/5.12.12/mingw73_64/include/QtCore/qcoreevent.h \
-		../../../QT/5.12.12/mingw73_64/include/QtCore/qscopedpointer.h \
 		../../../QT/5.12.12/mingw73_64/include/QtCore/qmetatype.h \
 		../../../QT/5.12.12/mingw73_64/include/QtCore/qvarlengtharray.h \
 		../../../QT/5.12.12/mingw73_64/include/QtCore/qcontainerfwd.h \
 		../../../QT/5.12.12/mingw73_64/include/QtCore/qobject_impl.h \
+		../../../QT/5.12.12/mingw73_64/include/QtCore/QFileInfo \
+		../../../QT/5.12.12/mingw73_64/include/QtCore/qfileinfo.h \
+		../../../QT/5.12.12/mingw73_64/include/QtCore/qfile.h \
+		../../../QT/5.12.12/mingw73_64/include/QtCore/qfiledevice.h \
 		../../../QT/5.12.12/mingw73_64/include/QtCore/qshareddata.h \
 		../../../QT/5.12.12/mingw73_64/include/QtCore/qhash.h \
 		../../../QT/5.12.12/mingw73_64/include/QtCore/QIODevice
@@ -697,7 +705,10 @@ debug/ClientManager.o: ../Client/ClientManager.cpp ../Client/ClientManager.h \
 		../../../QT/5.12.12/mingw73_64/include/QtCore/qset.h \
 		../../../QT/5.12.12/mingw73_64/include/QtCore/qcontiguouscache.h \
 		../../../QT/5.12.12/mingw73_64/include/QtCore/qsharedpointer.h \
-		../../../QT/5.12.12/mingw73_64/include/QtCore/qsharedpointer_impl.h
+		../../../QT/5.12.12/mingw73_64/include/QtCore/qsharedpointer_impl.h \
+		../../../QT/5.12.12/mingw73_64/include/QtNetwork/QTcpServer \
+		../../../QT/5.12.12/mingw73_64/include/QtNetwork/qtcpserver.h \
+		../../../QT/5.12.12/mingw73_64/include/QtNetwork/qhostaddress.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o debug\ClientManager.o ..\Client\ClientManager.cpp
 
 debug/main.o: ../Client/main.cpp ../Client/mainwindow.h \
@@ -817,6 +828,9 @@ debug/main.o: ../Client/main.cpp ../Client/mainwindow.h \
 		../../../QT/5.12.12/mingw73_64/include/QtNetwork/qtnetworkglobal.h \
 		../../../QT/5.12.12/mingw73_64/include/QtNetwork/qtnetwork-config.h \
 		../../../QT/5.12.12/mingw73_64/include/QtNetwork/qabstractsocket.h \
+		../../../QT/5.12.12/mingw73_64/include/QtNetwork/QTcpServer \
+		../../../QT/5.12.12/mingw73_64/include/QtNetwork/qtcpserver.h \
+		../../../QT/5.12.12/mingw73_64/include/QtNetwork/qhostaddress.h \
 		../../../QT/5.12.12/mingw73_64/include/QtWidgets/QApplication \
 		../../../QT/5.12.12/mingw73_64/include/QtWidgets/qapplication.h \
 		../../../QT/5.12.12/mingw73_64/include/QtCore/qcoreapplication.h \
@@ -945,6 +959,9 @@ debug/mainwindow.o: ../Client/mainwindow.cpp ../Client/ChatItemWidget.h \
 		../../../QT/5.12.12/mingw73_64/include/QtNetwork/qtnetworkglobal.h \
 		../../../QT/5.12.12/mingw73_64/include/QtNetwork/qtnetwork-config.h \
 		../../../QT/5.12.12/mingw73_64/include/QtNetwork/qabstractsocket.h \
+		../../../QT/5.12.12/mingw73_64/include/QtNetwork/QTcpServer \
+		../../../QT/5.12.12/mingw73_64/include/QtNetwork/qtcpserver.h \
+		../../../QT/5.12.12/mingw73_64/include/QtNetwork/qhostaddress.h \
 		ui_mainwindow.h \
 		../../../QT/5.12.12/mingw73_64/include/QtWidgets/QFileDialog \
 		../../../QT/5.12.12/mingw73_64/include/QtWidgets/qfiledialog.h \

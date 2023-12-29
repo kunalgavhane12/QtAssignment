@@ -1,7 +1,7 @@
 #include "ChatItemWidget.h"
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
-#include <QFileDialog>>
+#include <QFileDialog>
 #include <QMessageBox>
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
@@ -64,8 +64,6 @@ void MainWindow::dataReceived(QString message)
 
 
 }
-
-
 
 
 void MainWindow::on_lnClientName_editingFinished()

@@ -20,6 +20,11 @@ VideoPlayer::VideoPlayer(QWidget *parent)
     ui->horizontalSlider_Volume->setValue(30);
 
     Player->setVolume(ui->horizontalSlider_Volume->value());
+
+    connect(Player, &QMediaPlayer::durationChanged, this, &VideoPlayer::durationChanged);
+    connect(Player, &QMediaPlayer::positionChanged, this, &VideoPlayer::positionChanged);
+
+    ui->horizontalSlider_Duration->setRange(0, Player->duration() / 1000);
 }
 
 VideoPlayer::~VideoPlayer()
@@ -27,10 +32,48 @@ VideoPlayer::~VideoPlayer()
     delete ui;
 }
 
+void VideoPlayer::durationChanged(qint64 duration)
+{
+    mDuration = duration / 1000;
+    ui->horizontalSlider_Duration->setMaximum(mDuration);
+}
+
+void VideoPlayer::positionChanged(qint64 duration)
+{
+    if(!ui->horizontalSlider_Duration->isSliderDown())
+    {
+        ui->horizontalSlider_Duration->setValue(duration / 1000);
+    }
+    updateDuration(duration / 1000);
+}
+
+
+void VideoPlayer::updateDuration(qint64 Duration)
+{
+    if(Duration || mDuration)
+    {
+        QTime CurremtTime((Duration / 3600) % 60,(Duration / 60) % 60,  Duration % 60, (Duration * 1000) % 1000);
+        QTime TotalTime((mDuration / 3600) % 60,(mDuration / 60) % 60, mDuration % 60, (mDuration * 1000) % 1000);
+
+        QString Format = "";
+        if(mDuration > 3600)
+        {
+            Format = "hh:mm:ss";
+        }
+        else
+        {
+            Format = "mm:ss";
+        }
+
+        ui->label_Current_Time->setText(CurremtTime.toString(Format));
+        ui->label_Total_Time->setText(TotalTime.toString(Format));
+    }
+}
+
 
 void VideoPlayer::on_actionOpen_triggered()
 {
-    QString fileName = QFileDialog::getOpenFileName(this,tr("Select Video  File"),"",tr("MP4 Files(*.avi, *.mpg, *.mp4)"));
+    QString fileName = QFileDialog::getOpenFileName(this,tr("Select Video  File"),"",tr("MP4 Files(*.mkv, *.avi, *.mpg, *.mp4)"));
 
     Video = new QVideoWidget();
 
@@ -57,15 +100,15 @@ void VideoPlayer::on_horizontalSlider_Duration_valueChanged(int value)
 
 void VideoPlayer::on_pushButton_Play_Pause_clicked()
 {
-    if(Is_Pause == true)
+    if(is_Pause == true)
     {
-       Is_Pause = false;
+       is_Pause = false;
        Player->play();
        ui->pushButton_Play_Pause->setIcon(style()->standardIcon(QStyle::SP_MediaPause));
     }
     else
     {
-        Is_Pause = true;
+        is_Pause = true;
         Player->pause();
         ui->pushButton_Play_Pause->setIcon(style()->standardIcon(QStyle::SP_MediaPlay));
     }
@@ -75,20 +118,21 @@ void VideoPlayer::on_pushButton_Play_Pause_clicked()
 void VideoPlayer::on_pushButton_Stop_clicked()
 {
     Player->stop();
+    Player->setPosition(0);
 }
 
 
 void VideoPlayer::on_pushButton_Volume_clicked()
 {
-    if(Is_Muted == false)
+    if(is_Muted == false)
     {
-       Is_Muted = true;
+       is_Muted = true;
        ui->pushButton_Volume->setIcon(style()->standardIcon(QStyle::SP_MediaVolumeMuted));
        Player->setMuted(true);
     }
     else
     {
-        Is_Muted = false;
+        is_Muted = false;
         ui->pushButton_Volume->setIcon(style()->standardIcon(QStyle::SP_MediaVolume));
         Player->setMuted(false);
     }

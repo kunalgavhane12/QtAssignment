@@ -6,7 +6,7 @@ MainWindow::MainWindow(QWidget *parent)
     , ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
-    seupServer();
+    setupServer();
 }
 
 MainWindow::~MainWindow()
@@ -67,7 +67,7 @@ void MainWindow::setClientStatus(ChatProtocol::Status status)
     ui->tbClientsChat->setTabIcon(index, icon);
 }
 
-void MainWindow::seupServer()
+void MainWindow::setupServer()
 {
     _server = new ServerManager();
     connect(_server, &ServerManager::newClientConnected, this, &MainWindow::newClientConnected);

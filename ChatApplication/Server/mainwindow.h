@@ -25,6 +25,6 @@ private: //fields
     Ui::MainWindow *ui;
     ServerManager *_server;
 private: //methods
-    void seupServer();
+    void setupServer();
 };
 #endif // MAINWINDOW_H
