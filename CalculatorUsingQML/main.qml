@@ -9,7 +9,6 @@ Window {
 
     Display {
         id: display
-        text: "0"
         color: "white"
     }
 

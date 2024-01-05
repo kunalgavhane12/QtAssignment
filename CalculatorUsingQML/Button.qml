@@ -8,8 +8,7 @@ Item {
     property color clickColor: "gray"
     property color textHover: "Black"
     property string text: title
-//    property alias title: display
-    property alias area: mouseArea
+    property string buttonText: mouseArea
 
     width: 72
     height: 50
@@ -42,6 +41,10 @@ Item {
             onExited: {
                 parent.color = root.color
                 title.color = root.textColor
+            }
+
+            onClicked:{
+                display.displayText = root.text
             }
 
             onPressed: parent.color = root.color
