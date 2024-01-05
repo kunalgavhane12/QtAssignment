@@ -13,6 +13,7 @@ Item {
         anchors.fill: parent
 
         Text {
+
             text: root.displayText
             anchors.fill: parent
             anchors.leftMargin: 2

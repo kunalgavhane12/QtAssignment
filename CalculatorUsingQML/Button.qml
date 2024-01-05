@@ -8,7 +8,7 @@ Item {
     property color clickColor: "gray"
     property color textHover: "Black"
     property string text: title
-    property string buttonText: mouseArea
+     property alias area: mouseArea
 
     width: 72
     height: 50
@@ -44,11 +44,18 @@ Item {
             }
 
             onClicked:{
-                display.displayText = root.text
+                if(display.displayText === "0" && root.text !== ".")
+                {
+                    display.displayText = root.text
+                }
+                else
+                {
+                    display.displayText = display.displayText + root.text
+                }
             }
 
-            onPressed: parent.color = root.color
-            onReleased: parent.color = root.hoverColor
+            onPressed: parent.color = root.hoverColor
+            onReleased: parent.color = root.color
         }
     }
 }
