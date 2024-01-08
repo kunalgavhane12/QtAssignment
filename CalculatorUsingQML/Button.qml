@@ -15,7 +15,7 @@ Item {
 
     property real num1: 0
     property real num2: 0
-    property real result: 0
+    property double result: 0
 
     width: 72
     height: 50

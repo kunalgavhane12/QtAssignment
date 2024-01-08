@@ -7,6 +7,8 @@ Window {
     visible: true
     title: qsTr("Calculator")
 
+//    property color bgcolor: "pink"
+//    color: bgcolor
     Display {
         id: display
         color: "white"
@@ -31,6 +33,7 @@ Window {
         Button {
             id: bracketleft
             text: "("
+//            onClicked: display.updateDisplay(text)
             onClicked:{
                 if(display.displayText === "0")
                 {
@@ -45,6 +48,7 @@ Window {
         Button {
             id: bracketright
             text: ")"
+//            onClicked: display.updateDisplay(text)
             onClicked:{
                 if(display.displayText === "0")
                 {
@@ -59,6 +63,7 @@ Window {
         Button {
             id: backspace
             text: "DEL"
+ //            onClicked: display.updateDisplay(text)
             onClicked:{
                 display.displayText = display.displayText.slice(0, -1);
             }
@@ -66,6 +71,7 @@ Window {
         Button {
             id: seven
             text: "7"
+//            onClicked: display.updateDisplay(text)
             onClicked:{
                 if(display.displayText === "0")
                 {
@@ -80,6 +86,7 @@ Window {
         Button {
             id: eight
             text: "8"
+//            onClicked: display.updateDisplay(text)
             onClicked:{
                 if(display.displayText === "0")
                 {
@@ -94,6 +101,7 @@ Window {
         Button {
             id: nine
             text: "9"
+//            onClicked: display.updateDisplay(text)
             onClicked:{
                 if(display.displayText === "0")
                 {
@@ -115,6 +123,7 @@ Window {
         Button {
             id: four
             text: "4"
+//            onClicked: display.updateDisplay(text)
             onClicked:{
                 if(display.displayText === "0")
                 {
@@ -129,6 +138,7 @@ Window {
         Button {
             id: five
             text: "5"
+//            onClicked: display.updateDisplay(text)
             onClicked:{
                 if(display.displayText === "0")
                 {
@@ -143,6 +153,7 @@ Window {
         Button {
             id: six
             text: "6"
+//            onClicked: display.updateDisplay(text)
             onClicked:{
                 if(display.displayText === "0")
                 {
@@ -164,6 +175,7 @@ Window {
         Button {
             id: one
             text: "1"
+//            onClicked: display.updateDisplay(text)
             onClicked:{
                 if(display.displayText === "0")
                 {
@@ -178,6 +190,7 @@ Window {
         Button {
             id: two
             text: "2"
+//            onClicked: display.updateDisplay(text)
             onClicked:{
                 if(display.displayText === "0")
                 {
@@ -192,6 +205,7 @@ Window {
         Button {
             id: three
             text: "3"
+//            onClicked: display.updateDisplay(text)
             onClicked:{
                 if(display.displayText === "0")
                 {
@@ -220,6 +234,7 @@ Window {
         Button {
             id: zero
             text: "0"
+//            onClicked: display.updateDisplay(text)
             onClicked:{
                 if(display.displayText === "0")
                 {
@@ -243,6 +258,14 @@ Window {
                 }
                 else
                 {
+//                    if(display.displayText.lastIndexOf(display.displayText) === ".")
+//                    {
+//                        display.displayText = display.displayText
+//                    }
+//                    else
+//                    {
+//                        display.displayText += text
+//                    }
                     display.displayText += text
                 }
             }
@@ -256,19 +279,9 @@ Window {
                 result = eval(expression)
                 display.displayText = result.toString();
             }
+
+
         }
     }
-
-    //    function updateDisplay(value)
-    //    {
-    //        if(display.displayText === "0")
-    //        {
-    //            display.displayText = text
-    //        }
-    //        else
-    //        {
-    //            display.displayText += text
-    //        }
-    //    }
 }
 
