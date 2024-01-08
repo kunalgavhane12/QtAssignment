@@ -8,8 +8,9 @@ Item {
     property color clickColor: "gray"
     property color textHover: "Black"
     property string text: title.text
+    property string expression: ""
     property string op: ""
-    property alias area: mouseArea
+    //    property alias area: mouseArea
 
     property real num1: 0
     property real num2: 0
@@ -34,7 +35,7 @@ Item {
         }
 
         MouseArea {
-            id:mouseArea
+            //            id:mouseArea
             anchors.fill: parent
             hoverEnabled: true
 
@@ -66,20 +67,28 @@ Item {
                     console.log("Operator pressed:", root.text);
                     op = root.text
 
-                    if (num1 == 0)
-                    {
-                        num1 = parseFloat(display.displayText)
-                        display.displayText = ""
-                        console.log("num1:", num1, "num2:", num2);
-                    }
+                    display.displayText = display.displayText + root.text
+
                 }
                 else if(root.text === "=")
                 {
-                    num2 = parseFloat(display.displayText)
-                    display.displayText = ""
-                    console.log("num1:", num1, "num2:", num2);
+                    expression = display.displayText
+                    result = eval(expression)
+                    display.displayText = result.toString();
 
-//                    if (num1 != 0 && num2 != 0)
+/*                    if (num1 == 0)
+                    {
+                        num1 = parseFloat(display.displayText)
+                        console.log("num1:", num1, "num2:", num2);
+                    }
+                    else
+                    {
+                        num2 = parseFloat(display.displayText)
+                    }
+
+                    console.log("num1:", num1, "num2:", num2, "exp:", display.displayText);
+
+                    if (num1 != 0 && num2 != 0)
                     {
                         if (op === "+")
                         {
@@ -100,6 +109,7 @@ Item {
                         console.log("num1:", num1, "num2:", num2);
                         display.displayText = result.toString();
                     }
+ */
                 }
                 else
                 {
