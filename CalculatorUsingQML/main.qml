@@ -32,10 +32,9 @@ Window {
             id: bracketleft
             text: "("
             onClicked:{
-
                 if(display.displayText === "0")
                 {
-                    display.displayText = "("
+                    display.displayText = text
                 }
                 else
                 {
@@ -49,14 +48,13 @@ Window {
             onClicked:{
                 if(display.displayText === "0")
                 {
-                    display.displayText = ")"
+                    display.displayText = text
                 }
                 else
                 {
                     display.displayText += text
                 }
             }
-
         }
         Button {
             id: backspace
@@ -71,7 +69,7 @@ Window {
             onClicked:{
                 if(display.displayText === "0")
                 {
-                    display.displayText = "7"
+                    display.displayText = text
                 }
                 else
                 {
@@ -85,7 +83,7 @@ Window {
             onClicked:{
                 if(display.displayText === "0")
                 {
-                    display.displayText = "8"
+                    display.displayText = text
                 }
                 else
                 {
@@ -99,7 +97,7 @@ Window {
             onClicked:{
                 if(display.displayText === "0")
                 {
-                    display.displayText = "9"
+                    display.displayText = text
                 }
                 else
                 {
@@ -120,7 +118,7 @@ Window {
             onClicked:{
                 if(display.displayText === "0")
                 {
-                    display.displayText = "4"
+                    display.displayText = text
                 }
                 else
                 {
@@ -134,7 +132,7 @@ Window {
             onClicked:{
                 if(display.displayText === "0")
                 {
-                    display.displayText = "5"
+                    display.displayText = text
                 }
                 else
                 {
@@ -148,7 +146,7 @@ Window {
             onClicked:{
                 if(display.displayText === "0")
                 {
-                    display.displayText = "6"
+                    display.displayText = text
                 }
                 else
                 {
@@ -169,7 +167,7 @@ Window {
             onClicked:{
                 if(display.displayText === "0")
                 {
-                    display.displayText = "1"
+                    display.displayText = text
                 }
                 else
                 {
@@ -183,7 +181,7 @@ Window {
             onClicked:{
                 if(display.displayText === "0")
                 {
-                    display.displayText = "2"
+                    display.displayText = text
                 }
                 else
                 {
@@ -197,7 +195,7 @@ Window {
             onClicked:{
                 if(display.displayText === "0")
                 {
-                    display.displayText = "3"
+                    display.displayText = text
                 }
                 else
                 {
@@ -225,7 +223,7 @@ Window {
             onClicked:{
                 if(display.displayText === "0")
                 {
-                    display.displayText = "0"
+                    display.displayText = text
                 }
                 else
                 {
@@ -236,8 +234,10 @@ Window {
         Button {
             id: dot
             text: "."
+
             onClicked:{
-                if(display.displayText === "0")
+
+                if(display.displayText === "0" )
                 {
                     display.displayText += text
                 }
@@ -259,5 +259,16 @@ Window {
         }
     }
 
+    //    function updateDisplay(value)
+    //    {
+    //        if(display.displayText === "0")
+    //        {
+    //            display.displayText = text
+    //        }
+    //        else
+    //        {
+    //            display.displayText += text
+    //        }
+    //    }
 }
 

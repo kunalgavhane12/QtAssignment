@@ -55,6 +55,39 @@ Item {
 
             onClicked: root.clicked()
 
+            /*            onClicked:{
+                if(display.displayText === "0" && root.text !== ".")
+                {
+                    display.displayText = root.text
+                }
+                else if(root.text === "AC")
+                {
+                    display.displayText = ""
+                }
+                else if(root.text === "DEL")
+                {
+                    display.displayText = display.displayText.slice(0, -1);
+                }
+                else if(root.text === "+" || root.text === "-" || root.text === "*" || root.text === "/")
+                {
+                    console.log("Operator pressed:", root.text);
+                    op = root.text
+
+                    display.displayText = display.displayText + root.text
+
+                }
+                else if(root.text === "=")
+                {
+                    expression = display.displayText
+                    result = eval(expression)
+                    display.displayText = result.toString();
+                }
+                else
+                {
+                    display.displayText = display.displayText + root.text
+                }
+            }
+*/
         }
     }
 }
