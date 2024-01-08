@@ -55,7 +55,7 @@ Item {
 
             onClicked: root.clicked()
 
-            /*            onClicked:{
+/*            onClicked:{
                 if(display.displayText === "0" && root.text !== ".")
                 {
                     display.displayText = root.text

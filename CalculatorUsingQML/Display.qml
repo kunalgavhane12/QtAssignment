@@ -27,18 +27,6 @@ Item {
             anchors.centerIn: parent
         }
 
-        function updateDisplay(value)
-        {
-            if(display.displayText === "0")
-            {
-                display.displayText = text
-            }
-            else
-            {
-                display.displayText += text
-            }
-        }
-
         MouseArea {
             anchors.fill: parent
         }
