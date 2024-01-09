@@ -8,8 +8,7 @@ Window {
     visible: true
     title: qsTr("Calculator")
 
-//    property color bgcolor: "pink"
-//    color: bgcolor
+    property int count: 0
 
     Display {
         id: display
@@ -18,12 +17,52 @@ Window {
 
     function updateDisplay(value)
     {
+        var lastChar = display.displayText.charAt(display.displayText.length - 1);
+
         if(display.displayText === "0")
         {
+            console.log("count: ",count)
+
             display.displayText = value
+        }
+        else if (value === "+" || value === "-" || value === "*" || value === "/")
+        {
+            count = 0
+            if(lastChar === ".")
+            {
+                display.displayText += "0" + value
+
+            }
+            else
+            {
+                display.displayText += value
+            }
+
+        }
+        else if (value === "(")
+        {
+            count = 0
+            if(lastChar >= "0" && lastChar <= "9")
+            {
+                display.displayText += "*" + value
+
+            }
+            else
+            {
+                display.displayText += value
+
+            }
+
+        }
+        else if (lastChar === ")")
+        {
+            count = 0
+            display.displayText += "*" + value
         }
         else
         {
+            console.log("count: ",count)
+
             display.displayText += value
         }
     }
@@ -105,7 +144,7 @@ Window {
             text: "/"
             onClicked:
             {
-                display.displayText += "/";
+                updateDisplay(text);
             }
         }
 
@@ -141,7 +180,7 @@ Window {
             text: "*"
             onClicked:
             {
-                display.displayText += "*";
+                updateDisplay(text);
             }
         }
 
@@ -177,7 +216,7 @@ Window {
             text: "+"
             onClicked:
             {
-                display.displayText += "+";
+                updateDisplay(text);
             }
         }
 
@@ -202,15 +241,31 @@ Window {
         Button {
             id: dot
             text: "."
+
             onClicked:
             {
-                if(display.displayText === "0" )
+                console.log("count: ",count)
+
+                var lastChar = display.displayText.charAt(display.displayText.length - 1);
+
+                if (display.displayText === "0")
                 {
-                    display.displayText += text
+                    count = 1
+                    display.displayText += text;
+                }
+                else if (lastChar === "+" || lastChar === "-" || lastChar === "*" || lastChar === "/")
+                {
+                    count = 1
+                    updateDisplay("0" + text);
+                }
+                else if (lastChar >= "0" && lastChar <= "9" && count == 0 )
+                {
+                    count = 1
+                    updateDisplay(text);
                 }
                 else
                 {
-                    updateDisplay(text);
+
                 }
             }
         }
