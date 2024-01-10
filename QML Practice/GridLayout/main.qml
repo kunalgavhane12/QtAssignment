@@ -8,7 +8,7 @@ Window {
     title: qsTr("Hello World")
 
     Grid {
-        anchors.centerIn: parent
+
         spacing: 2
         rows: 3
         columns: 3

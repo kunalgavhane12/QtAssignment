@@ -1,0 +1,11 @@
+<RCC>
+    <qresource prefix="/">
+        <file>main.qml</file>
+    </qresource>
+    <qresource prefix="/image">
+        <file>C:/Users/Dell/Pictures/dog.jpg</file>
+        <file>C:/Users/Dell/Pictures/peacock.jpg</file>
+        <file>C:/Users/Dell/Pictures/smile.png</file>
+        <file>C:/Users/Dell/Pictures/tiger.jpg</file>
+    </qresource>
+</RCC>

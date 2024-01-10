@@ -8,7 +8,6 @@ Item {
     property color clickColor: "gray"
     property color textHover: "Black"
     property alias title: display
-    property alias area: mouseArea
 
     Rectangle{
         height: root.height
@@ -25,7 +24,7 @@ Item {
         }
 
         MouseArea {
-            id:mouseArea
+
             anchors.fill: parent
             hoverEnabled: true
 
@@ -39,8 +38,8 @@ Item {
                 display.color = root.textColor
             }
 
-            onPressed: parent.color = root.color
-            onReleased: parent.color = root.hoverColor
+            onPressed: parent.color = root.hoverColor
+            onReleased: parent.color = root.color
         }
     }
 }
