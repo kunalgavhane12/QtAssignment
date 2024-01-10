@@ -33,6 +33,15 @@ Window {
                 display.displayText += "0" + value
 
             }
+            else if (display.displayText === '+' || display.displayText === '-' || display.displayText === '*' || display.displayText === '/')
+            {
+                display.displayText = value
+            }
+            else if (lastChar === '+' || lastChar === '-' || lastChar === '*' || lastChar === '/')
+            {
+                display.displayText = display.displayText.slice(0, -1)
+                display.displayText += value
+            }
             else
             {
                 display.displayText += value
@@ -222,7 +231,7 @@ Window {
 
         Button {
             id: percentage
-            text: "%"
+            text: "-"
             onClicked:
             {
                 updateDisplay(text);
