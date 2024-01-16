@@ -1,0 +1,13 @@
+<RCC>
+    <qresource prefix="/">
+        <file>main.qml</file>
+        <file>qtquickcontrols2.conf</file>
+        <file>LoginPage.qml</file>
+        <file>backend.js</file>
+        <file>fontawesome-webfont.ttf</file>
+        <file>registerScreen.qml</file>
+        <file>CButton.qml</file>
+        <file>PasswordResetPage.qml</file>
+        <file>UserInfoPage.qml</file>
+    </qresource>
+</RCC>
