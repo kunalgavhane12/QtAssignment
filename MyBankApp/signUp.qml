@@ -90,7 +90,7 @@ Item {
 
         if(pword !== pword1)
         {
-            popup.popMessage = "Password not matching."
+            popup.popMessage = "Password does not match!."
             popup.open()
             return
         }

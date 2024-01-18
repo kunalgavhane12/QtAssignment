@@ -86,11 +86,11 @@ Window {
 
         if(username === uname && password === pword)
         {
-            stackView.push("qrc:/accountPage.qml")
+            stackView.replace("qrc:/accountPage.qml")
         }
         else
         {
-            popup.popMessage = "Login Failed!"
+            popup.popMessage = "Invalid credentials!"
             popup.open()
         }
     }

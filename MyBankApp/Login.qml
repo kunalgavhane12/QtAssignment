@@ -6,7 +6,20 @@ import QtQuick.Layouts 1.12
 import "backend.js" as Backend
 
 Page {
+    id: page
     signal login()
+
+    Label {
+        id: loginPage
+        y: 46
+        width: 84
+        height: 15
+        text: qsTr("Login")
+        anchors.horizontalCenter: parent.horizontalCenter
+        font.pointSize: 20
+        font.bold: true
+    }
+
 
     background: Rectangle {
         color: backgroundColor
@@ -21,8 +34,9 @@ Page {
 
         Column {
             id: column
-            anchors.fill: parent
-            spacing: 10
+            width: 400
+            height: 258
+            spacing: 5
             Label{
                 id: lblUsername
                 text: "Username"
@@ -69,9 +83,6 @@ Page {
                 width: parent.width
                 onClicked: stackView.push("qrc:/signUp.qml")
             }
-
         }
-
     }
-
 }
