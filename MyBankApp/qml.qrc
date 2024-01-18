@@ -1,0 +1,9 @@
+<RCC>
+    <qresource prefix="/">
+        <file>main.qml</file>
+        <file>Login.qml</file>
+        <file>signUp.qml</file>
+        <file>accountPage.qml</file>
+        <file>backend.js</file>
+    </qresource>
+</RCC>
