@@ -30,7 +30,7 @@ Page {
             Button{
                 width: 150
                 height: 50
-                text: "Transfer"                
+                text: "Transfer"
                 onClicked: stackView.push("qrc:/transferPage.qml")
             }
             Button{
@@ -52,24 +52,11 @@ Page {
     }
     Rectangle {
         id: rectangle
-        color: "lightgrey"
+        color: "green"
         x: 150
         y: 0
         width: parent.width - x
         height: parent.height
-
-        Label{
-            text: root.username
-            anchors.right: parent.right
-            anchors.rightMargin: 0
-        }
-
-        Text {
-            text: "WelCome"
-            font.pointSize: 25
-            font.bold: true
-            anchors.centerIn: parent
-        }
 
 
     }

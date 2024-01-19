@@ -84,5 +84,5 @@ Page {
                 onClicked: stackView.push("qrc:/signUp.qml")
             }
         }
-    }
+          }
 }

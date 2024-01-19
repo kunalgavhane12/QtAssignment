@@ -5,6 +5,8 @@
         <file>signUp.qml</file>
         <file>accountPage.qml</file>
         <file>backend.js</file>
-        <file>hoverButton.qml</file>
+        <file>depositPage.qml</file>
+        <file>transferPage.qml</file>
+        <file>detailsPage.qml</file>
     </qresource>
 </RCC>
