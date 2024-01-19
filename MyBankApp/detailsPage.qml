@@ -50,14 +50,73 @@ Page {
         }
 
     }
+
     Rectangle {
         id: rectangle
-        color: "red"
+        color: "lightgrey"
         x: 150
         y: 0
         width: parent.width - x
         height: parent.height
 
+        Label{
+            text: root.username
+            anchors.right: parent.right
+            anchors.rightMargin: 0
+        }
 
+        Column {
+            width: 463
+            height: 342
+            anchors.verticalCenter: parent.verticalCenter
+            anchors.horizontalCenter: parent.horizontalCenter
+            spacing: 10
+
+            Label {
+                id: lblName
+                text: qsTr("Name : ")
+            }
+
+            Label {
+                id: lblEmail
+                text: "Email :"
+            }
+
+            Label {
+                id: lblPword
+                text: qsTr("Account Number :")
+            }
+
+            Label {
+                id: lblPword1
+                text: qsTr("Account Balance :")
+            }
+
+        }
+
+        Column {
+            width: 274
+            height: 342
+            anchors.verticalCenter: parent.verticalCenter
+            anchors.horizontalCenter: parent.horizontalCenter
+            spacing: 10
+
+            Label {
+                text: root.name
+            }
+
+            Label {
+                text: root.username
+            }
+
+            Label {
+                text: root.accountNumber
+            }
+
+            Label {
+                text: root.accountBalance
+            }
+
+        }
     }
 }

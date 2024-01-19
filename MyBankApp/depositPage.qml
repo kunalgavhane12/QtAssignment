@@ -3,7 +3,7 @@ import QtQuick.Controls 2.5
 
 Page {
 
-     Rectangle{
+    Rectangle{
         id: menu
         color: "lightgrey"
         width: 150
@@ -12,19 +12,18 @@ Page {
         Column{
             id: column
             anchors.fill: parent
-
             Button{
-                 width: 150
-                 height: 50
-                 text: "Home"
-                 onClicked: stackView.push("qrc:/accountPage.qml")
+                width: 150
+                height: 50
+                text: "Home"
+                onClicked: stackView.push("qrc:/accountPage.qml")
 
             }
             Button{
                 width: 150
                 height: 50
                 text: "Deposit"
-              onClicked: stackView.push("qrc:/depositPage.qml")
+                onClicked: stackView.push("qrc:/depositPage.qml")
 
             }
             Button{
@@ -58,10 +57,17 @@ Page {
         width: parent.width - x
         height: parent.height
 
+        Label{
+            text: root.username
+            anchors.right: parent.right
+            anchors.rightMargin: 0
+        }
+
         Column {
-            anchors.centerIn: parent
-            width: 400
-            height: 258
+            anchors.horizontalCenter: parent.horizontalCenter
+            width: 448
+            height: 302
+            y: 20
             spacing: 5
             Label{
                 id: name
@@ -97,7 +103,6 @@ Page {
             TextField{
                 id: txtDeposit
                 width: parent.width
-                echoMode: TextField.Password
                 placeholderText: "0.00"
                 text: ""
             }
@@ -117,9 +122,5 @@ Page {
 
             }
         }
-
-
-
-
     }
 }

@@ -20,7 +20,6 @@ Page {
         font.bold: true
     }
 
-
     background: Rectangle {
         color: backgroundColor
     }

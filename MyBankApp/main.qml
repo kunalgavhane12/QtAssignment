@@ -19,6 +19,9 @@ Window {
     property color popupTextColor: "black"
     property string username: "admin@gmail.com"
     property string password: "Admin@123"
+    property string name: "Admin"
+    property string accountBalance: "0.00"
+    property string accountNumber: "123456789"
 
 
     StackView{

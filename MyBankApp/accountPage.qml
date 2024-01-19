@@ -50,6 +50,7 @@ Page {
         }
 
     }
+
     Rectangle {
         id: rectangle
         color: "lightgrey"
@@ -70,7 +71,5 @@ Page {
             font.bold: true
             anchors.centerIn: parent
         }
-
-
     }
 }
