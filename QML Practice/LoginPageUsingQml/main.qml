@@ -1,7 +1,9 @@
 import QtQuick 2.12
-import QtQuick.Window 2.12
 import QtQml 2.12
-import QtQuick.Controls 2.3
+import QtQuick.Window 2.12
+import QtQuick.Controls 2.12
+
+import "code.js" as Code
 
 Window {
     width: 640
@@ -9,17 +11,10 @@ Window {
     visible: true
     title: qsTr("Banking App")
     id: root
-//        color: "#ff6739"
+    //  color: "#ff6739"
     property string username: "admin"
     property string password: "admin"
     property string  status: "LOGIN FAILED"
-
-    Component.onCompleted: {
-        stackView.push("qrc:/main.qml")
-        dataBase = userDataBase()
-        console.log(dataBase.version)
-    }
-
 
     Popup{
         id: popup
@@ -43,7 +38,7 @@ Window {
                 id: closeButton
                 text: "Close"
                 onClicked: popup.visible = false
-          }
+            }
         }
     }
 
@@ -67,6 +62,7 @@ Window {
             y: 30
             width: 300
             placeholderText: "Enter username"
+
         }
 
         Label {
@@ -80,7 +76,7 @@ Window {
             y: 100
             width: 300
             placeholderText: "Enter password"
-            echoMode: "Password"
+            echoMode: TextInput.Password //"Password"
 
         }
 
@@ -92,6 +88,25 @@ Window {
             onClicked: {
                 var tempcode = txtUsername.text
                 var tempcode1 = txtPassword.text
+
+                if (Code.isValidEmail(txtUsername.text))
+                {
+                    console.log("Email is valid:", txtUsername.text)
+                }
+                else
+                {
+                    console.log("Invalid email format")
+                }
+
+                if (Code.isValidPassword(txtPassword.text))
+                {
+                    console.log("Password is valid")
+                }
+                else
+                {
+                    console.log("Invalid password format")
+                }
+
                 if(tempcode === password && tempcode1 === username)
                     status = "LOGIN SUCCESSFUL"
                 popup.visible = true
@@ -111,6 +126,5 @@ Window {
         }
     }
 
+
 }
-
-

@@ -7,6 +7,7 @@ Item {
     property color textColor: "white"
     property color clickColor: "gray"
     property color textHover: "Black"
+    property alias area: mousearea
     property alias title: display
 
     Rectangle{
@@ -24,7 +25,7 @@ Item {
         }
 
         MouseArea {
-
+            id: mousearea
             anchors.fill: parent
             hoverEnabled: true
 

@@ -1,0 +1,12 @@
+<RCC>
+    <qresource prefix="/">
+        <file>main.qml</file>
+        <file>Login.qml</file>
+        <file>signUp.qml</file>
+        <file>accountPage.qml</file>
+        <file>backend.js</file>
+        <file>depositPage.qml</file>
+        <file>transferPage.qml</file>
+        <file>detailsPage.qml</file>
+    </qresource>
+</RCC>

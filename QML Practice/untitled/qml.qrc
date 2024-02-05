@@ -1,7 +1,8 @@
 <RCC>
     <qresource prefix="/">
         <file>main.qml</file>
-        <file>code.js</file>
         <file>login.qml</file>
+        <file>signup.qml</file>
+        <file>profile.qml</file>
     </qresource>
 </RCC>
