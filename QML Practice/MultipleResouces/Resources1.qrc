@@ -1,0 +1,28 @@
+<RCC>
+    <qresource prefix="/res">
+        <file>resources/icons3/cog.png</file>
+        <file>resources/icons3/coins.png</file>
+        <file>resources/icons3/coins_add.png</file>
+        <file>resources/icons3/coins_delete.png</file>
+        <file>resources/icons3/color_swatch.png</file>
+        <file>resources/icons3/color_wheel.png</file>
+        <file>resources/icons3/comment.png</file>
+        <file>resources/icons3/comment_add.png</file>
+        <file>resources/icons3/comment_delete.png</file>
+        <file>resources/icons3/comment_edit.png</file>
+        <file>resources/icons3/comments.png</file>
+        <file>resources/icons3/comments_add.png</file>
+        <file>resources/icons3/comments_delete.png</file>
+        <file>resources/icons3/compress.png</file>
+        <file>resources/icons3/computer.png</file>
+        <file>resources/icons3/computer_add.png</file>
+        <file>resources/icons3/computer_delete.png</file>
+        <file>resources/icons3/computer_edit.png</file>
+        <file>resources/icons3/computer_error.png</file>
+        <file>resources/icons3/computer_go.png</file>
+        <file>resources/icons3/computer_key.png</file>
+        <file>resources/icons3/computer_link.png</file>
+        <file>resources/icons3/connect.png</file>
+        <file>resources/icons3/contrast_decrease.png</file>
+    </qresource>
+</RCC>
