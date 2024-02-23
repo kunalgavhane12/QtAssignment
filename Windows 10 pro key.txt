@@ -1,0 +1,3 @@
+wmic path softwareLicensingService get OA3xOriginalProductKey
+
+Y9QNJ-33HCP-WFTGX-FVP26-D3TBP
